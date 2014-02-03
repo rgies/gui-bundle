@@ -1,0 +1,30 @@
+{
+    "name": "rgies/rad-bundle",
+    "type": "symfony-bundle",
+    "description": "Rapid Development Bundle",
+    "keywords": ["rad", "rapid", "development"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robert Gies",
+            "email": "mail@gies-it.de"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/rgies/rad-bundle/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "~2.4"
+    },
+    "autoload": {
+        "psr-0": { "RGies\\RadBundle": "" }
+    },
+    "target-dir": "RGies/RadBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
