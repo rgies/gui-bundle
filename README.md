@@ -1,7 +1,7 @@
-rad-bundle
-==========
+Rapid Development Bundle
+==============================
 
-Symfony 2 bundle for rapid developerment (e.g. code generation).
+Symfony 2 Bundle for Rapid Developerment (e.g. Code Generation).
 
 ## Installation ##
 
@@ -22,7 +22,7 @@ Then register the bundle in the `AppKernel.php` file:
     {
         $bundles = array(
             ...
-            new RGies\RadBundle\RGiesRadBundle(),
+            new RGies\RadBundle\RadBundle(),
             ...
         );
 
