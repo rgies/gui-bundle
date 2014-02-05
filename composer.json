@@ -1,7 +1,7 @@
 {
     "name": "rgies/gui-bundle",
     "type": "symfony-bundle",
-    "description": "GUI for Rapid Development Bundle",
+    "description": "GUI for Rapid Development",
     "keywords": ["rad", "rapid", "development", "gui"],
     "license": "MIT",
     "authors": [
