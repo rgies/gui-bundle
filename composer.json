@@ -1,7 +1,7 @@
 {
     "name": "rgies/gui-bundle",
     "type": "symfony-bundle",
-    "description": "GUI for Rapid Development Bundle",
+    "description": "GUI for Rapid Development",
     "keywords": ["rad", "rapid", "development", "gui"],
     "license": "MIT",
     "authors": [
@@ -24,7 +24,7 @@
     "target-dir": "RGies/GuiBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "master"
         }
     }
 }
