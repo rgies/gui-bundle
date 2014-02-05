@@ -34,4 +34,4 @@ Symfony 2 GUI Bundle for Rapid Developerment (e.g. Code Generation).
     rad:
         resource: "@GuiBundle/Controller/"
         type:     annotation
-        prefix:   /
+        prefix:   /gui

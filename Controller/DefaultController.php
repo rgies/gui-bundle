@@ -29,7 +29,7 @@ class DefaultController extends Controller
     /**
      * Show dashboard view.
      *
-     * @Route("/gui", name="gui")
+     * @Route("/", name="gui")
      * @Template()
      */
     public function indexAction()
@@ -40,7 +40,7 @@ class DefaultController extends Controller
     /**
      * Create bundle view.
      *
-     * @Route("/gui/create-bundle", name="guiCreateBundle")
+     * @Route("/create-bundle", name="guiCreateBundle")
      * @Template()
      */
     public function createBundleAction()
@@ -51,7 +51,7 @@ class DefaultController extends Controller
     /**
      * Execute Command.
      *
-     * @Route("/gui/execute-command", name="guiExecuteCommand")
+     * @Route("/execute-command", name="guiExecuteCommand")
      * @Template()
      */
     public function execCommandAction()
