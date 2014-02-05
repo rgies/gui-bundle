@@ -1,7 +1,7 @@
-Rapid Development Bundle
+Rapid Development GUI
 ==============================
 
-Symfony 2 Bundle for Rapid Developerment (e.g. Code Generation).
+Symfony 2 GUI Bundle for Rapid Developerment (e.g. Code Generation).
 
 ## Installation ##
 
@@ -9,12 +9,12 @@ Symfony 2 Bundle for Rapid Developerment (e.g. Code Generation).
 
     "require": {
         ..
-        "rgies/rad-bundle": "dev-master"
+        "rgies/gui-bundle": "dev-master"
     },
 
 2.And then run the Composer update command:
 
-    $ php composer.phar update rgies/rad-bundle
+    $ php composer.phar update rgies/gui-bundle
 
 3.Then register the bundle in the `AppKernel.php` file:
 
@@ -22,7 +22,7 @@ Symfony 2 Bundle for Rapid Developerment (e.g. Code Generation).
     {
         $bundles = array(
             ...
-            new RGies\RadBundle\RadBundle(),
+            new RGies\GuiBundle\GuiBundle(),
             ...
         );
 
@@ -32,6 +32,6 @@ Symfony 2 Bundle for Rapid Developerment (e.g. Code Generation).
 4.Add the following route to your routing configuration:
 
     rad:
-        resource: "@RadBundle/Controller/"
+        resource: "@GuiBundle/Controller/"
         type:     annotation
         prefix:   /
