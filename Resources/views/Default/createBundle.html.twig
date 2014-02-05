@@ -3,17 +3,17 @@
 {% block content %}
     <form name="dataForm" role="form" method="post" action="{{ path('guiExecuteCommand') }}">
         <input name="command" id="command" type="hidden" value="generate:bundle" />
-        <div class="form-group">
+        <div class="form-group col-sm-6">
             <label for="bundleName">Name*</label>
             <input name="bundleName" type="text" class="form-control" id="bundleName" placeholder="Bundle name" maxlength="40" required />
             <p class="help-block">Enter here your bundle name.</p>
         </div>
-        <div class="form-group">
+        <div class="form-group col-sm-6">
             <label for="bundleNamespace">Vendor*</label>
             <input name="bundleNamespace" type="text" class="form-control" id="bundleNamespace" placeholder="Vendor or project name" maxlength="40" required />
             <p class="help-block">Enter here your vendor or project name.</p>
         </div>
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <div class="checkbox">
                 <label>
                     <input name="createStructure" id="createStructure" type="checkbox" checked="checked" /> Create directory structure
