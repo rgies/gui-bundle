@@ -1,0 +1,21 @@
+{% extends "::base.html.twig" %}
+{% block title %}Rapid Development{% endblock %}
+{% block body %}
+    {% block navi %}
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ path('gui') }}">
+                    <span class="glyphicon glyphicon-folder-open"></span>
+                    &nbsp;&nbsp;Symfony 2 - Rapid Development Cockpit</a>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+    <div class="container">
+        <div class="page-header">
+            <h1>{% block headline %}Headline{% endblock %}</h1>
+        </div>
+        {% block content %}Content{% endblock %}
+    </div>
+{% endblock %}
