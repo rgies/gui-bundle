@@ -49,7 +49,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Execute Command.
+     * Ajax Execute Command.
      *
      * @Route("/execute-command", name="guiExecuteCommand")
      * @Template()
@@ -60,16 +60,19 @@ class DefaultController extends Controller
         $executor = new CommandExecutor($this->get('kernel'));
 
         $command = $request->get('command');
+        $rootPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/');
 
         switch($command)
         {
-            // Generate new bundle
+            // generate new bundle
             case 'generate:bundle':
+                $bundleName = $executor->formatBundleName($request->get('bundleName'));
+                $namespace = $executor->formatNamespace($request->get('bundleNamespace')) . '/' . $bundleName;
                 $cmd = $command;
-                $cmd.= ' --bundle-name="' . $this->_formatBundleName($request->get('bundleName')) . '"';
-                $cmd.= ' --namespace="' . $request->get('bundleNamespace') . '"';
+                $cmd.= ' --bundle-name="' . $bundleName . '"';
+                $cmd.= ' --namespace="' . $namespace . '"';
                 $cmd.= ' --format="annotation"';
-                $cmd.= ' --dir="annotation"';
+                $cmd.= ' --dir="' . $rootPath . '/src"';
                 $cmd.= ($request->get('createStructure')) ? ' --structure' : '';
                 break;
 
@@ -77,24 +80,11 @@ class DefaultController extends Controller
                 $cmd = null;
         }
 
-        $ret = ($cmd) ? $executor->execute($cmd) : '';
+        // execute command
+        $ret = ($cmd) ? $executor->execute($command, $cmd) : '';
 
-        var_dump($ret);exit;
-        return array();
-    }
-
-    /**
-     * Format bundle name.
-     *
-     * @param string $name Bundle name
-     * @return string
-     */
-    protected function _formatBundleName($name)
-    {
-        $name = lcfirst($name);
-        $name = preg_replace('~[^-a-zA-Z0-9_]+~', '', $name);
-        $name = preg_replace('~.*(Bundle|bundle)~', '', $name) . 'Bundle';
-
-        return $name;
+        // return json result
+        echo json_encode($ret);
+        exit;
     }
 }

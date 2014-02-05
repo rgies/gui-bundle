@@ -33,7 +33,14 @@ class CommandExecutor
         $this->baseKernel = $baseKernel;
     }
 
-    public function execute($commandString)
+    /**
+     * Execute symfony cli command.
+     *
+     * @param string $action Name of action e.g. generate:bundle
+     * @param string $commandString Command to execute
+     * @return array
+     */
+    public function execute($action, $commandString)
     {
         $input = new StringInput($commandString);
         $input->setInteractive(false);
@@ -44,7 +51,7 @@ class CommandExecutor
         $output->setFormatter(new HtmlConsoleOutputFormatter($formatter));
 
         //$application = new Application($this->getContainer()->get('kernel'));
-        $application = $this->getApplication($input);
+        $application = $this->_getApplication($input);
         $kernel = $application->getKernel();
         chdir($kernel->getRootDir() . '/..');
 
@@ -56,21 +63,51 @@ class CommandExecutor
         ob_end_clean();
 
         return array(
+            'action'      => $action,
             'input'       => $commandString,
             'output'      => $output->getBuffer(),
             'environment' => $kernel->getEnvironment(),
-            'error_code'  => $errorCode
+            'errorcode'  => $errorCode
         );
     }
 
-    protected function getApplication($input = null)
+    /**
+     * Format bundle name.
+     *
+     * @param string $name Bundle name
+     * @return string
+     */
+    public function formatBundleName($name)
     {
-        $kernel = $this->getKernel($input);
+        $name = ucfirst($name);
+        $name = preg_replace('~[^-a-zA-Z0-9_]+~', '', $name);
+        $name = preg_replace('~.*(Bundle|bundle)$~', '', $name) . 'Bundle';
+
+        return $name;
+    }
+
+    /**
+     * Format namespace.
+     *
+     * @param string $namespace Namespace
+     * @return string
+     */
+    public function formatNamespace($namespace)
+    {
+        $name = ucfirst($namespace);
+        $name = preg_replace('~[^-a-zA-Z0-9_]+~', '', $name);
+
+        return $name;
+    }
+
+    protected function _getApplication($input = null)
+    {
+        $kernel = $this->_getKernel($input);
 
         return new Application($kernel);
     }
 
-    protected function getKernel($input = null)
+    protected function _getKernel($input = null)
     {
         if($input === null) {
             return $this->baseKernel;
