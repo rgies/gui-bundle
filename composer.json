@@ -1,8 +1,8 @@
 {
-    "name": "rgies/rad-bundle",
+    "name": "rgies/gui-bundle",
     "type": "symfony-bundle",
-    "description": "Rapid Development Bundle",
-    "keywords": ["rad", "rapid", "development"],
+    "description": "GUI for Rapid Development Bundle",
+    "keywords": ["rad", "rapid", "development", "gui"],
     "license": "MIT",
     "authors": [
         {
@@ -11,7 +11,7 @@
         },
         {
             "name": "Community contributions",
-            "homepage": "https://github.com/rgies/rad-bundle/contributors"
+            "homepage": "https://github.com/rgies/gui-bundle/contributors"
         }
     ],
     "require": {
@@ -19,9 +19,9 @@
         "symfony/framework-bundle": "~2.4"
     },
     "autoload": {
-        "psr-0": { "RGies\\RadBundle": "" }
+        "psr-0": { "RGies\\GuiBundle": "" }
     },
-    "target-dir": "RGies/RadBundle",
+    "target-dir": "RGies/GuiBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
