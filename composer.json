@@ -24,7 +24,7 @@
     "target-dir": "RGies/GuiBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "master"
+            "dev-master": "master-dev"
         }
     }
 }
