@@ -2,14 +2,14 @@
 /**
  * Symfony2 - Rapid Development Bundle.
  *
- * @package     RGies\RadBundle\Executor
+ * @package     RGies\RadBundle\Util
  * @author      Robert Gies <mail@rgies.com>
  * @copyright   Copyright © 2014 by Robert Gies
  * @license     MIT
  * @date        2014-02-04
  */
 
-namespace RGies\GuiBundle\Executor;
+namespace RGies\GuiBundle\Util;
 
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -22,7 +22,7 @@ use RGies\GuiBundle\Formatter\HtmlConsoleOutputFormatter;
 
 /**
  * Class CommandExecutor
- * @package RGies\GuiBundle\Executor
+ * @package RGies\GuiBundle\Util
  */
 class CommandExecutor
 {

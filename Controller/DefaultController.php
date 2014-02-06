@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use RGies\GuiBundle\Executor\CommandExecutor;
+use RGies\GuiBundle\Util\CommandExecutor;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -44,6 +44,17 @@ class DefaultController extends Controller
      * @Template()
      */
     public function createBundleAction()
+    {
+        return array();
+    }
+
+    /**
+     * Install bundle view.
+     *
+     * @Route("/install-bundle", name="guiInstallBundle")
+     * @Template()
+     */
+    public function installBundleAction()
     {
         return array();
     }
@@ -98,7 +109,7 @@ class DefaultController extends Controller
                 $cmd.= ' --namespace="' . $namespace . '"';
                 $cmd.= ' --format="annotation"';
                 $cmd.= ' --dir="' . $rootPath . '/src"';
-                $cmd.= ($request->get('createStructure')) ? ' --structure' : '';
+                $cmd.= ($request->get('createStructure')=='on') ? ' --structure' : '';
                 break;
 
             // generate new controller

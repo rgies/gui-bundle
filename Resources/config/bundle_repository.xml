@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<repository>
+    <bundle>
+        <name></name>
+        <category></category>
+        <url></url>
+        <routingEntry></routingEntry>
+        <composerEntry></composerEntry>
+        <kernelEntry></kernelEntry>
+        <description></description>
+    </bundle>
+</repository>
