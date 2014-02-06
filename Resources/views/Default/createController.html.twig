@@ -1,0 +1,75 @@
+{% extends "GuiBundle::base.html.twig" %}
+{% block headline %}Create Controller{% endblock %}
+{% block content %}
+    <form name="dataForm" id="dataForm" role="form" method="post" action="{{ path('guiExecuteCommand') }}">
+        <input name="command" id="command" type="hidden" value="generate:controller" />
+        <div class="form-group col-sm-6">
+            <label for="bundleName">Bundle*</label>
+            <select name="bundleName" class="form-control" id="bundleName" required>
+                <option></option>
+                {% for item in bundles %}<option>{{ item }}</option>{% endfor %}
+            </select>
+            <p class="help-block">Please select target bundle.</p>
+        </div>
+        <div class="form-group col-sm-6">
+            <label for="controllerName">Name*</label>
+            <input name="controllerName" type="text" class="form-control" id="controllerName" placeholder="Controller name" maxlength="40" required />
+            <p class="help-block">Enter here your controller name.</p>
+        </div>
+        <div class="form-group col-sm-6">
+            <label for="controllerActions">Actions</label>
+            <input name="controllerActions" type="text" class="form-control" id="controllerActions" placeholder="Action names" maxlength="100" />
+            <p class="help-block">Enter here your comma separated list of action names.</p>
+        </div>
+        <div class="form-group col-sm-12">
+            <p>* Required fields.</p>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    <div class="modal fade" id="responseDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="responseDialogHeader" class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="responseDialogHeaderText" class="modal-title">Command Execution</h4>
+                </div>
+                <div id="responseDialogBody" class="modal-body">
+                    <p>body content</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->{% endblock %}
+{% block javascripts %}
+    <script>
+        // send ajax request to execute commandline
+        $(document).ready(function()
+        {
+            // bind to the form's submit event
+            $('#dataForm').submit(function() { $(this).ajaxSubmit({success:showResponse, dataType:'json'}); return false; });
+        });
+
+        function showResponse(response, statusText, xhr, $form)
+        {
+            //alert(responseText.output);
+            var text = response.input + '<br/><br/>' + response.output;
+
+            if (response.errorcode == 0)
+            {
+                $('#responseDialogHeader').css('background-color', 'green');
+                $('#responseDialogHeaderText').html('Successful');
+
+            }
+            else
+            {
+                $('#responseDialogHeader').css('background-color', 'red');
+                $('#responseDialogHeaderText').html('Execution Error');
+            }
+
+            $('#responseDialogBody').html(text);
+            $('#responseDialog').modal('show');
+        }
+    </script>
+{% endblock %}

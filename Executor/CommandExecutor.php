@@ -80,8 +80,53 @@ class CommandExecutor
     public function formatBundleName($name)
     {
         $name = ucfirst($name);
-        $name = preg_replace('~[^-a-zA-Z0-9_]+~', '', $name);
+        $name = preg_replace('~[^a-zA-Z0-9]+~', '', $name);
         $name = preg_replace('~.*(Bundle|bundle)$~', '', $name) . 'Bundle';
+
+        return $name;
+    }
+
+    /**
+     * Format controller name.
+     *
+     * @param string $name Controller name
+     * @return string
+     */
+    public function formatControllerName($name)
+    {
+        $name = ucfirst($name);
+        $name = preg_replace('~[^a-zA-Z0-9]+~', '', $name);
+        $name = preg_replace('~.*(Controller|controller)$~', '', $name);
+
+        return $name;
+    }
+
+    /**
+     * Format action name.
+     *
+     * @param string $name Action name
+     * @return string
+     */
+    public function formatActionName($name)
+    {
+        $name = lcfirst($name);
+        $name = preg_replace('~[^a-zA-Z0-9]+~', '', $name);
+        $name = preg_replace('~.*(Action|action)$~', '', $name) . 'Action';
+
+        return $name;
+    }
+
+    /**
+     * Format action path name.
+     *
+     * @param string $name Action path name
+     * @return string
+     */
+    public function formatActionPathName($name)
+    {
+        $name = lcfirst($name);
+        $name = preg_replace('~[^a-zA-Z0-9]+~', '', $name);
+        $name = '/' . trim($name, ' /'). '/';
 
         return $name;
     }
@@ -95,7 +140,7 @@ class CommandExecutor
     public function formatNamespace($namespace)
     {
         $name = ucfirst($namespace);
-        $name = preg_replace('~[^-a-zA-Z0-9_]+~', '', $name);
+        $name = preg_replace('~[^a-zA-Z0-9]+~', '', $name);
 
         return $name;
     }

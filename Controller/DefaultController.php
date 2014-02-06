@@ -49,6 +49,31 @@ class DefaultController extends Controller
     }
 
     /**
+     * Create controller view.
+     *
+     * @Route("/create-controller", name="guiCreateController")
+     * @Template()
+     */
+    public function createControllerAction()
+    {
+        $srcPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/') . '/src';
+        $allBundles = $this->container->getParameter('kernel.bundles');
+        $bundles = array();
+
+        // find all bundles in src folder
+        foreach ($allBundles as $bundle=>$path)
+        {
+            if ($bundle != 'GuiBundle' && is_dir($srcPath . '/' . dirname($path)))
+            {
+                $bundles[] = $bundle;
+            }
+        }
+        asort($bundles);
+
+        return array('bundles' => $bundles);
+    }
+
+    /**
      * Ajax Execute Command.
      *
      * @Route("/execute-command", name="guiExecuteCommand")
@@ -74,6 +99,27 @@ class DefaultController extends Controller
                 $cmd.= ' --format="annotation"';
                 $cmd.= ' --dir="' . $rootPath . '/src"';
                 $cmd.= ($request->get('createStructure')) ? ' --structure' : '';
+                break;
+
+            // generate new controller
+            case 'generate:controller':
+                $bundleName = $request->get('bundleName');
+                $controllerName = $executor->formatControllerName($request->get('controllerName'));
+                $actionNames = $request->get('controllerActions');
+                $cmd = $command;
+                $cmd.= ' --controller="' . $bundleName . ':' . $controllerName . '"';
+                if ($actionNames)
+                {
+                    $actions = explode(',', $actionNames);
+                    foreach ($actions as $action)
+                    {
+                        $cmd.= ' --actions="' . $executor->formatActionName($action) . ':'
+                            . $executor->formatActionPathName($action) . '"';
+                    }
+                }
+                $cmd.= ' --template-format="twig"';
+                $cmd.= ' --route-format="annotation"';
+                $cmd.= ' --no-interaction';
                 break;
 
             default:
