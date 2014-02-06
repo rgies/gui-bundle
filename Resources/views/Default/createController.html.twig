@@ -2,7 +2,7 @@
 {% block headline %}Create Controller{% endblock %}
 {% block content %}
     <form name="dataForm" id="dataForm" role="form" method="post" action="{{ path('guiExecuteCommand') }}">
-        <input name="command" id="command" type="hidden" value="generate:controller" />
+        <input name="command" id="command" type="hidden" value="gui:generate:controller" />
         <div class="form-group col-sm-6">
             <label for="bundleName">Bundle*</label>
             <select name="bundleName" class="form-control" id="bundleName" required>

@@ -63,7 +63,7 @@ class DefaultController extends Controller
         // find all bundles in src folder
         foreach ($allBundles as $bundle=>$path)
         {
-            if ($bundle != 'GuiBundle' && is_dir($srcPath . '/' . dirname($path)))
+            if (is_dir($srcPath . '/' . dirname($path)))
             {
                 $bundles[] = $bundle;
             }
@@ -102,7 +102,7 @@ class DefaultController extends Controller
                 break;
 
             // generate new controller
-            case 'generate:controller':
+            case 'gui:generate:controller':
                 $bundleName = $request->get('bundleName');
                 $controllerName = $executor->formatControllerName($request->get('controllerName'));
                 $actionNames = $request->get('controllerActions');
