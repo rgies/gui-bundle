@@ -177,13 +177,13 @@ class DefaultController extends Controller
                 $types = $request->get('fieldType');
                 $cmd = $command;
                 $cmd.= ' --entity="' . $bundleName . ':' . $entityName . '"';
-                if ($fields)
+                if (is_array($fields) && count($fields) && $fields[0])
                 {
                     $cmd .= ' --fields="';
                     foreach ($fields as $key=>$field)
                     {
                         $fieldName = $executor->formatFieldName($field);
-                        if ($fieldName && $types[$key])
+                        if ($fieldName && $fieldName != 'id' && $types[$key])
                         {
                             $cmd .= $fieldName . ':' . $types[$key] . ' ';
                         }
@@ -212,7 +212,13 @@ class DefaultController extends Controller
         }
 
         // execute command
-        $ret = ($cmd) ? $executor->execute($command, $cmd) : '';
+        $ret = ($cmd) ? $executor->execute($cmd) : '';
+
+        if ($ret['errorcode'] == 0 && $command == 'doctrine:generate:crud' && $request->get('createTable') == 'on')
+        {
+            $ret2 = $executor->execute('doctrine:schema:update --force');
+            $ret['output'] .= '<br/>' . $ret2['output'];
+        }
 
 
         // return json result

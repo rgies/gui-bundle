@@ -36,11 +36,10 @@ class CommandExecutor
     /**
      * Execute symfony cli command.
      *
-     * @param string $action Name of action e.g. generate:bundle
      * @param string $commandString Command to execute
      * @return array
      */
-    public function execute($action, $commandString)
+    public function execute($commandString)
     {
         $input = new StringInput($commandString);
         $input->setInteractive(false);
@@ -63,7 +62,6 @@ class CommandExecutor
         ob_end_clean();
 
         return array(
-            'action'      => $action,
             'input'       => $commandString,
             'output'      => $output->getBuffer(),
             'environment' => $kernel->getEnvironment(),

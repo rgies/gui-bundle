@@ -52,11 +52,17 @@
         <div class="form-group col-sm-12">
             <div class="checkbox">
                 <label>
-                    <input name="createCrud" id="createCrud" type="checkbox" checked="checked" /> Create CRUD file structure
+                    <input name="createCrud" id="createCrud" type="checkbox" checked="checked" /> Create CRUD file structure.
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input name="createTable" id="createTable" type="checkbox" checked="checked" /> Execute database update.
                 </label>
             </div>
             <p>* Required fields.</p>
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-default">Reset</button>
         </div>
     </form>
     <div class="modal fade" id="responseDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -92,6 +98,7 @@
                 {
                     $('#form-group-name'+z).toggle();
                     $('#form-group-type'+z).toggle();
+                    $('#form-group-name'+z+' input').focus();
                     return;
                 }
             }
