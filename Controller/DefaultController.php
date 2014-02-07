@@ -49,6 +49,34 @@ class DefaultController extends Controller
     }
 
     /**
+     * Create crud view.
+     *
+     * @Route("/create-crud", name="guiCreateCrud")
+     * @Template()
+     */
+    public function createCrudAction()
+    {
+        $dataTypes = array(
+            'integer',
+            'string(10)',
+            'string(50)',
+            'string(100)',
+            'string(255)',
+            'text',
+            'boolean',
+            'datetime',
+            'float',
+            'smallint',
+            'bigint',
+        );
+
+        return array(
+            'types'   => $dataTypes,
+            'bundles' => $this->_getInstalledBundleNames()
+        );
+    }
+
+    /**
      * Install bundle view.
      *
      * @Route("/install-bundle", name="guiInstallBundle")
@@ -56,7 +84,10 @@ class DefaultController extends Controller
      */
     public function installBundleAction()
     {
-        return array();
+        $configFile = dirname(__DIR__). '/Resources/config/bundle_repository.xml';
+        $bundles = simplexml_load_file($configFile);
+
+        return array('bundles' => $bundles);
     }
 
     /**
@@ -66,6 +97,11 @@ class DefaultController extends Controller
      * @Template()
      */
     public function createControllerAction()
+    {
+        return array('bundles' => $this->_getInstalledBundleNames());
+    }
+
+    protected function _getInstalledBundleNames()
     {
         $srcPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/') . '/src';
         $allBundles = $this->container->getParameter('kernel.bundles');
@@ -81,7 +117,7 @@ class DefaultController extends Controller
         }
         asort($bundles);
 
-        return array('bundles' => $bundles);
+        return $bundles;
     }
 
     /**
@@ -133,12 +169,51 @@ class DefaultController extends Controller
                 $cmd.= ' --no-interaction';
                 break;
 
+            // generate entity
+            case 'doctrine:generate:entity':
+                $bundleName = $request->get('bundleName');
+                $entityName = $executor->formatEntityName($request->get('entityName'));
+                $fields = $request->get('fieldName');
+                $types = $request->get('fieldType');
+                $cmd = $command;
+                $cmd.= ' --entity="' . $bundleName . ':' . $entityName . '"';
+                if ($fields)
+                {
+                    $cmd .= ' --fields="';
+                    foreach ($fields as $key=>$field)
+                    {
+                        $fieldName = $executor->formatFieldName($field);
+                        if ($fieldName && $types[$key])
+                        {
+                            $cmd .= $fieldName . ':' . $types[$key] . ' ';
+                        }
+                    }
+                    $cmd = rtrim($cmd, ' ');
+                    $cmd .= '"';
+                }
+                $cmd.= ' --format="annotation"';
+                $cmd.= ' --with-repository';
+                $cmd.= ' --no-interaction';
+                break;
+
+            // generate crud
+            case 'doctrine:generate:crud':
+                $bundleName = $request->get('bundleName');
+                $entityName = $executor->formatEntityName($request->get('entityName'));
+                $cmd = 'doctrine:generate:crud';
+                $cmd.= ' --entity="' . $bundleName . ':' . $entityName . '"';
+                $cmd.= ' --route-prefix="' . strtolower($entityName) . '"';
+                $cmd.= ' --with-write';
+                $cmd.= ' --no-interaction';
+            break;
+
             default:
                 $cmd = null;
         }
 
         // execute command
         $ret = ($cmd) ? $executor->execute($command, $cmd) : '';
+
 
         // return json result
         echo json_encode($ret);

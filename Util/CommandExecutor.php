@@ -102,6 +102,20 @@ class CommandExecutor
     }
 
     /**
+     * Format entity name.
+     *
+     * @param string $name Entity name
+     * @return string
+     */
+    public function formatEntityName($name)
+    {
+        $name = ucfirst($name);
+        $name = preg_replace('~[^a-zA-Z0-9]+~', '', $name);
+
+        return $name;
+    }
+
+    /**
      * Format action name.
      *
      * @param string $name Action name
@@ -112,6 +126,20 @@ class CommandExecutor
         $name = lcfirst($name);
         $name = preg_replace('~[^a-zA-Z0-9]+~', '', $name);
         $name = preg_replace('~.*(Action|action)$~', '', $name) . 'Action';
+
+        return $name;
+    }
+
+    /**
+     * Format field name.
+     *
+     * @param string $name Field name
+     * @return string
+     */
+    public function formatFieldName($name)
+    {
+        $name = strtolower($name);
+        $name = preg_replace('~[^a-zA-Z0-9_]+~', '', $name);
 
         return $name;
     }

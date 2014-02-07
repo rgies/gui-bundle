@@ -2,18 +2,21 @@
 {% block headline %}<span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Bundle Repository <small>selection of helpful bundles</small>{% endblock %}
 {% block content %}
     <h4>Please select any option:</h4>
+    {% for bundle in bundles %}
     <div class="row">
         <div class="col-sm-12">
             <div class="panel panel-primary">
-                <div class="panel-heading"><h4>Name</h4></div>
+                <div class="panel-heading"><h4>{{ bundle.name }}</h4></div>
                 <div class="panel-body">
-                    <p style="min-height: 80px">Description</p>
+                    <p style="min-height: 80px">{{ bundle.description }}</p>
+                    <p><a target="_blank" href="{{ bundle.url | raw }}">{{ bundle.url }}</a></p>
                     <hr/>
                     <p class="text-right">
-                        <button class="btn btn-primary disabled" onclick="location.href='';"><span class="glyphicon glyphicon-play"></span> Start</button>
+                        <button class="btn btn-primary" onclick="location.href='';"><span class="glyphicon glyphicon-download"></span> Install</button>
                     </p>
                 </div>
             </div>
         </div>
     </div>
+    {% endfor %}
 {% endblock %}

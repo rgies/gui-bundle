@@ -1,12 +1,27 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <repository>
     <bundle>
-        <name></name>
-        <category></category>
-        <url></url>
+        <name>Responsive Website Skeleton</name>
+        <category>Website</category>
+        <url>https://github.com/rgies</url>
         <routingEntry></routingEntry>
         <composerEntry></composerEntry>
         <kernelEntry></kernelEntry>
-        <description></description>
+        <description>
+            This bundle integrates a full responsive website template with navigation an common used page structure.
+            - coming soon -
+        </description>
+    </bundle>
+    <bundle>
+        <name>GuzzleBundle</name>
+        <category>Data Interface</category>
+        <url>https://github.com/misd-service-development/guzzle-bundle</url>
+        <routingEntry></routingEntry>
+        <composerEntry></composerEntry>
+        <kernelEntry></kernelEntry>
+        <description>
+            This bundle integrates Guzzle into your Symfony2 application, which takes the pain out of sending HTTP requests and the redundancy out of creating web service clients.
+            It can also integrate with the JMSSerializerBundle for easy object (de)serialization, and provides a param converter for use with the SensioFrameworkExtraBundle.
+        </description>
     </bundle>
 </repository>
