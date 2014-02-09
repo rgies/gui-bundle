@@ -18,6 +18,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use RGies\GuiBundle\Util\CommandExecutor;
+use RGies\GuiBundle\Util\BundleUtil;
+
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -34,6 +36,12 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        $bundles = BundleUtil::getCustomBundleNameList($this, $this->container);
+        if (count($bundles) == 0)
+        {
+            return $this->redirect('create-bundle');
+        }
+
         return array();
     }
 
@@ -72,7 +80,7 @@ class DefaultController extends Controller
 
         return array(
             'types'   => $dataTypes,
-            'bundles' => $this->_getInstalledBundleNames()
+            'bundles' => BundleUtil::getCustomBundleNameList($this, $this->container)
         );
     }
 
@@ -98,26 +106,9 @@ class DefaultController extends Controller
      */
     public function createControllerAction()
     {
-        return array('bundles' => $this->_getInstalledBundleNames());
-    }
-
-    protected function _getInstalledBundleNames()
-    {
-        $srcPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/') . '/src';
-        $allBundles = $this->container->getParameter('kernel.bundles');
-        $bundles = array();
-
-        // find all bundles in src folder
-        foreach ($allBundles as $bundle=>$path)
-        {
-            if (is_dir($srcPath . '/' . dirname($path)))
-            {
-                $bundles[] = $bundle;
-            }
-        }
-        asort($bundles);
-
-        return $bundles;
+        return array(
+            'bundles' => BundleUtil::getCustomBundleNameList($this, $this->container)
+        );
     }
 
     /**
