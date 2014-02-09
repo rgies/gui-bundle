@@ -81,7 +81,7 @@ class ControllerGenerator extends Generator
             $controllerTemplate = $this->render('controller/Action.php.twig', $parameters);
             $file = file_get_contents($controllerFile);
             $endPos = mb_strrpos($file, '}');
-            $file = mb_substr($file,1,$endPos-1);
+            $file = mb_substr($file,0,$endPos-1);
             file_put_contents($controllerFile, $file . "\n" . rtrim($controllerTemplate) . "\n}");
         }
         else
