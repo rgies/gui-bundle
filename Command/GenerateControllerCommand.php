@@ -122,6 +122,12 @@ EOT
         $dialog->writeSection($output, 'Controller generation');
 
         $generator = $this->getGenerator($bundle);
+
+        // replace generator bundle to skeletons with gui bundle skeletons path
+        $skeletonDirs = array_slice($this->getSkeletonDirs($bundle), 0, -2);
+        $skeletonDirs[] = __DIR__ . '/../Resources/skeleton';
+        $generator->setSkeletonDirs($skeletonDirs);
+
         $generator->generate($bundle, $controller, $input->getOption('route-format'), $input->getOption('template-format'), $this->parseActions($input->getOption('actions')));
 
         $output->writeln('Generating the bundle code: <info>OK</info>');
