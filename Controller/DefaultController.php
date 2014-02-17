@@ -99,6 +99,63 @@ class DefaultController extends Controller
     }
 
     /**
+     * Ajax action to install defined package.
+     *
+     * @Route("/install-bundle-ajax", name="guiInstallBundleAjax")
+     * @Template()
+     */
+    public function installBundleAjaxAction()
+    {
+        $request = Request::createFromGlobals()->request;
+        $bundlePath = $request->get('bundlePath');
+        $bundleVersion = $request->get('bundleVersion');
+        $rootPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/');
+
+
+        if (!$bundlePath)
+        {
+            die('Error: Bundle path not set.');
+        }
+
+        if (!$bundleVersion)
+        {
+            die('Error: Bundle version not set.');
+        }
+
+        // insert bundle to composer.json file
+        $composerFile = file_get_contents($rootPath . '/composer.json');
+        if (mb_strpos($composerFile, $bundlePath) === false)
+        {
+            $insertPos = mb_strpos($composerFile, '"require": {');
+            $insertPos = mb_strpos($composerFile, '},', $insertPos);
+
+            $newFile = mb_substr($composerFile, 0, $insertPos);
+            $newFile .= '    ,"' . $bundlePath . '": "' . $bundleVersion . '"' . "\r\n    ";
+            $newFile .= mb_substr($composerFile, $insertPos);
+
+            file_put_contents($rootPath . '/composer.json', $newFile);
+        }
+
+        // execute composer
+        putenv('PATH=' . $_SERVER['PATH']);
+        exec($rootPath . '/bin/composer self-update');
+        exec($rootPath . '/bin/composer -n -d="' . $rootPath . '" update ' . $bundlePath, $out, $ret);
+
+        //var_dump($out);
+
+        if (!$ret)
+        {
+            // handle success
+            echo 'Done';
+        } else {
+            // handle error
+            echo 'Error';
+        }
+
+        exit;
+    }
+
+    /**
      * Create controller view.
      *
      * @Route("/create-controller", name="guiCreateController")
