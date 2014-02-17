@@ -12,8 +12,8 @@
                     <p><a target="_blank" href="{{ bundle.url | raw }}">{{ bundle.url }}</a></p>
                     <hr/>
                     <p class="text-right">
-                        <button class="btn btn-primary" onclick="$.ajax({type:'POST', url:'{{ path('guiInstallBundleAjax') }}', data:{bundlePath:'{{ bundle.bundlePath }}', bundleVersion:'{{ bundle.bundleVersion }}'} }).done(function(data) {
-                        alert(data); });">
+                        <button class="btn btn-primary" onclick="$('#pleaseWaitDialog').modal();$.ajax({type:'POST', url:'{{ path('guiInstallBundleAjax') }}', data:{bundlePath:'{{ bundle.bundlePath }}', bundleVersion:'{{ bundle.bundleVersion }}'} }).done(function(data) {
+                                $('#pleaseWaitDialog').modal('hide'); alert(data); });">
                             <span class="glyphicon glyphicon-cloud-download"></span> Install
                         </button>
                     </p>
@@ -22,4 +22,21 @@
         </div>
     </div>
     {% endfor %}
+    <!-- Waiting dialog -->
+    <div class="modal fade" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Processing...</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            <span class="sr-only">Please Wait</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
