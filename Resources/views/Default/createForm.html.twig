@@ -1,0 +1,40 @@
+{% extends "GuiBundle::base.html.twig" %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/gui/css/createForm.css') }}" rel="stylesheet">
+{% endblock %}
+{% block headline %}Create Form{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- Building Form. -->
+        <div style="float:left; width: 50%">
+            <div id="build">
+                <form id="target" role="form"></form>
+            </div>
+        </div>
+        <!-- / Building Form. -->
+
+        <!-- Components -->
+        <div class="col-sm-6">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="formtabs">
+                    <!-- Tab nav -->
+                </ul>
+                <form role="form" id="components">
+                    <div class="form-group">
+                        <div class="tab-content">
+                            <!-- Tabs of snippets go here -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- / Components -->
+
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <!--<script data-main="{{ asset('bundles/gui/js/main-built.js') }}" src="{{ asset('bundles/gui/js/lib/require.js') }}" ></script>-->
+    <script data-main="{{ asset('bundles/gui/js/main.js') }}" src="{{ asset('bundles/gui/js/lib/require.js') }}" ></script>
+{% endblock %}
