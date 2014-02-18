@@ -264,8 +264,9 @@ class DefaultController extends Controller
 
         if ($ret['errorcode'] == 0 && $command == 'doctrine:generate:crud' && $request->get('createTable') == 'on')
         {
-            $ret2 = $executor->execute('doctrine:schema:update --force');
-            $ret['output'] .= '<br/>' . $ret2['output'];
+            $ret2 = $executor->execute('doctrine:database:create');
+            $ret3 = $executor->execute('doctrine:schema:update --force');
+            $ret['output'] .= '<br/>' . $ret3['output'];
         }
 
 
