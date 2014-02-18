@@ -41,6 +41,7 @@ textarea {
 }
 
 .temp form {
+  width: 250px;
   padding: 8px 4px;
   border: 1px dotted #ccc;
   position: absolute;
