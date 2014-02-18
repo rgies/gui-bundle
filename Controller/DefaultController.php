@@ -20,7 +20,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use RGies\GuiBundle\Util\CommandExecutor;
 use RGies\GuiBundle\Util\BundleUtil;
 
+use Symfony\Component\Filesystem\Filesystem as FS;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\File;
 
 /**
  * Class DefaultController
@@ -111,7 +113,6 @@ class DefaultController extends Controller
         $bundleVersion = $request->get('bundleVersion');
         $rootPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/');
 
-
         if (!$bundlePath)
         {
             die('Error: Bundle path not set.');
@@ -123,18 +124,51 @@ class DefaultController extends Controller
         }
 
         // insert bundle to composer.json file
-        $composerFile = file_get_contents($rootPath . '/composer.json');
-        if (mb_strpos($composerFile, $bundlePath) === false)
+        $composerJsonFile = $rootPath . '/composer.json';
+
+        // use symfony file system
+        $fs = new FS();
+        if ($fs->exists($composerJsonFile))
         {
-            $insertPos = mb_strpos($composerFile, '"require": {');
-            $insertPos = mb_strpos($composerFile, '},', $insertPos);
+            // read entries from file
+            $composerFile = file_get_contents($composerJsonFile);
 
-            $newFile = mb_substr($composerFile, 0, $insertPos);
-            $newFile .= '    ,"' . $bundlePath . '": "' . $bundleVersion . '"' . "\r\n    ";
-            $newFile .= mb_substr($composerFile, $insertPos);
+            // decode json string into object
+            $composerJson = json_decode($composerFile);
 
-            file_put_contents($rootPath . '/composer.json', $newFile);
+            // check object if it a valid object
+            if ($composerJson && is_object($composerJson))
+            {
+                // retrieve all requirements from composer json object
+                $composerRequires =  $composerJson->require;
+
+                // check if we have allready set the new bundle
+                if (!isset($composerRequires->{$bundlePath}))
+                {
+                    // set new bundle and their version
+                    $composerRequires->{$bundlePath} = $bundleVersion;
+
+                    // override composer requirements with new one
+                    $composerJson->require = $composerRequires;
+
+                    // encode the json object
+                    $data = json_encode($composerJson, 128);
+
+                    // prepare json to a pretty json
+                    $data = BundleUtil::getPrettyJson($data);
+
+                    // dump json string into file
+                    // mode 0664 = read/write for user and group and read for all other
+                    $fs->dumpFile($composerJsonFile, '', 0664);
+                    $fs->dumpFile($composerJsonFile, $data, 0664);
+
+                    // TODO Register new installed bundle
+
+                }
+            }
         }
+
+        unset($composerJsonFile);
 
         // execute composer
         putenv('PATH=' . $_SERVER['PATH']);
