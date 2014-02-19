@@ -1,5 +1,4 @@
 require.config({
-    //baseUrl: "assets/js/lib/"
     baseUrl: "../../bundles/gui/js/lib/"
   , shim: {
     'backbone': {

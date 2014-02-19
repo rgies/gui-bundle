@@ -11,33 +11,18 @@
         "label": "Input Size",
         "value": [
           {
-            "label": "Mini",
-            "value": "input-mini",
-            "selected": false
-          },
-          {
             "label": "Small",
-            "value": "input-small",
+            "value": "input-sm",
             "selected": false
           },
           {
             "label": "Medium",
-            "value": "input-medium",
-            "selected": false
-          },
-          {
-            "label": "Large",
-            "value": "input-large",
-            "selected": false
-          },
-          {
-            "label": "Xlarge",
-            "value": "input-xlarge",
+            "value": "",
             "selected": true
           },
           {
-            "label": "Xxlarge",
-            "value": "input-xxlarge",
+            "label": "Large",
+            "value": "input-lg",
             "selected": false
           }
         ]
@@ -76,36 +61,21 @@
         "type": "select",
         "label": "Input Size",
         "value": [
-          {
-            "label": "Mini",
-            "value": "input-mini",
-            "selected": false
-          },
-          {
-            "label": "Small",
-            "value": "input-small",
-            "selected": false
-          },
-          {
-            "label": "Medium",
-            "value": "input-medium",
-            "selected": false
-          },
-          {
-            "label": "Large",
-            "value": "input-large",
-            "selected": false
-          },
-          {
-            "label": "Xlarge",
-            "value": "input-xlarge",
-            "selected": true
-          },
-          {
-            "label": "Xxlarge",
-            "value": "input-xxlarge",
-            "selected": false
-          }
+            {
+                "label": "Small",
+                "value": "input-sm",
+                "selected": false
+            },
+            {
+                "label": "Medium",
+                "value": "",
+                "selected": true
+            },
+            {
+                "label": "Large",
+                "value": "input-lg",
+                "selected": false
+            }
         ]
       },
       "label": {
@@ -147,36 +117,21 @@
         "type": "select",
         "label": "Input Size",
         "value": [
-          {
-            "label": "Mini",
-            "value": "input-mini",
-            "selected": false
-          },
-          {
-            "label": "Small",
-            "value": "input-small",
-            "selected": false
-          },
-          {
-            "label": "Medium",
-            "value": "input-medium",
-            "selected": false
-          },
-          {
-            "label": "Large",
-            "value": "input-large",
-            "selected": false
-          },
-          {
-            "label": "Xlarge",
-            "value": "input-xlarge",
-            "selected": true
-          },
-          {
-            "label": "Xxlarge",
-            "value": "input-xxlarge",
-            "selected": false
-          }
+            {
+                "label": "Small",
+                "value": "input-sm",
+                "selected": false
+            },
+            {
+                "label": "Medium",
+                "value": "",
+                "selected": true
+            },
+            {
+                "label": "Large",
+                "value": "input-lg",
+                "selected": false
+            }
         ]
       },
       "label": {
@@ -218,36 +173,21 @@
         "type": "select",
         "label": "Input Size",
         "value": [
-          {
-            "label": "Mini",
-            "value": "input-mini",
-            "selected": false
-          },
-          {
-            "label": "Small",
-            "value": "input-small",
-            "selected": false
-          },
-          {
-            "label": "Medium",
-            "value": "input-medium",
-            "selected": false
-          },
-          {
-            "label": "Large",
-            "value": "input-large",
-            "selected": false
-          },
-          {
-            "label": "Xlarge",
-            "value": "input-xlarge",
-            "selected": true
-          },
-          {
-            "label": "Xxlarge",
-            "value": "input-xxlarge",
-            "selected": false
-          }
+            {
+                "label": "Small",
+                "value": "input-sm",
+                "selected": false
+            },
+            {
+                "label": "Medium",
+                "value": "",
+                "selected": true
+            },
+            {
+                "label": "Large",
+                "value": "input-lg",
+                "selected": false
+            }
         ]
       },
       "label": {
@@ -284,36 +224,21 @@
         "type": "select",
         "label": "Input Size",
         "value": [
-          {
-            "label": "Mini",
-            "value": "input-mini",
-            "selected": false
-          },
-          {
-            "label": "Small",
-            "value": "input-small",
-            "selected": false
-          },
-          {
-            "label": "Medium",
-            "value": "input-medium",
-            "selected": false
-          },
-          {
-            "label": "Large",
-            "value": "input-large",
-            "selected": false
-          },
-          {
-            "label": "Xlarge",
-            "value": "input-xlarge",
-            "selected": true
-          },
-          {
-            "label": "Xxlarge",
-            "value": "input-xxlarge",
-            "selected": false
-          }
+            {
+                "label": "Small",
+                "value": "input-sm",
+                "selected": false
+            },
+            {
+                "label": "Medium",
+                "value": "",
+                "selected": true
+            },
+            {
+                "label": "Large",
+                "value": "input-lg",
+                "selected": false
+            }
         ]
       },
       "label": {
@@ -355,36 +280,21 @@
         "type": "select",
         "label": "Input Size",
         "value": [
-          {
-            "label": "Mini",
-            "value": "input-mini",
-            "selected": false
-          },
-          {
-            "label": "Small",
-            "value": "input-small",
-            "selected": false
-          },
-          {
-            "label": "Medium",
-            "value": "input-medium",
-            "selected": false
-          },
-          {
-            "label": "Large",
-            "value": "input-large",
-            "selected": false
-          },
-          {
-            "label": "Xlarge",
-            "value": "input-xlarge",
-            "selected": true
-          },
-          {
-            "label": "Xxlarge",
-            "value": "input-xxlarge",
-            "selected": false
-          }
+            {
+                "label": "Small",
+                "value": "input-sm",
+                "selected": false
+            },
+            {
+                "label": "Medium",
+                "value": "",
+                "selected": true
+            },
+            {
+                "label": "Large",
+                "value": "input-lg",
+                "selected": false
+            }
         ]
       },
       "label": {
@@ -440,36 +350,21 @@
         "type": "select",
         "label": "Input Size",
         "value": [
-          {
-            "label": "Mini",
-            "value": "input-mini",
-            "selected": false
-          },
-          {
-            "label": "Small",
-            "value": "input-small",
-            "selected": false
-          },
-          {
-            "label": "Medium",
-            "value": "input-medium",
-            "selected": false
-          },
-          {
-            "label": "Large",
-            "value": "input-large",
-            "selected": false
-          },
-          {
-            "label": "Xlarge",
-            "value": "input-xlarge",
-            "selected": true
-          },
-          {
-            "label": "Xxlarge",
-            "value": "input-xxlarge",
-            "selected": false
-          }
+            {
+                "label": "Small",
+                "value": "input-sm",
+                "selected": false
+            },
+            {
+                "label": "Medium",
+                "value": "",
+                "selected": true
+            },
+            {
+                "label": "Large",
+                "value": "input-lg",
+                "selected": false
+            }
         ]
       },
       "label": {

@@ -4,37 +4,32 @@
 {% endblock %}
 {% block headline %}Create Form{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        <!-- Building Form. -->
-        <div style="float:left; width: 50%">
-            <div id="build">
-                <form id="target" role="form"></form>
-            </div>
+    <!-- Building Form. -->
+    <div style="float:left; width: 50%">
+        <div id="build">
+            <form id="target" role="form">
+            </form>
         </div>
-        <!-- / Building Form. -->
-
-        <!-- Components -->
-        <div class="col-sm-6">
-            <div class="tabbable">
-                <ul class="nav nav-tabs" id="formtabs">
-                    <!-- Tab nav -->
-                </ul>
-                <form role="form" id="components">
-                    <div class="form-group">
-                        <div class="tab-content">
-                            <!-- Tabs of snippets go here -->
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- / Components -->
-
     </div>
-</div>
+    <!-- / Building Form. -->
+
+    <!-- Components -->
+    <div style="padding-left:20px; float:left; width: 50%">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="formtabs">
+                <!-- Tab nav -->
+            </ul>
+            <form role="form" id="components">
+                <div class="form-group">
+                    <div class="tab-content">
+                        <!-- Tabs of snippets go here -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- / Components -->
 {% endblock %}
 {% block javascripts %}
-    <!--<script data-main="{{ asset('bundles/gui/js/main-built.js') }}" src="{{ asset('bundles/gui/js/lib/require.js') }}" ></script>-->
     <script data-main="{{ asset('bundles/gui/js/main.js') }}" src="{{ asset('bundles/gui/js/lib/require.js') }}" ></script>
 {% endblock %}
