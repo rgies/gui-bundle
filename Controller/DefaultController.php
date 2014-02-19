@@ -19,10 +19,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem as FS;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
-
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessBuilder;
 
 use RGies\GuiBundle\Util\CommandExecutor;
 use RGies\GuiBundle\Util\BundleUtil;
+
 
 /**
  * Class DefaultController
@@ -187,12 +189,49 @@ class DefaultController extends Controller
 
         unset($composerJsonFile, $fs);
 
-        // execute composer
-        putenv('PATH=' . $_SERVER['PATH']);
-        exec($rootPath . '/bin/composer self-update');
-        exec($rootPath . '/bin/composer -n -d="' . $rootPath . '" update ' . $bundlePath, $out, $ret);
+        // execute composer self-update
+        $processBuilder = new ProcessBuilder();
+        $process = $processBuilder
+          ->setEnv('PATH', $_SERVER['PATH'])
+          ->setEnv('COMPOSER_HOME', $rootPath . '/bin')
+          ->setPrefix($rootPath . '/bin/composer')
+          ->setArguments(array('self-update'))
+          ->getProcess();
+        $process->setTimeout(3600);
+        $process->setIdleTimeout(60);
+        $process->run(function($type, $data)
+          {
+              if (Process::ERR === $type) {
+                  echo 'execute composer self-update: ERR > ' . $data;
+                  die;
+              }
+          }
+        );
+        unset($processBuilder, $process);
 
-        //var_dump($out);
+        // execute composer update on specified bundle
+        $processBuilder = new ProcessBuilder();
+        $process = $processBuilder
+          ->setEnv('PATH', $_SERVER['PATH'])
+          ->setEnv('COMPOSER_HOME', $rootPath . '/bin')
+          ->setWorkingDirectory($rootPath)
+          ->setPrefix($rootPath . '/bin/composer')
+          ->setArguments(array(
+              '--no-interaction',                   // Do not ask any interactive question
+              'update',                             // Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file
+              $bundlePath                           // The bundle to update
+            )
+          )->getProcess();
+        //$process->setTimeout(3600);
+        //$process->setIdleTimeout(60);
+        $ret = $process->run(function($type, $data)
+          {
+              if (Process::ERR === $type) {
+                  echo 'execute composer update on specified bundle: ERR > ' . $data;
+                  die;
+              }
+          }
+        );
 
         if (!$ret)
         {
@@ -226,13 +265,20 @@ class DefaultController extends Controller
                 }
             }
 
+            // TODO Add routing
+            // ...
+
+            // Clear cache
+            BundleUtil::clearCache($kernel);
+
             // handle success
             echo 'Done';
         } else {
             // handle error
-            echo 'Error';
+            echo 'Error: ' . $process->getErrorOutput();
         }
 
+        unset($processBuilder, $process);
         exit;
     }
 

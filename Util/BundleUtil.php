@@ -11,8 +11,11 @@
 
 namespace RGies\GuiBundle\Util;
 
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpKernel\Kernel;
 
 
 /**
@@ -172,5 +175,24 @@ class BundleUtil
         }
 
         return $installed;
+    }
+
+    /**
+     * Clear the application
+     *
+     * @param Kernel $kernel
+     *
+     * @return int
+     */
+    public static function clearCache(Kernel $kernel)
+    {
+        $input = new ArgvInput(array('console', 'cache:clear'));
+
+        $application = new Application($kernel);
+        $ret = $application->run($input);
+
+        unset($input, $application);
+
+        return $ret;
     }
 }
