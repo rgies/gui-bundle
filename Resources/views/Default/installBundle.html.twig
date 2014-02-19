@@ -12,7 +12,7 @@
                     <p><a target="_blank" href="{{ bundle.url | raw }}">{{ bundle.url }}</a></p>
                     <hr/>
                     <p class="text-right">
-                        <button class="btn btn-primary" onclick="$('#pleaseWaitDialog').modal();$.ajax({type:'POST', url:'{{ path('guiInstallBundleAjax') }}', data:{bundlePath:'{{ bundle.bundlePath }}', bundleVersion:'{{ bundle.bundleVersion }}'} }).done(function(data) {
+                        <button class="btn btn-primary" onclick="$('#pleaseWaitDialog').modal();$.ajax({type:'POST', url:'{{ path('guiInstallBundleAjax') }}', data:{bundlePath:'{{ bundle.bundlePath }}', bundleVersion:'{{ bundle.bundleVersion }}', kernelEntry:'{{ bundle.kernelEntry }}', bundleName:'{{ bundle.title }}'} }).done(function(data) {
                                 $('#pleaseWaitDialog').modal('hide'); alert(data); });">
                             <span class="glyphicon glyphicon-cloud-download"></span> Install
                         </button>

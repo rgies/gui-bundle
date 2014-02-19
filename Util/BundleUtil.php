@@ -145,4 +145,32 @@ class BundleUtil
 
         return $result;
     }
+
+    /**
+     *
+     * @param array     $bundles    All bundles
+     * @param string    $bundleName Bundle name to search for
+     *
+     * @return bool Returns TRUE if we found bundle; otherwise FALSE
+     */
+    public static function bundleInstalled(array $bundles, $bundleName)
+    {
+        $installed = FALSE;
+
+        if (!is_array($bundles))
+        {
+            return $installed;
+        }
+
+        foreach ($bundles as $key => $bundle)
+        {
+            if ($bundle === $bundleName)
+            {
+                $installed = TRUE;
+                break;
+            }
+        }
+
+        return $installed;
+    }
 }
