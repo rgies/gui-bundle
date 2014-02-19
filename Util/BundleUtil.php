@@ -11,8 +11,11 @@
 
 namespace RGies\GuiBundle\Util;
 
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpKernel\Kernel;
 
 
 /**
@@ -144,5 +147,52 @@ class BundleUtil
         $result = str_replace('":{', '": {', $result);
 
         return $result;
+    }
+
+    /**
+     *
+     * @param array     $bundles    All bundles
+     * @param string    $bundleName Bundle name to search for
+     *
+     * @return bool Returns TRUE if we found bundle; otherwise FALSE
+     */
+    public static function bundleInstalled(array $bundles, $bundleName)
+    {
+        $installed = FALSE;
+
+        if (!is_array($bundles))
+        {
+            return $installed;
+        }
+
+        foreach ($bundles as $key => $bundle)
+        {
+            if ($bundle === $bundleName)
+            {
+                $installed = TRUE;
+                break;
+            }
+        }
+
+        return $installed;
+    }
+
+    /**
+     * Clear the application
+     *
+     * @param Kernel $kernel
+     *
+     * @return int
+     */
+    public static function clearCache(Kernel $kernel)
+    {
+        $input = new ArgvInput(array('console', 'cache:clear'));
+
+        $application = new Application($kernel);
+        $ret = $application->run($input);
+
+        unset($input, $application);
+
+        return $ret;
     }
 }

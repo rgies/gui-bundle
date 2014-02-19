@@ -11,18 +11,20 @@
 
 namespace RGies\GuiBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\GeneratorBundle\Manipulator\KernelManipulator;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem as FS;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessBuilder;
 
 use RGies\GuiBundle\Util\CommandExecutor;
 use RGies\GuiBundle\Util\BundleUtil;
 
-use Symfony\Component\Filesystem\Filesystem as FS;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\File;
 
 /**
  * Class DefaultController
@@ -108,6 +110,11 @@ class DefaultController extends Controller
         $configFile = dirname(__DIR__). '/Resources/config/bundle_repository.xml';
         $bundles = simplexml_load_file($configFile);
 
+        // Thats resolve a small problem with kernel entries
+        foreach ($bundles->bundle as $bundle) {
+            $bundle->kernelEntry = urlencode($bundle->kernelEntry);
+        }
+
         return array('bundles' => $bundles);
     }
 
@@ -172,31 +179,111 @@ class DefaultController extends Controller
                     // mode 0664 = read/write for user and group and read for all other
                     $fs->dumpFile($composerJsonFile, '', 0664);
                     $fs->dumpFile($composerJsonFile, $data, 0664);
-
-                    // TODO Register new installed bundle
-
                 }
+
+                unset($composerRequires);
             }
+
+            unset($composerJson);
         }
 
-        unset($composerJsonFile);
+        unset($composerJsonFile, $fs);
 
-        // execute composer
-        putenv('PATH=' . $_SERVER['PATH']);
-        exec($rootPath . '/bin/composer self-update');
-        exec($rootPath . '/bin/composer -n -d="' . $rootPath . '" update ' . $bundlePath, $out, $ret);
+        // execute composer self-update
+        $processBuilder = new ProcessBuilder();
+        $process = $processBuilder
+          ->setEnv('PATH', $_SERVER['PATH'])
+          ->setEnv('COMPOSER_HOME', $rootPath . '/bin')
+          ->setPrefix($rootPath . '/bin/composer')
+          ->setArguments(array('self-update'))
+          ->getProcess();
+        $process->setTimeout(3600);
+        $process->setIdleTimeout(60);
+        $process->run(function($type, $data)
+          {
+              if (Process::ERR === $type) {
+                  echo 'execute composer self-update: ERR > ' . $data;
+                  die;
+              }
+          }
+        );
+        unset($processBuilder, $process);
 
-        //var_dump($out);
+        // execute composer update on specified bundle
+        $processBuilder = new ProcessBuilder();
+        $process = $processBuilder
+          ->setEnv('PATH', $_SERVER['PATH'])
+          ->setEnv('COMPOSER_HOME', $rootPath . '/bin')
+          ->setWorkingDirectory($rootPath)
+          ->setPrefix($rootPath . '/bin/composer')
+          ->setArguments(array(
+              '--no-interaction',                   // Do not ask any interactive question
+              'update',                             // Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file
+              $bundlePath                           // The bundle to update
+            )
+          )->getProcess();
+        $process->setTimeout(300);
+        $process->setIdleTimeout(NULL);
+        $ret = $process->run(function($type, $data)
+          {
+              if (Process::ERR === $type)
+              {
+                  echo 'execute composer update on specified bundle: ERR > ' . $data;
+                  die;
+              }
+              else
+              {
+                  echo $data;
+              }
+          }
+        );
 
         if (!$ret)
         {
+            // Register new bundle after it was installed
+            $kernel = $this->get('kernel');
+            if ($kernel instanceof Kernel)
+            {
+                // Check if bundle already installed
+                $bundleName = $request->get('bundleName');
+                $bundles = BundleUtil::getCustomBundleNameList($this, $this->container);
+                $bundleInstalled = BundleUtil::bundleInstalled($bundles, $bundleName);
+                if (!$bundleInstalled)
+                {
+                    // Replace some stuff from kernel entry
+                    $kernelEntry = urldecode($request->get('kernelEntry'));
+                    $kernelEntry = str_replace('new ', '', $kernelEntry);
+                    $kernelEntry = str_replace('()', '', $kernelEntry);
+
+                    // Register bundle
+                    $km = new KernelManipulator($kernel);
+                    try
+                    {
+                        $km->addBundle($kernelEntry);
+                    }
+                    catch (\RuntimeException $ex)
+                    {
+                        echo($ex->getMessage());
+                        die;
+                    }
+                    unset($km);
+                }
+            }
+
+            // TODO Add routing
+            // ...
+
+            // Clear cache
+            BundleUtil::clearCache($kernel);
+
             // handle success
             echo 'Done';
         } else {
             // handle error
-            echo 'Error';
+            echo 'Error: ' . $process->getErrorOutput();
         }
 
+        unset($processBuilder, $process);
         exit;
     }
 
