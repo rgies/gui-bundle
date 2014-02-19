@@ -222,13 +222,18 @@ class DefaultController extends Controller
               $bundlePath                           // The bundle to update
             )
           )->getProcess();
-        //$process->setTimeout(3600);
-        //$process->setIdleTimeout(60);
+        $process->setTimeout(300);
+        $process->setIdleTimeout(NULL);
         $ret = $process->run(function($type, $data)
           {
-              if (Process::ERR === $type) {
+              if (Process::ERR === $type)
+              {
                   echo 'execute composer update on specified bundle: ERR > ' . $data;
                   die;
+              }
+              else
+              {
+                  echo $data;
               }
           }
         );

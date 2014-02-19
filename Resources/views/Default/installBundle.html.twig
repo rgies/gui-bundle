@@ -12,8 +12,24 @@
                     <p><a target="_blank" href="{{ bundle.url | raw }}">{{ bundle.url }}</a></p>
                     <hr/>
                     <p class="text-right">
-                        <button class="btn btn-primary" onclick="$('#pleaseWaitDialog').modal();$.ajax({type:'POST', url:'{{ path('guiInstallBundleAjax') }}', data:{bundlePath:'{{ bundle.bundlePath }}', bundleVersion:'{{ bundle.bundleVersion }}', kernelEntry:'{{ bundle.kernelEntry }}', bundleName:'{{ bundle.title }}'} }).done(function(data) {
-                                $('#pleaseWaitDialog').modal('hide'); alert(data); });">
+                        <button class="btn btn-primary" onclick="
+                                $('#pleaseWaitDialog').modal();
+                                $.ajax({
+                                    type:'POST',
+                                    url:'{{ path('guiInstallBundleAjax') }}',
+                                    data: {
+                                        bundlePath: '{{ bundle.bundlePath }}',
+                                        bundleVersion: '{{ bundle.bundleVersion }}',
+                                        kernelEntry: '{{ bundle.kernelEntry }}',
+                                        bundleName: '{{ bundle.title }}'}
+                                    }).done(function(data) {
+                                        $('#pleaseWaitDialog').modal('hide');
+                                        console.log(data);
+                                    }).error(function(error) {
+                                        console.log(error.responseText);
+                                        $('#pleaseWaitDialog').modal('hide');
+                                   });
+                                ">
                             <span class="glyphicon glyphicon-cloud-download"></span> Install
                         </button>
                     </p>
@@ -35,6 +51,7 @@
                             <span class="sr-only">Please Wait</span>
                         </div>
                     </div>
+                    <div id="sr-message-only">Retrieving bundle ...</div>
                 </div>
             </div>
         </div>
