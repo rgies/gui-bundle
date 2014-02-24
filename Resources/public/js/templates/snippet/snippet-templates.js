@@ -1,7 +1,7 @@
 define(function(require) {
   var formname               = require('text!templates/snippet/formname.html')
-  , prependedtext            = require('text!templates/snippet/prependedtext.html')
-  , textinput                = require('text!templates/snippet/textinput.html')
+  //, prependedtext            = require('text!templates/snippet/prependedtext.html')
+  //, textinput                = require('text!templates/snippet/textinput.html')
   , appendedcheckbox         = require('text!templates/snippet/appendedcheckbox.html')
   , appendedtext             = require('text!templates/snippet/appendedtext.html')
   , filebutton               = require('text!templates/snippet/filebutton.html')
@@ -22,8 +22,8 @@ define(function(require) {
 
   return {
     formname                   : formname
-    , prependedtext            : prependedtext
-    , textinput                : textinput
+    //, prependedtext            : prependedtext
+    //, textinput                : textinput
     , appendedcheckbox         : appendedcheckbox
     , appendedtext             : appendedtext
     , filebutton               : filebutton

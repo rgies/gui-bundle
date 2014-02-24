@@ -7,7 +7,7 @@ define([
   , "text!templates/popover/popover-textarea-split.html"
   , "text!templates/popover/popover-checkbox.html"
   , "templates/snippet/snippet-templates"
-  , "bootstrap"
+  , "../../../../js/bootstrap.min"
 ], function(
   $, _, Backbone
   , _PopoverMain

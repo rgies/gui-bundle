@@ -36,7 +36,7 @@ textarea {
   position: absolute;
   z-index: 999999;
   top: 0;
-  overflow-x: hidden;
+  /*overflow-x: hidden;*/
   left: 0;
 }
 

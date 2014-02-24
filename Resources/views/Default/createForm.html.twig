@@ -4,8 +4,9 @@
 {% endblock %}
 {% block headline %}Create Form{% endblock %}
 {% block content %}
+
     <!-- Building Form. -->
-    <div style="float:left; width: 50%">
+    <div style="float:left; width: 60%">
         <div id="build">
             <form id="target" role="form">
             </form>
@@ -14,7 +15,7 @@
     <!-- / Building Form. -->
 
     <!-- Components -->
-    <div style="padding-left:20px; float:left; width: 50%">
+    <div style="padding-left:20px; float:left; width: 40%">
         <div class="tabbable">
             <ul class="nav nav-tabs" id="formtabs">
                 <!-- Tab nav -->
@@ -28,7 +29,6 @@
             </form>
         </div>
     </div>
-    <!-- / Components -->
 {% endblock %}
 {% block javascripts %}
     <script data-main="{{ asset('bundles/gui/js/main.js') }}" src="{{ asset('bundles/gui/js/lib/require.js') }}" ></script>

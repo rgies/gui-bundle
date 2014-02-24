@@ -1,5 +1,5 @@
 define([
-       'jquery', 'underscore', 'backbone'
+       "jquery", 'underscore', 'backbone'
        , "text!templates/app/tab-nav.html"
 
 ], function($, _, Backbone,

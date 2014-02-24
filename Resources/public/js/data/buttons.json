@@ -70,7 +70,7 @@
       "buttonlabel": {
         "type": "input",
         "label": "Button Label",
-        "value": "Button"
+        "value": "Submit"
       }
     },
     "title": "Single Button"
@@ -84,7 +84,7 @@
           {
             "label": "Default",
             "value": "btn-default",
-            "selected": false
+            "selected": true
           },
           {
             "label": "Primary",
@@ -109,7 +109,7 @@
           {
             "label": "Danger",
             "value": "btn-danger",
-            "selected": true
+            "selected": false
           },
           {
             "label": "Inverse",
@@ -145,7 +145,7 @@
           {
             "label": "Primary",
             "value": "btn-primary",
-            "selected": false
+            "selected": true
           },
           {
             "label": "Info",
@@ -155,7 +155,7 @@
           {
             "label": "Success",
             "value": "btn-success",
-            "selected": true
+            "selected": false
           },
           {
             "label": "Warning",
@@ -177,12 +177,12 @@
       "button1label": {
         "type": "input",
         "label": "Button Label",
-        "value": "Good Button"
+        "value": "Submit"
       },
       "button2label": {
         "type": "input",
         "label": "Button Label",
-        "value": "Scary Button"
+        "value": "Cancel"
       }
     },
     "title": "Double Button"
