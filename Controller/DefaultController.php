@@ -170,7 +170,7 @@ class DefaultController extends Controller
                     $composerJson->require = $composerRequires;
 
                     // encode the json object
-                    $data = json_encode($composerJson, 128);
+                    $data = json_encode($composerJson, JSON_PRETTY_PRINT);
 
                     // prepare json to a pretty json
                     $data = BundleUtil::getPrettyJson($data);

@@ -86,7 +86,7 @@ class BundleUtil
                 break;
             default:
             case 'txt':
-                $lineBreak = "\n";
+                $lineBreak = PHP_EOL;
                 $ind = "    ";
                 break;
         }
