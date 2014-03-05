@@ -29,11 +29,11 @@ class ScriptHandler
      *
      * @param CommandEvent $event
      */
-    public static function getInstructions(CommandEvent $event)
+    public static function getInstallInstructions(CommandEvent $event)
     {
         echo PHP_EOL . 'Symfony RAD-Tool installation complete. ';
         echo 'Now you can start the Rapid Development Cockpit.' . PHP_EOL;
-        echo 'Open your web browser with this url:' . PHP_EOL;
+        echo 'Open your web browser with the following url:' . PHP_EOL;
         echo 'http://localhost/[...]/app_dev.php/gui' . PHP_EOL;
     }
 }
