@@ -34,6 +34,8 @@ class ScriptHandler
         echo PHP_EOL . 'Symfony RAD-Tool installation complete. ';
         echo 'Now you can start the Rapid Development Cockpit.' . PHP_EOL;
         echo 'Open your web browser with the following url:' . PHP_EOL;
+        echo '=========================================' . PHP_EOL;
         echo 'http://localhost/[...]/app_dev.php/gui' . PHP_EOL;
+        echo '=========================================' . PHP_EOL;
     }
 }
