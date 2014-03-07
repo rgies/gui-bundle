@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <repository>
     <bundle>
-        <title>Responsive Website Skeleton</title>
-        <category>Website</category>
-        <url>https://github.com/rgies</url>
-        <bundleName></bundleName>
-        <bundlePath></bundlePath>
-        <bundleVersion></bundleVersion>
+        <title>User Management (FOSUserBundle)</title>
+        <category>Authentication</category>
+        <url>https://github.com/FriendsOfSymfony/FOSUserBundle</url>
+        <!-- Url or base64 encoded image 120x100 px -->
+        <icon></icon>
+        <bundleName>FOSUserBundle</bundleName>
+        <bundlePath>friendsofsymfony/user-bundle</bundlePath>
+        <bundleVersion>~2.0@dev</bundleVersion>
         <routingEntry></routingEntry>
-        <kernelEntry></kernelEntry>
+        <kernelEntry>new FOS\UserBundle\FOSUserBundle()</kernelEntry>
         <description>
-            This bundle integrates a full responsive website template with navigation an common used page structure.
-            - coming soon -
+            The Symfony2 security component provides a flexible security framework that allows you to load users from configuration, a database, or anywhere else you can imagine.
+            The FOSUserBundle builds on top of this to make it quick and easy to store users in a database.
+            So, if you need to persist and fetch the users in your system to and from a database, this is the right bundle.
         </description>
     </bundle>
     <bundle>
-        <title>GuzzleBundle</title>
+        <title>HTTP Client (GuzzleBundle)</title>
         <category>Data Interface</category>
         <url>https://github.com/misd-service-development/guzzle-bundle</url>
+        <!-- Url or base64 encoded image 120x100 px -->
+        <icon></icon>
         <bundleName>GuzzleBundle</bundleName>
         <bundlePath>misd/guzzle-bundle</bundlePath>
         <bundleVersion>~1.0</bundleVersion>

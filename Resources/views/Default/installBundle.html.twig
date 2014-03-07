@@ -8,8 +8,13 @@
             <div class="panel panel-primary">
                 <div class="panel-heading"><h4>{{ bundle.title }}</h4></div>
                 <div class="panel-body">
-                    <p style="min-height: 80px">{{ bundle.description }}</p>
-                    <p><a target="_blank" href="{{ bundle.url | raw }}">{{ bundle.url }}</a></p>
+                    <div style="padding-right: 20px; float: left;">
+                        <img alt="" src="{{ bundle.icon | raw }}" />
+                    </div>
+                    <div>
+                        <p style="min-height: 80px">{{ bundle.description }}</p>
+                        <p><a target="_blank" href="{{ bundle.url | raw }}">{{ bundle.url }}</a></p>
+                    </div>
                     <hr/>
                     <p class="text-right">
                         <button class="btn btn-primary" onclick="
