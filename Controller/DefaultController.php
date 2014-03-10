@@ -19,12 +19,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem as FS;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 use RGies\GuiBundle\Util\CommandExecutor;
 use RGies\GuiBundle\Util\BundleUtil;
 
+/** Thats a fallback for PHP < 5.4 */
+if (!defined('JSON_PRETTY_PRINT')) {
+    define('JSON_PRETTY_PRINT', 128);
+}
 
 /**
  * Class DefaultController
@@ -132,9 +137,11 @@ class DefaultController extends Controller
      */
     public function installBundleAjaxAction()
     {
-        $request = Request::createFromGlobals()->request;
-        $bundlePath = $request->get('bundlePath');
-        $bundleVersion = $request->get('bundleVersion');
+
+        $request = Request::createFromGlobals();
+        $bundlePath = $request->request->get('bundlePath');
+        $bundleVersion = $request->request->get('bundleVersion');
+        $bundleName = $request->request->get('bundleName');
         $rootPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/');
 
         if (!$bundlePath)
@@ -183,8 +190,9 @@ class DefaultController extends Controller
 
                     // dump json string into file
                     // mode 0664 = read/write for user and group and read for all other
-                    $fs->dumpFile($composerJsonFile, '', 0664);
-                    $fs->dumpFile($composerJsonFile, $data, 0664);
+                    file_put_contents($composerJsonFile, $data);
+                    //$fs->dumpFile($composerJsonFile, '', 0777);
+                    //$fs->dumpFile($composerJsonFile, $data, 0777);
                 }
 
                 unset($composerRequires);
@@ -195,63 +203,58 @@ class DefaultController extends Controller
 
         unset($composerJsonFile, $fs);
 
+        /**
+         * Anonymous callback for process
+         *
+         * @param string    $type   The process type
+         * @param mixed     $output The output of process
+         */
+        $callback = function($type, $output)
+        {
+            if (Process::ERR === $type)
+            {
+                echo 'error on executing composer: \n\n' . $output;
+                die;
+            }
+        };
+
         // execute composer self-update
-        $processBuilder = new ProcessBuilder();
-        $process = $processBuilder
-          ->setEnv('PATH', $_SERVER['PATH'])
-          ->setEnv('COMPOSER_HOME', $rootPath . '/bin')
-          ->setPrefix($rootPath . '/bin/composer')
-          ->setArguments(array('self-update'))
-          ->getProcess();
-        $process->setTimeout(3600);
-        $process->setIdleTimeout(60);
-        $process->run(function($type, $data)
-          {
-              if (Process::ERR === $type) {
-                  echo 'execute composer self-update: ERR > ' . $data;
-                  die;
-              }
-          }
-        );
+        $processBuilder = new ProcessBuilder($this->getComposerArguments($rootPath, 'self-update'));
+        $processBuilder->setEnv('PATH', $request->server->get('PATH'));
+        $processBuilder->setEnv('COMPOSER_HOME', $rootPath . '/bin');
+
+        $process = $processBuilder->getProcess();
+        $process->setTimeout(90);
+        $process->setIdleTimeout(NULL);
+        $ret = $process->run($callback);
+        if ($ret == 0)
+        {
+            echo 'Execute composer self-update finished.';
+        }
+
         unset($processBuilder, $process);
 
         // execute composer update on specified bundle
-        $processBuilder = new ProcessBuilder();
-        $process = $processBuilder
-          ->setEnv('PATH', $_SERVER['PATH'])
-          ->setEnv('COMPOSER_HOME', $rootPath . '/bin')
-          ->setWorkingDirectory($rootPath)
-          ->setPrefix($rootPath . '/bin/composer')
-          ->setArguments(array(
-              '--no-interaction',                   // Do not ask any interactive question
-              'update',                             // Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file
-              $bundlePath                           // The bundle to update
-            )
-          )->getProcess();
+        $processBuilder = new ProcessBuilder($this->getComposerArguments($rootPath, 'update', $bundlePath));
+        $processBuilder->setEnv('PATH', $request->server->get('PATH'));
+        $processBuilder->setEnv('COMPOSER_HOME', $rootPath . '/bin');
+        $processBuilder->setWorkingDirectory($rootPath);
+
+        // Generate output for AJAX call
+        echo 'Running update on: ' . $bundleName;
+
+        $process = $processBuilder->getProcess();
         $process->setTimeout(300);
         $process->setIdleTimeout(NULL);
-        $ret = $process->run(function($type, $data)
-          {
-              if (Process::ERR === $type)
-              {
-                  echo 'execute composer update on specified bundle: ERR > ' . $data;
-                  die;
-              }
-              else
-              {
-                  echo $data;
-              }
-          }
-        );
+        $ret = $process->run($callback);
 
-        if (!$ret)
+        if ($ret == 0)
         {
             // Register new bundle after it was installed
             $kernel = $this->get('kernel');
             if ($kernel instanceof Kernel)
             {
                 // Check if bundle already installed
-                $bundleName = $request->get('bundleName');
                 $bundles = BundleUtil::getCustomBundleNameList($this, $this->container);
                 $bundleInstalled = BundleUtil::bundleInstalled($bundles, $bundleName);
                 if (!$bundleInstalled)
@@ -286,7 +289,7 @@ class DefaultController extends Controller
             echo 'Done';
         } else {
             // handle error
-            echo 'Error: ' . $process->getErrorOutput();
+            echo 'Error on updating: ' . $bundleName . '\n\n' . Process::$exitCodes[$ret];
         }
 
         unset($processBuilder, $process);
@@ -411,5 +414,46 @@ class DefaultController extends Controller
         // return json result
         echo json_encode($ret);
         exit;
+    }
+
+    /**
+     * Get the arguments for the compoer process
+     *
+     * @param string $path      A root path of the project folder
+     * @param string $option    A option to identify the process arguments
+     * @param string $what      A optional argument for update (like: name/bundle ...)
+     *
+     * @return array Returns the right arguments for the composer process
+     */
+    private function getComposerArguments($path, $option = 'self-update', $what = '')
+    {
+        $phpFinder = new PhpExecutableFinder();
+        $php = $phpFinder->find();
+        if ($php === FALSE)
+        {
+            $php = '';
+        }
+
+        $composer = array();
+        switch ($option)
+        {
+            case 'self-update':
+                $composer = array(
+                  $php,
+                  (empty($php)) ? $path . '/bin/composer' : $path . '/bin/composer.phar',
+                  'self-update'
+                );
+                break;
+            case 'update':
+                $composer = array(
+                  $php,
+                  (empty($php)) ? $path . '/bin/composer' : $path . '/bin/composer.phar',
+                  '--no-interaction',
+                  'update',
+                  $what
+                );
+                break;
+        }
+        return $composer;
     }
 }
