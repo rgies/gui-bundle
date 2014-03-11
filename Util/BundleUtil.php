@@ -156,18 +156,20 @@ class BundleUtil
      *
      * @return bool Returns TRUE if we found bundle; otherwise FALSE
      */
-    public static function bundleInstalled(array $bundles, $bundleName)
+    public static function bundleInstalled(Container $container, $bundleName)
     {
+        $allBundles = $container->getParameter('kernel.bundles');
+
         $installed = FALSE;
 
-        if (!is_array($bundles))
+        if (!is_array($allBundles))
         {
             return $installed;
         }
 
-        foreach ($bundles as $key => $bundle)
+        foreach ($allBundles as $key => $bundle)
         {
-            if ($bundle === $bundleName)
+            if ($key === $bundleName)
             {
                 $installed = TRUE;
                 break;

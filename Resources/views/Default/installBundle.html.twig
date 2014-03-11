@@ -49,11 +49,13 @@
                                 }).done(function(data) {
                                     $('#pleaseWaitDialog').modal('hide');
                                     console.log(data);
+                                    window.location.reload(true);
                                 }).error(function(error) {
-                                    console.log(error.responseText);
                                     $('#pleaseWaitDialog').modal('hide');
+                                    console.log(error.responseText);
+                                    window.location.reload(true);
                                 });
-                                ">
+                                " {% if bundle.installed is defined and bundle.installed == true %}disabled{% endif %}>
                             <span class="glyphicon glyphicon-cloud-download"></span> Install
                         </button>
                     </p>

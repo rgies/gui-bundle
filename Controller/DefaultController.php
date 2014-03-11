@@ -122,9 +122,12 @@ class DefaultController extends Controller
         $bundles = simplexml_load_file($configFile);
 
         // Thats resolve a small problem with kernel entries
-        foreach ($bundles->bundle as $bundle) {
+        foreach ($bundles->bundle as $key => $bundle) {
+
+            $bundle->addChild('installed', BundleUtil::bundleInstalled($this->container, (string)$bundle->bundleName));
             $bundle->kernelEntry = urlencode($bundle->kernelEntry);
             $bundle->routingEntry = json_encode($bundle->routingEntry);
+
 
             // set default bundle icon
             if (!isset($bundle->icon) || !trim($bundle->icon))
@@ -263,8 +266,7 @@ class DefaultController extends Controller
             if ($kernel instanceof Kernel)
             {
                 // Check if bundle already installed
-                $bundles = BundleUtil::getCustomBundleNameList($this, $this->container);
-                $bundleInstalled = BundleUtil::bundleInstalled($bundles, $bundleName);
+                $bundleInstalled = BundleUtil::bundleInstalled($this->container, $bundleName);
                 if (!$bundleInstalled)
                 {
                     // Replace some stuff from kernel entry
