@@ -16,15 +16,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\GeneratorBundle\Manipulator\KernelManipulator;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Symfony\Component\Filesystem\Filesystem as FS;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
 use RGies\GuiBundle\Util\CommandExecutor;
 use RGies\GuiBundle\Util\BundleUtil;
+
+use Exception;
+use RuntimeException;
 
 /** Thats a fallback for PHP < 5.4 */
 if (!defined('JSON_PRETTY_PRINT')) {
@@ -118,6 +124,7 @@ class DefaultController extends Controller
         // Thats resolve a small problem with kernel entries
         foreach ($bundles->bundle as $bundle) {
             $bundle->kernelEntry = urlencode($bundle->kernelEntry);
+            $bundle->routingEntry = json_encode($bundle->routingEntry);
 
             // set default bundle icon
             if (!isset($bundle->icon) || !trim($bundle->icon))
@@ -143,6 +150,7 @@ class DefaultController extends Controller
         $bundleVersion = $request->request->get('bundleVersion');
         $bundleName = $request->request->get('bundleName');
         $rootPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/');
+        $routingEntry = $request->request->get('routingEntry');
 
         if (!$bundlePath)
         {
@@ -244,8 +252,8 @@ class DefaultController extends Controller
         echo 'Running update on: ' . $bundleName;
 
         $process = $processBuilder->getProcess();
-        $process->setTimeout(300);
-        $process->setIdleTimeout(NULL);
+        $process->setTimeout(3600);
+        $process->setIdleTimeout(60);
         $ret = $process->run($callback);
 
         if ($ret == 0)
@@ -270,7 +278,7 @@ class DefaultController extends Controller
                     {
                         $km->addBundle($kernelEntry);
                     }
-                    catch (\RuntimeException $ex)
+                    catch (RuntimeException $ex)
                     {
                         echo($ex->getMessage());
                         die;
@@ -279,8 +287,49 @@ class DefaultController extends Controller
                 }
             }
 
-            // TODO Add routing
-            // ...
+            // Handle route installation
+            if (!isset($routingEntry) && !empty($routingEntry))
+            {
+                // Retrieve project environment and handle the correct YAML file
+                $env = $this->get('kernel')->getEnvironment();
+                if ($env == 'dev') {
+                    $routeFile = $rootPath . '/app/config/routing_' . $env . '.yml';
+                }
+                else {
+                    $routeFile = $rootPath . '/app/config/routing.yml';
+                }
+
+                try {
+                    // Get content of YAML file
+                    $ymlFileContent = file_get_contents($routeFile);
+
+                    // Parse YAML file
+                    $routes = Yaml::parse($ymlFileContent, true);
+                    if (!isset($routes[$routingEntry['name']]))
+                    {
+                        $routes[$routingEntry['name']] = array(
+                          'resource' => $routingEntry['resource'],
+                          'type' => $routingEntry['type'],
+                          'prefix' => $routingEntry['prefix'],
+                        );
+                    }
+
+                    $result = Yaml::dump($routes);
+                    if ($result)
+                    {
+                        echo 'Installing of \'' . $routingEntry['name'] . '\' completed.';
+                    }
+                }
+                catch (ParseException $ex) {
+                    echo 'Unable to parse the YAML string: ' . $ex->getMessage();
+                    die;
+                }
+                catch (Exception $ex)
+                {
+                    echo 'Exception was thrown: ' . $ex->getMessage();
+                    die;
+                }
+            }
 
             // Clear cache
             BundleUtil::clearCache($kernel);

@@ -18,6 +18,23 @@
                     <hr/>
                     <p class="text-right">
                         <button class="btn btn-primary" onclick="
+                                var routingEntry = JSON.parse('{{ bundle.routingEntry }}');
+                                var routes = null;
+                                if (routingEntry)
+                                {
+                                    if (routingEntry.name == '_example') {
+                                        alert('Installing of an example is not possible at this time!')
+                                        return false;
+                                    }
+
+                                    routes = {
+                                        name: routingEntry.name,
+                                        resource: routingEntry.resource,
+                                        type: routingEntry.type,
+                                        prefix: routingEntry.prefix
+                                    };
+                                }
+
                                 $('#pleaseWaitDialog').modal();
                                 $.ajax({
                                     type:'POST',
@@ -26,14 +43,16 @@
                                         bundlePath: '{{ bundle.bundlePath }}',
                                         bundleVersion: '{{ bundle.bundleVersion }}',
                                         kernelEntry: '{{ bundle.kernelEntry }}',
-                                        bundleName: '{{ bundle.title }}'}
-                                    }).done(function(data) {
-                                        $('#pleaseWaitDialog').modal('hide');
-                                        console.log(data);
-                                    }).error(function(error) {
-                                        console.log(error.responseText);
-                                        $('#pleaseWaitDialog').modal('hide');
-                                   });
+                                        bundleName: '{{ bundle.title }}',
+                                        routingEntry: routes
+                                    }
+                                }).done(function(data) {
+                                    $('#pleaseWaitDialog').modal('hide');
+                                    console.log(data);
+                                }).error(function(error) {
+                                    console.log(error.responseText);
+                                    $('#pleaseWaitDialog').modal('hide');
+                                });
                                 ">
                             <span class="glyphicon glyphicon-cloud-download"></span> Install
                         </button>

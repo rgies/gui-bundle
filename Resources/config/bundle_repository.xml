@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <repository>
-    <bundle>
+  <bundle>
+    <title>Example Bundle</title>
+    <category>Example</category>
+    <url>https://www.google.de</url>
+    <!-- Url or base64 encoded image 120x100 px -->
+    <icon></icon>
+    <bundleName>ExampleBundle</bundleName>
+    <bundlePath>example/example-bundle</bundlePath>
+    <bundleVersion>~99.99@dev</bundleVersion>
+    <routingEntry>
+      <name>_example</name>
+      <resource>@ExampleBundle/Controller/</resource>
+      <type>annotation</type>
+      <prefix>/example</prefix>
+    </routingEntry>
+    <kernelEntry>new Example\ExampleBundle\ExampleBundle()</kernelEntry>
+    <description>
+      Example to demontrate the power of bundle installation. If you need more information look into the GuiBundle/Resources/config/bundle_repository.xml file.
+    </description>
+  </bundle>
+  <bundle>
         <title>User Management (FOSUserBundle)</title>
         <category>Authentication</category>
         <url>https://github.com/FriendsOfSymfony/FOSUserBundle</url>
