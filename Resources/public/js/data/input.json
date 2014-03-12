@@ -1,10 +1,16 @@
 [
     {
+        "title": "Text Input",
         "fields": {
             "id": {
                 "type": "input",
                 "label": "ID / Name",
                 "value": "textinput"
+            },
+            "label": {
+                "type": "input",
+                "label": "Label Text",
+                "value": "Text Input"
             },
             "validation": {
                 "type": "select",
@@ -32,11 +38,6 @@
                     }
                 ]
             },
-            "label": {
-                "type": "input",
-                "label": "Label Text",
-                "value": "Text Input"
-            },
             "helptext": {
                 "type": "input",
                 "label": "Help Text",
@@ -52,36 +53,15 @@
                 "label": "Required",
                 "value": false
             }
-        },
-        "title": "Text Input"
+        }
     },
     {
+        "title": "Password Input",
         "fields": {
             "id": {
                 "type": "input",
                 "label": "ID / Name",
                 "value": "passwordinput"
-            },
-            "inputsize": {
-                "type": "select",
-                "label": "Input Size",
-                "value": [
-                    {
-                        "label": "Small",
-                        "value": "input-sm",
-                        "selected": false
-                    },
-                    {
-                        "label": "Medium",
-                        "value": "",
-                        "selected": true
-                    },
-                    {
-                        "label": "Large",
-                        "value": "input-lg",
-                        "selected": false
-                    }
-                ]
             },
             "label": {
                 "type": "input",
@@ -103,10 +83,30 @@
                 "label": "Required",
                 "value": false
             }
-        },
-        "title": "Password Input"
+        }
     },
     {
+        "title": "Text Area",
+        "fields": {
+            "id": {
+                "type": "input",
+                "label": "ID / Name",
+                "value": "textarea"
+            },
+            "label": {
+                "type": "input",
+                "label": "Label Text",
+                "value": "Text Area"
+            },
+            "textarea": {
+                "type": "textarea",
+                "label": "Starting Text",
+                "value": "default text"
+            }
+        }
+    },
+    {
+        "title": "Prepended Text",
         "fields": {
             "id": {
                 "type": "input",
@@ -159,10 +159,10 @@
                 "label": "Required",
                 "value": false
             }
-        },
-        "title": "Prepended Text"
+        }
     },
     {
+        "title": "Appended Text",
         "fields": {
             "id": {
                 "type": "input",
@@ -215,10 +215,10 @@
                 "label": "Required",
                 "value": false
             }
-        },
-        "title": "Appended Text"
+        }
     },
     {
+        "title": "Prepended Checkbox",
         "fields": {
             "id": {
                 "type": "input",
@@ -271,10 +271,10 @@
                 "label": "Required",
                 "value": false
             }
-        },
-        "title": "Prepended Checkbox"
+        }
     },
     {
+        "title": "Appended Checkbox",
         "fields": {
             "id": {
                 "type": "input",
@@ -327,10 +327,10 @@
                 "label": "Required",
                 "value": false
             }
-        },
-        "title": "Appended Checkbox"
+        }
     },
     {
+        "title": "Button Drop Down",
         "fields": {
             "id": {
                 "type": "input",
@@ -387,27 +387,6 @@
                 "label": "Required",
                 "value": false
             }
-        },
-        "title": "Button Drop Down"
-    },
-    {
-        "fields": {
-            "id": {
-                "type": "input",
-                "label": "ID / Name",
-                "value": "textarea"
-            },
-            "label": {
-                "type": "input",
-                "label": "Label Text",
-                "value": "Text Area"
-            },
-            "textarea": {
-                "type": "textarea",
-                "label": "Starting Text",
-                "value": "default text"
-            }
-        },
-        "title": "Text Area"
+        }
     }
 ]
