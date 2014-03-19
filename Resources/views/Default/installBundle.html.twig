@@ -43,8 +43,10 @@
                                     }
                                 }).done(function(data) {
                                     $('#pleaseWaitDialog').modal('hide');
+                                    window.location.reload(true);
                                 }).error(function(error) {
                                     $('#pleaseWaitDialog').modal('hide');
+                                    window.location.reload(true);
                                 });
                                 " {% if bundle.installed is defined and bundle.installed == 1 %}disabled{% endif %}>
                             <span class="glyphicon glyphicon-cloud-download"></span> Install
