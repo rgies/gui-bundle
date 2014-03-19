@@ -124,7 +124,8 @@ class DefaultController extends Controller
         // Thats resolve a small problem with kernel entries
         foreach ($bundles->bundle as $key => $bundle) {
 
-            $bundle->addChild('installed', BundleUtil::bundleInstalled($this, (string)$bundle->bundleName));
+            $installed = BundleUtil::bundleInstalled($this, (string)$bundle->bundleName);
+            $bundle->addChild('installed', ($installed === TRUE) ? '1' : '0');
             $bundle->kernelEntry = urlencode($bundle->kernelEntry);
             $bundle->routingEntry = json_encode($bundle->routingEntry);
 

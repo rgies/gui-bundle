@@ -46,7 +46,7 @@
                                 }).error(function(error) {
                                     $('#pleaseWaitDialog').modal('hide');
                                 });
-                                " {% if bundle.installed is defined and bundle.installed == true %}disabled{% endif %}>
+                                " {% if bundle.installed is defined and bundle.installed == 1 %}disabled{% endif %}>
                             <span class="glyphicon glyphicon-cloud-download"></span> Install
                         </button>
                     </p>
