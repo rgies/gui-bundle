@@ -92,6 +92,7 @@ class DefaultController extends Controller
     {
         $dataTypes = array(
             'integer',
+            'string(5)',
             'string(10)',
             'string(50)',
             'string(100)',

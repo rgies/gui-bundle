@@ -1,6 +1,7 @@
 {% extends "GuiBundle::base.html.twig" %}
 {% block headline %}Create Bundle{% endblock %}
 {% block content %}
+    <!-- Data form -->
     <form name="dataForm" id="dataForm" role="form" method="post" action="{{ path('guiExecuteCommand') }}">
         <input name="command" id="command" type="hidden" value="generate:bundle" />
         <div class="form-group col-sm-6">
@@ -13,6 +14,14 @@
             <input name="bundleNamespace" type="text" class="form-control" id="bundleNamespace" placeholder="Vendor or project name" maxlength="40" required />
             <p class="help-block">Enter here your vendor or project name.</p>
         </div>
+        <div class="form-group col-sm-6">
+            <label for="bundleSkeleton">Select bundle template [optional]</label>
+            <select id="bundleSkeleton" name="bundleSkeleton" class="form-control">
+                <option></option>
+                <option>Default website template</option>
+            </select>
+            <p class="help-block">Select here a predefined bundle template.</p>
+        </div>
         <div class="form-group col-sm-12">
             <div class="checkbox">
                 <label>
@@ -23,6 +32,8 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
+
+    <!-- Response dialog -->
     <div class="modal fade" id="responseDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -39,6 +50,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->{% endblock %}
+
 {% block javascripts %}
     <script>
         // send ajax request to execute commandline
@@ -57,7 +69,6 @@
             {
                 $('#responseDialogHeader').css('background-color', 'green');
                 $('#responseDialogHeaderText').html('Successful');
-
             }
             else
             {
