@@ -22,11 +22,6 @@
                                 var routes = null;
                                 if (routingEntry)
                                 {
-                                    if (routingEntry.name == '_example') {
-                                        alert('Installing of an example is not possible at this time!')
-                                        return false;
-                                    }
-
                                     routes = {
                                         name: routingEntry.name,
                                         resource: routingEntry.resource,
@@ -48,14 +43,12 @@
                                     }
                                 }).done(function(data) {
                                     $('#pleaseWaitDialog').modal('hide');
-                                    console.log(data);
                                     window.location.reload(true);
                                 }).error(function(error) {
                                     $('#pleaseWaitDialog').modal('hide');
-                                    console.log(error.responseText);
                                     window.location.reload(true);
                                 });
-                                " {% if bundle.installed is defined and bundle.installed == true %}disabled{% endif %}>
+                                " {% if bundle.installed is defined and bundle.installed == 1 %}disabled{% endif %}>
                             <span class="glyphicon glyphicon-cloud-download"></span> Install
                         </button>
                     </p>

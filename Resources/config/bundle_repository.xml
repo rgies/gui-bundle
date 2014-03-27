@@ -1,25 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <repository>
+  <!--
+  /**
+   * A small example how what you can do if you add a new repository
+   */
+
+  /**
+   * The bundle root node
+   */
   <bundle>
+
+    /**
+     * The ttile for the bundle
+     */
     <title>Example Bundle</title>
+
+    /**
+     * The category of bundle
+     */
     <category>Example</category>
+
+    /**
+     * The URL of this bundle
+     */
     <url>https://www.google.de</url>
-    <!-- Url or base64 encoded image 120x100 px -->
+
+    /**
+     * The Url or base64 encoded image 120x100 px
+     */
     <icon></icon>
+
+    /**
+     * The correct bundle name. The bundle name must end with "Bundle"
+     */
     <bundleName>ExampleBundle</bundleName>
+
+    /**
+     * The relative bundle installation path
+     */
     <bundlePath>example/example-bundle</bundlePath>
+
+    /**
+     * The version of this bundle
+     */
     <bundleVersion>~99.99@dev</bundleVersion>
+
+    /**
+     * The routing entry. For more information about the routing look into the routing*.yml file.
+     * At this time we support only this three properties of routing.
+     */
     <routingEntry>
       <name>_example</name>
       <resource>@ExampleBundle/Controller/</resource>
       <type>annotation</type>
       <prefix>/example</prefix>
     </routingEntry>
+
+    /**
+     * The kernel entry. If you need more information about this look into the AppKernel.php
+     */
     <kernelEntry>new Example\ExampleBundle\ExampleBundle()</kernelEntry>
+
+    /**
+     * The description of this repository
+     */
     <description>
-      Example to demontrate the power of bundle installation. If you need more information look into the GuiBundle/Resources/config/bundle_repository.xml file.
+      Example to demonstrate the power of bundle installation.
     </description>
   </bundle>
+  -->
+
   <bundle>
         <title>User Management (FOSUserBundle)</title>
         <category>Authentication</category>

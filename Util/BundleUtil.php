@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 
 /**
@@ -156,9 +157,9 @@ class BundleUtil
      *
      * @return bool Returns TRUE if we found bundle; otherwise FALSE
      */
-    public static function bundleInstalled(Container $container, $bundleName)
+    public static function bundleInstalled(Controller $controller, $bundleName)
     {
-        $allBundles = $container->getParameter('kernel.bundles');
+        $allBundles = $controller->get('kernel')->getBundles();
 
         $installed = FALSE;
 
@@ -169,10 +170,14 @@ class BundleUtil
 
         foreach ($allBundles as $key => $bundle)
         {
-            if ($key === $bundleName)
+            if ($bundle instanceof BundleInterface)
             {
-                $installed = TRUE;
-                break;
+                $name = $bundle->getName();
+                if ($bundleName === $name)
+                {
+                    $installed = TRUE;
+                    break;
+                }
             }
         }
 
