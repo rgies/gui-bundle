@@ -93,7 +93,7 @@
         <url>https://github.com/misd-service-development/guzzle-bundle</url>
         <!-- Url or base64 encoded image 120x100 px -->
         <icon></icon>
-        <bundleName>GuzzleBundle</bundleName>
+        <bundleName>MisdGuzzleBundle</bundleName>
         <bundlePath>misd/guzzle-bundle</bundlePath>
         <bundleVersion>~1.0</bundleVersion>
         <routingEntry></routingEntry>
