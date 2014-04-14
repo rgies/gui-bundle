@@ -110,7 +110,7 @@
         </description>
     </bundle>
 
-    <!-- Misd Guzzle Bundle -->
+    <!-- Knp Snappy Bundle -->
     <bundle>
         <title>PDF Generator (KnpSnappyBundle)</title>
         <category>Converter Tools</category>
