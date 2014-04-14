@@ -8,16 +8,37 @@
             <div class="panel panel-primary">
                 <div class="panel-heading"><h4>{{ bundle.title }}</h4></div>
                 <div class="panel-body">
-                    <div style="padding-right: 20px; float: left;">
+                    <div style="padding: 0px 20px 100px 0px; float: left;">
                         <img alt="" src="{{ bundle.icon | raw }}" />
                     </div>
                     <div>
-                        <p style="min-height: 80px">{{ bundle.description }}</p>
+                        <p style="min-height: 80px">{{ bundle.description | raw }}</p>
                         <p><a target="_blank" href="{{ bundle.url | raw }}">{{ bundle.url }}</a></p>
                     </div>
                     <hr/>
+                    <!-- Install Notes dialog -->
+                    {% if bundle.installNotes is defined %}
+                    <div class="modal fade" id="installNotesDialog{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel">Install Notes</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>{{ bundle.installNotes | raw }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                     <p class="text-right">
-                        <button class="btn btn-primary" onclick="
+                        {% if bundle.installNotes is defined %}
+                            <button class="btn btn" onclick="$('#installNotesDialog{{ loop.index }}').modal();">Install Notes</button>
+                        {% endif %}
+                        <button id="bundleInstallButton{{ loop.index }}" class="btn btn-primary" onclick="
                                 var routingEntry = JSON.parse('{{ bundle.routingEntry }}');
                                 var routes = null;
                                 if (routingEntry)
@@ -43,10 +64,13 @@
                                     }
                                 }).done(function(data) {
                                     $('#pleaseWaitDialog').modal('hide');
-                                    window.location.reload(true);
+                                    $('#bundleInstallButton{{ loop.index }}').attr('disabled', 'disabled');
+                                    $('#installNotesDialog{{ loop.index }}').modal();
+                                    //window.location.reload(true);
                                 }).error(function(error) {
                                     $('#pleaseWaitDialog').modal('hide');
-                                    window.location.reload(true);
+                                    alert('Error on bundle installation. Please check the log file.');
+                                    //window.location.reload(true);
                                 });
                                 " {% if bundle.installed is defined and bundle.installed == 1 %}disabled{% endif %}>
                             <span class="glyphicon glyphicon-cloud-download"></span> Install

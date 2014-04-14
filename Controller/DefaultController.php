@@ -130,6 +130,10 @@ class DefaultController extends Controller
             $bundle->kernelEntry = urlencode($bundle->kernelEntry);
             $bundle->routingEntry = json_encode($bundle->routingEntry);
 
+            if (isset($bundle->installNotes))
+            {
+                $bundle->installNotes = nl2br(trim($bundle->installNotes));
+            }
 
             // set default bundle icon
             if (!isset($bundle->icon) || !trim($bundle->icon))

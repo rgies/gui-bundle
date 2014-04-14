@@ -11,7 +11,7 @@
   <bundle>
 
     /**
-     * The ttile for the bundle
+     * The tile for the bundle
      */
     <title>Example Bundle</title>
 
@@ -70,6 +70,7 @@
   </bundle>
   -->
 
+    <!-- FOS User Bundle -->
   <bundle>
         <title>User Management (FOSUserBundle)</title>
         <category>Authentication</category>
@@ -82,11 +83,14 @@
         <routingEntry></routingEntry>
         <kernelEntry>new FOS\UserBundle\FOSUserBundle()</kernelEntry>
         <description>
-            The Symfony2 security component provides a flexible security framework that allows you to load users from configuration, a database, or anywhere else you can imagine.
-            The FOSUserBundle builds on top of this to make it quick and easy to store users in a database.
-            So, if you need to persist and fetch the users in your system to and from a database, this is the right bundle.
+            <![CDATA[
+                The Symfony2 security component provides a flexible security framework that allows you to load users from configuration, a database, or anywhere else you can imagine.
+                The FOSUserBundle builds on top of this to make it quick and easy to store users in a database.<br/>So, if you need to persist and fetch the users in your system to and from a database, this is the right bundle.
+            ]]>
         </description>
     </bundle>
+
+    <!-- Misd Guzzle Bundle -->
     <bundle>
         <title>HTTP Client (GuzzleBundle)</title>
         <category>Data Interface</category>
@@ -99,8 +103,47 @@
         <routingEntry></routingEntry>
         <kernelEntry>new Misd\GuzzleBundle\MisdGuzzleBundle()</kernelEntry>
         <description>
-            This bundle integrates Guzzle into your Symfony2 application, which takes the pain out of sending HTTP requests and the redundancy out of creating web service clients.
-            It can also integrate with the JMSSerializerBundle for easy object (de)serialization, and provides a param converter for use with the SensioFrameworkExtraBundle.
+            <![CDATA[
+                This bundle integrates Guzzle into your Symfony2 application, which takes the pain out of sending HTTP requests and the redundancy out of creating web service clients.
+                It can also integrate with the JMSSerializerBundle for easy object (de)serialization, and provides a param converter for use with the SensioFrameworkExtraBundle.
+            ]]>
         </description>
+    </bundle>
+
+    <!-- Misd Guzzle Bundle -->
+    <bundle>
+        <title>PDF Generator (KnpSnappyBundle)</title>
+        <category>Converter Tools</category>
+        <url>https://github.com/KnpLabs/KnpSnappyBundle</url>
+        <!-- Url or base64 encoded image 120x100 px -->
+        <icon></icon>
+        <bundleName>KnpSnappyBundle</bundleName>
+        <bundlePath>knplabs/knp-snappy-bundle</bundlePath>
+        <bundleVersion>dev-master</bundleVersion>
+        <routingEntry></routingEntry>
+        <kernelEntry>new Knp\Bundle\SnappyBundle\KnpSnappyBundle()</kernelEntry>
+        <description>
+            <![CDATA[
+                Easily create PDF and images in Symfony2 by converting html using webkit. Snappy is a PHP (5.3+) wrapper for the wkhtmltopdf conversion utility. It allows you to generate either pdf or image files from your html documents, using the webkit engine.
+                The KnpSnappyBundle provides a simple integration for your Symfony project.<br/><br/><strong>PLEASE NOTE:</strong> You need installed binaries from <a href="http://wkhtmltopdf.org/" target="_blank">http://wkhtmltopdf.org/</a>
+            ]]>
+        </description>
+        <installNotes>
+            <![CDATA[
+                <h2>Configuration</h2>
+                Add the following configuration to your config.yml file.
+
+                <strong># app/config/config.yml</strong>
+                knp_snappy:
+                &nbsp;&nbsp;&nbsp;&nbsp; pdf:
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enabled:    true
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; binary:     /usr/local/bin/wkhtmltopdf
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; options:    []
+                &nbsp;&nbsp;&nbsp;&nbsp; image:
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enabled:    true
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; binary:     /usr/local/bin/wkhtmltoimage
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; options:    []        </installNotes>
+            ]]>
+        </installNotes>
     </bundle>
 </repository>
