@@ -81,6 +81,13 @@
         <bundlePath>friendsofsymfony/user-bundle</bundlePath>
         <bundleVersion>~2.0@dev</bundleVersion>
         <routingEntry></routingEntry>
+        <configuration>
+            <fos_user>
+                <db_driver>orm</db_driver>
+                <firewall_name>main</firewall_name>
+                <user_class></user_class>
+            </fos_user>
+        </configuration>
         <kernelEntry>new FOS\UserBundle\FOSUserBundle()</kernelEntry>
         <description>
             <![CDATA[
