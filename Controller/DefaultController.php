@@ -135,6 +135,16 @@ class DefaultController extends Controller
                 $bundle->installNotes = nl2br(trim($bundle->installNotes));
             }
 
+            // encode configuration for config.yml
+            if (isset($bundle->configuration))
+            {
+                $bundle->configuration = json_encode($bundle->configuration);
+            }
+            else
+            {
+                $bundle->configuration = '{}';
+            }
+
             // set default bundle icon
             if (!isset($bundle->icon) || !trim($bundle->icon))
             {
@@ -160,6 +170,7 @@ class DefaultController extends Controller
         $bundleName = $request->request->get('bundleName');
         $rootPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/');
         $routingEntry = $request->request->get('routingEntry');
+        $configuration = $request->request->get('configuration');
 
         if (!$bundlePath)
         {
@@ -295,9 +306,17 @@ class DefaultController extends Controller
                 }
             }
 
-            // Handle route installation
-            if (!isset($routingEntry) && !empty($routingEntry))
+            // Handle configuration at config.yml
+            if (isset($configuration) && !empty($configuration))
             {
+                $this->_addConfiguration($rootPath, $configuration);
+            }
+
+            // Handle route installation
+            if (isset($routingEntry) && !empty($routingEntry))
+            {
+                // routing should be every time written in default routing.yml
+                /*
                 // Retrieve project environment and handle the correct YAML file
                 $env = $this->get('kernel')->getEnvironment();
                 if ($env == 'dev') {
@@ -306,8 +325,12 @@ class DefaultController extends Controller
                 else {
                     $routeFile = $rootPath . '/app/config/routing.yml';
                 }
+                */
 
-                try {
+                $routeFile = $rootPath . '/app/config/routing.yml';
+
+                try
+                {
                     // Get content of YAML file
                     $ymlFileContent = file_get_contents($routeFile);
 
@@ -326,9 +349,11 @@ class DefaultController extends Controller
                     if ($result)
                     {
                         echo 'Installing of \'' . $routingEntry['name'] . '\' completed.';
+                        // todo: save function for routing.yml is missing
                     }
                 }
-                catch (ParseException $ex) {
+                catch (ParseException $ex)
+                {
                     echo 'Unable to parse the YAML string: ' . $ex->getMessage();
                     die;
                 }
@@ -512,5 +537,60 @@ class DefaultController extends Controller
                 break;
         }
         return $composer;
+    }
+
+    /**
+     * Add given configuration array to config.yml.
+     *
+     * @param string $rootPath Path to app root
+     * @param array $configuration Configuration to add
+     * @return bool False if config not written
+     */
+    private function _addConfiguration($rootPath, $configuration)
+    {
+        $configFile = $rootPath . '/app/config/config.yml';
+
+        try
+        {
+            // Get content of YAML file
+            $ymlFileContent = file_get_contents($configFile);
+
+            // Parse YAML file
+            $config = Yaml::parse($ymlFileContent, true);
+            $addConfig = array();
+
+            if (is_array($configuration))
+            {
+                foreach ($configuration as $key=>$value)
+                {
+                    if (!isset($config[$key]))
+                    {
+                        $addConfig[$key] = $value;
+                    }
+                }
+            }
+
+            // new YAML config part
+            $result = Yaml::dump($addConfig, 10);
+
+            if ($result)
+            {
+                echo 'Installing of configuration completed.';
+                if (@file_put_contents($configFile, $result, FILE_APPEND) !== false)
+                {
+                    return true;
+                }
+            }
+        }
+        catch (ParseException $ex)
+        {
+            echo 'Unable to parse the YAML string: ' . $ex->getMessage();
+        }
+        catch (Exception $ex)
+        {
+            echo 'Exception was thrown: ' . $ex->getMessage();
+        }
+
+        return false;
     }
 }

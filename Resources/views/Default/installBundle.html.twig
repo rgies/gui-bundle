@@ -40,6 +40,7 @@
                         {% endif %}
                         <button id="bundleInstallButton{{ loop.index }}" class="btn btn-primary" onclick="
                                 var routingEntry = JSON.parse('{{ bundle.routingEntry }}');
+                                var configuration = JSON.parse('{{ bundle.configuration }}');
                                 var routes = null;
                                 if (routingEntry)
                                 {
@@ -60,6 +61,7 @@
                                         bundleVersion: '{{ bundle.bundleVersion }}',
                                         kernelEntry: '{{ bundle.kernelEntry }}',
                                         bundleName: '{{ bundle.title }}',
+                                        configuration: configuration,
                                         routingEntry: routes
                                     }
                                 }).done(function(data) {

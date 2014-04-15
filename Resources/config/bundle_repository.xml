@@ -121,6 +121,20 @@
         <bundlePath>knplabs/knp-snappy-bundle</bundlePath>
         <bundleVersion>dev-master</bundleVersion>
         <routingEntry></routingEntry>
+        <configuration>
+            <knp_snappy>
+                <pdf>
+                    <enabled>true</enabled>
+                    <binary>/usr/local/bin/wkhtmltopdf</binary>
+                    <options>[]</options>
+                </pdf>
+                <image>
+                    <enabled>true</enabled>
+                    <binary>/usr/local/bin/wkhtmltopdf</binary>
+                    <options>[]</options>
+                </image>
+            </knp_snappy>
+        </configuration>
         <kernelEntry>new Knp\Bundle\SnappyBundle\KnpSnappyBundle()</kernelEntry>
         <description>
             <![CDATA[
@@ -131,7 +145,7 @@
         <installNotes>
             <![CDATA[
                 <h2>Configuration</h2>
-                Add the following configuration to your config.yml file.
+                Setup the following configuration part in your config.yml file. Set the correct path to wkhtmltopdf in your environment.
 
                 <strong># app/config/config.yml</strong>
                 knp_snappy:
@@ -142,7 +156,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp; image:
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enabled:    true
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; binary:     /usr/local/bin/wkhtmltoimage
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; options:    []        </installNotes>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; options:    []
             ]]>
         </installNotes>
     </bundle>
