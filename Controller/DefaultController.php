@@ -542,6 +542,7 @@ class DefaultController extends Controller
     /**
      * Add given configuration array to config.yml.
      *
+     * @param string $bundleName Name of the bundle
      * @param string $rootPath Path to app root
      * @param array $configuration Configuration to add
      * @return bool False if config not written
@@ -565,6 +566,9 @@ class DefaultController extends Controller
                 {
                     if (!isset($config[$key]))
                     {
+                        $value = $this->_recursiveArrFindReplace($value, 'true', true);
+                        $value = $this->_recursiveArrFindReplace($value, 'false', false);
+                        $value = $this->_recursiveArrFindReplace($value, '[]', array());
                         $addConfig[$key] = $value;
                     }
                 }
@@ -592,5 +596,35 @@ class DefaultController extends Controller
         }
 
         return false;
+    }
+
+    /**
+     * Search and replace given value into arrays.
+     *
+     * @param array $arr
+     * @param string $find
+     * @param string $replace
+     * @return array
+     */
+    private function _recursiveArrFindReplace($arr, $find, $replace)
+    {
+        if (is_array($arr))
+        {
+            foreach ($arr as $key=>$val)
+            {
+                if (is_array($arr[$key]))
+                {
+                    $arr[$key] = $this->_recursiveArrFindReplace($arr[$key], $find, $replace);
+                }
+                else
+                {
+                    if ($arr[$key] == $find)
+                    {
+                        $arr[$key] = $replace;
+                    }
+                }
+            }
+        }
+        return $arr;
     }
 }
