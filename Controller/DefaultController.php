@@ -309,7 +309,7 @@ class DefaultController extends Controller
             // Handle configuration at config.yml
             if (isset($configuration) && !empty($configuration))
             {
-                $this->_addConfiguration($rootPath, $configuration);
+                $this->_addConfiguration($bundleName, $rootPath, $configuration);
             }
 
             // Handle route installation
@@ -546,7 +546,7 @@ class DefaultController extends Controller
      * @param array $configuration Configuration to add
      * @return bool False if config not written
      */
-    private function _addConfiguration($rootPath, $configuration)
+    private function _addConfiguration($bundleName, $rootPath, $configuration)
     {
         $configFile = $rootPath . '/app/config/config.yml';
 
@@ -571,7 +571,7 @@ class DefaultController extends Controller
             }
 
             // new YAML config part
-            $result = Yaml::dump($addConfig, 10);
+            $result = PHP_EOL . '# ' . $bundleName . ' Configuration' . PHP_EOL . Yaml::dump($addConfig, 10);
 
             if ($result)
             {
