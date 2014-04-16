@@ -151,17 +151,19 @@ class BundleUtil
     }
 
     /**
+     * Checks if bundle with given name is installed.
      *
-     * @param array     $bundles    All bundles
-     * @param string    $bundleName Bundle name to search for
+     * @param \Symfony\Bundle\FrameworkBundle\Controller\Controller $controller
+     * @param string $bundleName Bundle name to search for
      *
+     * @internal param array $bundles All bundles
      * @return bool Returns TRUE if we found bundle; otherwise FALSE
      */
     public static function bundleInstalled(Controller $controller, $bundleName)
     {
         $allBundles = $controller->get('kernel')->getBundles();
 
-        $installed = FALSE;
+        $installed = false;
 
         if (!is_array($allBundles))
         {
@@ -175,7 +177,7 @@ class BundleUtil
                 $name = $bundle->getName();
                 if ($bundleName === $name)
                 {
-                    $installed = TRUE;
+                    $installed = true;
                     break;
                 }
             }

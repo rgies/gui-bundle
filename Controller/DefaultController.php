@@ -169,6 +169,7 @@ class DefaultController extends Controller
         $bundleVersion = $request->request->get('bundleVersion');
         $bundleName = $request->request->get('bundleName');
         $bundleTitle = $request->request->get('bundleTitle');
+        $bundleNamespace = $request->get('bundleNamespace');
         $rootPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/');
         $routingEntry = $request->request->get('routingEntry');
         $configuration = $request->request->get('configuration');
@@ -287,14 +288,11 @@ class DefaultController extends Controller
                 $bundleInstalled = BundleUtil::bundleInstalled($this, $bundleTitle);
                 if (!$bundleInstalled)
                 {
-                    // Replace some stuff from kernel entry
-                    $namespace = urldecode($request->get('kernelNamespace'));
-
                     // Register bundle
                     $km = new KernelManipulator($kernel);
                     try
                     {
-                        $km->addBundle($namespace . '\\' . $bundleName);
+                        $km->addBundle(urldecode($bundleNamespace) . '\\' . $bundleName);
                     }
                     catch (RuntimeException $ex)
                     {
@@ -322,7 +320,9 @@ class DefaultController extends Controller
 
             // handle success
             echo 'Done';
-        } else {
+        }
+        else
+        {
             // handle error
             echo 'Error on updating: ' . $bundleTitle . '\n\n' . Process::$exitCodes[$ret];
         }
