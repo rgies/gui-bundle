@@ -168,6 +168,7 @@ class DefaultController extends Controller
         $bundlePath = $request->request->get('bundlePath');
         $bundleVersion = $request->request->get('bundleVersion');
         $bundleName = $request->request->get('bundleName');
+        $bundleTitle = $request->request->get('bundleTitle');
         $rootPath = rtrim(dirname($this->get('kernel')->getRootDir()), '/');
         $routingEntry = $request->request->get('routingEntry');
         $configuration = $request->request->get('configuration');
@@ -269,7 +270,7 @@ class DefaultController extends Controller
         $processBuilder->setWorkingDirectory($rootPath);
 
         // Generate output for AJAX call
-        echo 'Running update on: ' . $bundleName;
+        echo 'Running update on: ' . $bundleTitle;
 
         $process = $processBuilder->getProcess();
         $process->setTimeout(3600);
@@ -283,7 +284,7 @@ class DefaultController extends Controller
             if ($kernel instanceof Kernel)
             {
                 // Check if bundle already installed
-                $bundleInstalled = BundleUtil::bundleInstalled($this, $bundleName);
+                $bundleInstalled = BundleUtil::bundleInstalled($this, $bundleTitle);
                 if (!$bundleInstalled)
                 {
                     // Replace some stuff from kernel entry
@@ -307,13 +308,13 @@ class DefaultController extends Controller
             // Handle configuration at config.yml
             if (isset($configuration) && !empty($configuration))
             {
-                $this->_addConfiguration($bundleName, $rootPath, $configuration);
+                $this->_addConfiguration($bundleTitle, $rootPath, $configuration);
             }
 
             // Handle route installation
             if (isset($routingEntry) && !empty($routingEntry))
             {
-                $this->_addRouting($bundleName, $rootPath, $routingEntry);
+                $this->_addRouting($bundleTitle, $rootPath, $routingEntry);
             }
 
             // Clear cache
@@ -323,7 +324,7 @@ class DefaultController extends Controller
             echo 'Done';
         } else {
             // handle error
-            echo 'Error on updating: ' . $bundleName . '\n\n' . Process::$exitCodes[$ret];
+            echo 'Error on updating: ' . $bundleTitle . '\n\n' . Process::$exitCodes[$ret];
         }
 
         unset($processBuilder, $process);
@@ -494,12 +495,12 @@ class DefaultController extends Controller
     /**
      * Add given configuration array to config.yml.
      *
-     * @param string $bundleName Name of the bundle
+     * @param string $bundleTitle Title of the bundle
      * @param string $rootPath Path to app root
      * @param array $configuration Configuration to add
      * @return bool False if config not written
      */
-    private function _addConfiguration($bundleName, $rootPath, $configuration)
+    private function _addConfiguration($bundleTitle, $rootPath, $configuration)
     {
         $configFile = $rootPath . '/app/config/config.yml';
 
@@ -527,7 +528,7 @@ class DefaultController extends Controller
             }
 
             // new YAML config part
-            $result = PHP_EOL . '# ' . $bundleName . ' Configuration' . PHP_EOL . Yaml::dump($newConfig, 10);
+            $result = PHP_EOL . '# ' . $bundleTitle . ' Configuration' . PHP_EOL . Yaml::dump($newConfig, 10);
 
             if ($result)
             {
@@ -553,12 +554,12 @@ class DefaultController extends Controller
     /**
      * Add given routing configuration to routing.yml.
      *
-     * @param string $bundleName Name of the bundle
+     * @param string $bundleTitle Title of the bundle
      * @param string $rootPath Path to app root
      * @param array $routingEntry Configuration to add
      * @return bool False if config not written
      */
-    private function _addRouting($bundleName, $rootPath, $routingEntry)
+    private function _addRouting($bundleTitle, $rootPath, $routingEntry)
     {
         $routeFile = $rootPath . '/app/config/routing.yml';
 
@@ -581,7 +582,7 @@ class DefaultController extends Controller
             }
 
             // new YAML config part
-            $result = PHP_EOL . '# ' . $bundleName . ' Routing' . PHP_EOL . Yaml::dump($newRoutes, 10);
+            $result = PHP_EOL . '# ' . $bundleTitle . ' Routing' . PHP_EOL . Yaml::dump($newRoutes, 10);
 
             if ($result)
             {
