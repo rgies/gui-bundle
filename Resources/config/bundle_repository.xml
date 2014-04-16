@@ -79,16 +79,16 @@
         <icon></icon>
         <bundleName>FOSUserBundle</bundleName>
         <bundlePath>friendsofsymfony/user-bundle</bundlePath>
+        <bundleNamespace>FOS\UserBundle</bundleNamespace>
         <bundleVersion>~2.0@dev</bundleVersion>
         <routingEntry></routingEntry>
         <configuration>
             <fos_user>
                 <db_driver>orm</db_driver>
                 <firewall_name>main</firewall_name>
-                <user_class>FOS\UserBundle\Entity\User</user_class>
+                <user_class>FOS\\UserBundle\\Entity\\User</user_class>
             </fos_user>
         </configuration>
-        <kernelEntry>new FOS\UserBundle\FOSUserBundle()</kernelEntry>
         <description>
             <![CDATA[
                 The Symfony2 security component provides a flexible security framework that allows you to load users from configuration, a database, or anywhere else you can imagine.
@@ -118,9 +118,9 @@
         <icon></icon>
         <bundleName>MisdGuzzleBundle</bundleName>
         <bundlePath>misd/guzzle-bundle</bundlePath>
+        <bundleNamespace>Misd\GuzzleBundle</bundleNamespace>
         <bundleVersion>~1.0</bundleVersion>
         <routingEntry></routingEntry>
-        <kernelEntry>new Misd\GuzzleBundle\MisdGuzzleBundle()</kernelEntry>
         <description>
             <![CDATA[
                 This bundle integrates Guzzle into your Symfony2 application, which takes the pain out of sending HTTP requests and the redundancy out of creating web service clients.
@@ -138,6 +138,7 @@
         <icon></icon>
         <bundleName>KnpSnappyBundle</bundleName>
         <bundlePath>knplabs/knp-snappy-bundle</bundlePath>
+        <bundleNamespace>Knp\Bundle\SnappyBundle</bundleNamespace>
         <bundleVersion>dev-master</bundleVersion>
         <routingEntry></routingEntry>
         <configuration>
@@ -154,7 +155,6 @@
                 </image>
             </knp_snappy>
         </configuration>
-        <kernelEntry>new Knp\Bundle\SnappyBundle\KnpSnappyBundle()</kernelEntry>
         <description>
             <![CDATA[
                 Easily create PDF and images in Symfony2 by converting html using webkit. Snappy is a PHP (5.3+) wrapper for the wkhtmltopdf conversion utility. It allows you to generate either pdf or image files from your html documents, using the webkit engine.

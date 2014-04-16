@@ -127,7 +127,7 @@ class DefaultController extends Controller
 
             $installed = BundleUtil::bundleInstalled($this, (string)$bundle->bundleName);
             $bundle->addChild('installed', ($installed === TRUE) ? '1' : '0');
-            $bundle->kernelEntry = urlencode($bundle->kernelEntry);
+            $bundle->bundleNamespace = urlencode($bundle->bundleNamespace);
             $bundle->routingEntry = json_encode($bundle->routingEntry);
 
             if (isset($bundle->installNotes))
@@ -287,15 +287,13 @@ class DefaultController extends Controller
                 if (!$bundleInstalled)
                 {
                     // Replace some stuff from kernel entry
-                    $kernelEntry = urldecode($request->get('kernelEntry'));
-                    $kernelEntry = str_replace('new ', '', $kernelEntry);
-                    $kernelEntry = str_replace('()', '', $kernelEntry);
+                    $namespace = urldecode($request->get('kernelNamespace'));
 
                     // Register bundle
                     $km = new KernelManipulator($kernel);
                     try
                     {
-                        $km->addBundle($kernelEntry);
+                        $km->addBundle($namespace . '\\' . $bundleName);
                     }
                     catch (RuntimeException $ex)
                     {
@@ -315,6 +313,7 @@ class DefaultController extends Controller
             // Handle route installation
             if (isset($routingEntry) && !empty($routingEntry))
             {
+                $this->_addRouting($bundleName, $rootPath, $routingEntry);
             }
 
             // Clear cache
