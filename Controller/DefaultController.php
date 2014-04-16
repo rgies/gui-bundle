@@ -315,53 +315,6 @@ class DefaultController extends Controller
             // Handle route installation
             if (isset($routingEntry) && !empty($routingEntry))
             {
-                // routing should be every time written in default routing.yml
-                /*
-                // Retrieve project environment and handle the correct YAML file
-                $env = $this->get('kernel')->getEnvironment();
-                if ($env == 'dev') {
-                    $routeFile = $rootPath . '/app/config/routing_' . $env . '.yml';
-                }
-                else {
-                    $routeFile = $rootPath . '/app/config/routing.yml';
-                }
-                */
-
-                $routeFile = $rootPath . '/app/config/routing.yml';
-
-                try
-                {
-                    // Get content of YAML file
-                    $ymlFileContent = file_get_contents($routeFile);
-
-                    // Parse YAML file
-                    $routes = Yaml::parse($ymlFileContent, true);
-                    if (!isset($routes[$routingEntry['name']]))
-                    {
-                        $routes[$routingEntry['name']] = array(
-                          'resource' => $routingEntry['resource'],
-                          'type' => $routingEntry['type'],
-                          'prefix' => $routingEntry['prefix'],
-                        );
-                    }
-
-                    $result = Yaml::dump($routes);
-                    if ($result)
-                    {
-                        echo 'Installing of \'' . $routingEntry['name'] . '\' completed.';
-                        // todo: save function for routing.yml is missing
-                    }
-                }
-                catch (ParseException $ex)
-                {
-                    echo 'Unable to parse the YAML string: ' . $ex->getMessage();
-                    die;
-                }
-                catch (Exception $ex)
-                {
-                    echo 'Exception was thrown: ' . $ex->getMessage();
-                    die;
-                }
             }
 
             // Clear cache
@@ -558,7 +511,7 @@ class DefaultController extends Controller
 
             // Parse YAML file
             $config = Yaml::parse($ymlFileContent, true);
-            $addConfig = array();
+            $newConfig = array();
 
             if (is_array($configuration))
             {
@@ -569,18 +522,72 @@ class DefaultController extends Controller
                         $value = $this->_recursiveArrFindReplace($value, 'true', true);
                         $value = $this->_recursiveArrFindReplace($value, 'false', false);
                         $value = $this->_recursiveArrFindReplace($value, '[]', array());
-                        $addConfig[$key] = $value;
+                        $newConfig[$key] = $value;
                     }
                 }
             }
 
             // new YAML config part
-            $result = PHP_EOL . '# ' . $bundleName . ' Configuration' . PHP_EOL . Yaml::dump($addConfig, 10);
+            $result = PHP_EOL . '# ' . $bundleName . ' Configuration' . PHP_EOL . Yaml::dump($newConfig, 10);
 
             if ($result)
             {
                 echo 'Installing of configuration completed.';
                 if (@file_put_contents($configFile, $result, FILE_APPEND) !== false)
+                {
+                    return true;
+                }
+            }
+        }
+        catch (ParseException $ex)
+        {
+            echo 'Unable to parse the YAML string: ' . $ex->getMessage();
+        }
+        catch (Exception $ex)
+        {
+            echo 'Exception was thrown: ' . $ex->getMessage();
+        }
+
+        return false;
+    }
+
+    /**
+     * Add given routing configuration to routing.yml.
+     *
+     * @param string $bundleName Name of the bundle
+     * @param string $rootPath Path to app root
+     * @param array $routingEntry Configuration to add
+     * @return bool False if config not written
+     */
+    private function _addRouting($bundleName, $rootPath, $routingEntry)
+    {
+        $routeFile = $rootPath . '/app/config/routing.yml';
+
+        try
+        {
+            // Get content of YAML file
+            $ymlFileContent = file_get_contents($routeFile);
+
+            // Parse YAML file
+            $routes = Yaml::parse($ymlFileContent, true);
+            $newRoutes = array();
+
+            if (!isset($routes[$routingEntry['name']]))
+            {
+                $newRoutes = array(
+                    'resource' => $routingEntry['resource'],
+                    'type' => $routingEntry['type'],
+                    'prefix' => $routingEntry['prefix'],
+                );
+            }
+
+            // new YAML config part
+            $result = PHP_EOL . '# ' . $bundleName . ' Routing' . PHP_EOL . Yaml::dump($newRoutes, 10);
+
+            if ($result)
+            {
+                echo 'Installing of \'' . $routingEntry['name'] . '\' completed.';
+                if (@file_put_contents($routeFile, $result, FILE_APPEND) !== false)
                 {
                     return true;
                 }

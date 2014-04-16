@@ -85,7 +85,7 @@
             <fos_user>
                 <db_driver>orm</db_driver>
                 <firewall_name>main</firewall_name>
-                <user_class></user_class>
+                <user_class>FOS\UserBundle\Entity\User</user_class>
             </fos_user>
         </configuration>
         <kernelEntry>new FOS\UserBundle\FOSUserBundle()</kernelEntry>
@@ -95,6 +95,18 @@
                 The FOSUserBundle builds on top of this to make it quick and easy to store users in a database.<br/>So, if you need to persist and fetch the users in your system to and from a database, this is the right bundle.
             ]]>
         </description>
+      <installNotes>
+          <![CDATA[
+                <h2>Configuration</h2>
+                Setup the configuration, firewall and your own user class (see <a href="https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/index.md" target="_blank">Documentation</a> started from Step 3).
+
+                <strong># app/config/config.yml</strong>
+                fos_user:
+                &nbsp;&nbsp;&nbsp;&nbsp; db_driver: orm
+                &nbsp;&nbsp;&nbsp;&nbsp; firewall_name: main
+                &nbsp;&nbsp;&nbsp;&nbsp; user_class: YourCompany\YourBundle\Entity\User
+            ]]>
+      </installNotes>
     </bundle>
 
     <!-- Misd Guzzle Bundle -->
