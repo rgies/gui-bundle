@@ -68,7 +68,7 @@ class DefaultController extends Controller
      */
     public function createBundleAction()
     {
-        return array();
+        return array('templates' => $this->_getBundleTemplateNames());
     }
 
     /**
@@ -361,14 +361,16 @@ class DefaultController extends Controller
         switch($command)
         {
             // generate new bundle
-            case 'generate:bundle':
+            case 'gui:generate:bundle':
                 $bundleName = $executor->formatBundleName($request->get('bundleName'));
                 $namespace = $executor->formatNamespace($request->get('bundleNamespace')) . '/' . $bundleName;
+                $templateName = $request->get('bundleSkeleton');
                 $cmd = $command;
                 $cmd.= ' --bundle-name="' . $bundleName . '"';
                 $cmd.= ' --namespace="' . $namespace . '"';
                 $cmd.= ' --format="annotation"';
                 $cmd.= ' --dir="' . $rootPath . '/src"';
+                $cmd.= ' --template-name="' . $templateName . '"';
                 $cmd.= ($request->get('createStructure')=='on') ? ' --structure' : '';
                 break;
 
@@ -633,5 +635,29 @@ class DefaultController extends Controller
             }
         }
         return $arr;
+    }
+
+    /**
+     * Gets list of all available bundle template names.
+     *
+     * @return array
+     */
+    protected function _getBundleTemplateNames()
+    {
+        $names = array();
+        $path = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/skeleton/bundle/templates'));
+
+        if ($files = scandir($path))
+        {
+            foreach ($files as $file)
+            {
+                if ($file[0] != '.' && is_dir($path . '/' . $file))
+                {
+                    $names[] = $file;
+                }
+            }
+        }
+
+        return $names;
     }
 }

@@ -23,7 +23,7 @@ use Sensio\Bundle\GeneratorBundle\Command\Validators;
 /**
  * Generates controllers.
  *
- * @author Wouter J <wouter@wouterj.nl>
+ * @author Robert Gies <mail@rgies.com>
  */
 class GenerateControllerCommand extends GeneratorCommand
 {
@@ -63,7 +63,7 @@ class GenerateControllerCommand extends GeneratorCommand
             ))
             ->setDescription('Generates a controller')
             ->setHelp(<<<EOT
-The <info>generate:controller</info> command helps you generates new controllers
+The <info>gui:generate:controller</info> command helps you generates new controllers
 inside bundles.
 
 By default, the command interacts with the developer to tweak the generation.
@@ -76,7 +76,7 @@ ones needed if you follow the conventions):
 If you want to disable any user interaction, use <comment>--no-interaction</comment>
 but don't forget to pass all needed options:
 
-<info>php app/console generate:controller --controller=AcmeBlogBundle:Post --no-interaction</info>
+<info>php app/console gui:generate:controller --controller=AcmeBlogBundle:Post --no-interaction</info>
 
 Every generated file is based on a template. There are default templates but they can
 be overriden by placing custom templates in one of the following locations, by order of priority:

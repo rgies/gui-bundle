@@ -3,7 +3,7 @@
 {% block content %}
     <!-- Data form -->
     <form name="dataForm" id="dataForm" role="form" method="post" action="{{ path('guiExecuteCommand') }}">
-        <input name="command" id="command" type="hidden" value="generate:bundle" />
+        <input name="command" id="command" type="hidden" value="gui:generate:bundle" />
         <div class="form-group col-sm-6">
             <label for="bundleName">Name*</label>
             <input name="bundleName" type="text" class="form-control" id="bundleName" placeholder="Bundle name" maxlength="40" required />
@@ -18,7 +18,9 @@
             <label for="bundleSkeleton">Select bundle template [optional]</label>
             <select id="bundleSkeleton" name="bundleSkeleton" class="form-control">
                 <option></option>
-                <option>Default website template</option>
+                {% for template in templates %}
+                <option>{{ template }}</option>
+                {% endfor %}
             </select>
             <p class="help-block">Select here a predefined bundle template.</p>
         </div>

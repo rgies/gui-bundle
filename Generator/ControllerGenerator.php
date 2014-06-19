@@ -1,12 +1,13 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
+/**
+ * Symfony2 - Rapid Development Bundle.
  *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * @package     RGies\GuiBundle\Generator
+ * @author      Robert Gies <mail@rgies.com>
+ * @copyright   Copyright © 2014 by Robert Gies
+ * @license     MIT
+ * @date        2014-02-06
  */
 
 namespace RGies\GuiBundle\Generator;
@@ -18,7 +19,7 @@ use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 /**
  * Generates a Controller inside a bundle.
  *
- * @author Wouter J <wouter@wouterj.nl>
+ * @author Robert Gies <mail@rgies.com>
  */
 class ControllerGenerator extends Generator
 {
