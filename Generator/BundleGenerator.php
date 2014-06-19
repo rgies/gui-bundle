@@ -90,6 +90,15 @@ class BundleGenerator extends Generator
 
                 // copy views
                 $this->_copyBundleTemplates($dir . '/Resources/views', $templateDir . '/views', $parameters);
+
+                // copy css
+                $this->_copyBundleTemplates($dir . '/Resources/public/css', $templateDir . '/css', $parameters);
+
+                // copy js
+                $this->_copyBundleTemplates($dir . '/Resources/public/js', $templateDir . '/js', $parameters);
+
+                // copy images
+                $this->_copyBundleTemplates($dir . '/Resources/public/images', $templateDir . '/images', $parameters);
             }
         }
     }
@@ -112,6 +121,10 @@ class BundleGenerator extends Generator
                     {
                         $this->setSkeletonDirs($templateDir);
                         $this->renderFile($file, $targetDir . '/' . basename($file, '.twig'), $parameters);
+                    }
+                    else
+                    {
+                        $this->filesystem->copy($templateDir . '/' . $file, $targetDir . '/' . $file);
                     }
                 }
             }
