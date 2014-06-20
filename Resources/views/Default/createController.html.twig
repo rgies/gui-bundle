@@ -1,5 +1,5 @@
 {% extends "GuiBundle::base.html.twig" %}
-{% block headline %}Create Controller{% endblock %}
+{% block headline %}Create Pages{% endblock %}
 {% block content %}
     {% if bundles|length == 0 %}
         <div class="alert alert-warning">
@@ -16,7 +16,7 @@
             <p class="help-block">Please select target bundle.</p>
         </div>
         <div class="form-group col-sm-6">
-            <label for="controllerName">Name*</label>
+            <label for="controllerName">Controller name*</label>
             <div class="input-group">
                 <input name="controllerName" type="text" class="form-control" id="controllerName" placeholder="Controller name" maxlength="40" required />
                 <div class="input-group-btn">
@@ -32,9 +32,9 @@
             <p class="help-block">Enter new controller name or select existing.</p>
         </div>
         <div class="form-group col-sm-6">
-            <label for="controllerActions">Actions</label>
+            <label for="controllerActions">Page names</label>
             <input name="controllerActions" type="text" class="form-control" id="controllerActions" placeholder="Action names" maxlength="100" />
-            <p class="help-block">Enter here your comma separated list of action names.</p>
+            <p class="help-block">Enter here your comma separated list of view names.</p>
         </div>
         <div class="form-group col-sm-12">
             <p>* Required fields.</p>
