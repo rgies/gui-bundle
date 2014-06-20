@@ -99,6 +99,9 @@ class BundleGenerator extends Generator
 
                 // copy images
                 $this->_copyBundleTemplates($dir . '/Resources/public/images', $templateDir . '/images', $parameters, true);
+
+                // copy skeleton
+                $this->_copyBundleTemplates($dir . '/Resources/skeleton', $templateDir . '/skeleton', $parameters, true);
             }
         }
     }
