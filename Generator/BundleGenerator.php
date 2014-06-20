@@ -98,12 +98,12 @@ class BundleGenerator extends Generator
                 $this->_copyBundleTemplates($dir . '/Resources/public/js', $templateDir . '/js', $parameters);
 
                 // copy images
-                $this->_copyBundleTemplates($dir . '/Resources/public/images', $templateDir . '/images', $parameters);
+                $this->_copyBundleTemplates($dir . '/Resources/public/images', $templateDir . '/images', $parameters, true);
             }
         }
     }
 
-    protected function _copyBundleTemplates($targetDir, $templateDir, $parameters)
+    protected function _copyBundleTemplates($targetDir, $templateDir, $parameters, $onlyCopy = false)
     {
         if (is_dir($templateDir))
         {
@@ -115,9 +115,11 @@ class BundleGenerator extends Generator
 
                     if (is_dir($templateDir . '/' . $file))
                     {
-                        $this->_copyBundleTemplates($targetDir . '/' . $file, $templateDir . '/' . $file, $parameters);
+                        $this->_copyBundleTemplates(
+                            $targetDir . '/' . $file, $templateDir . '/' . $file, $parameters, $onlyCopy
+                        );
                     }
-                    elseif (substr($file, -5) == '.twig')
+                    elseif (substr($file, -5) == '.twig' && !$onlyCopy)
                     {
                         $this->setSkeletonDirs($templateDir);
                         $this->renderFile($file, $targetDir . '/' . basename($file, '.twig'), $parameters);
