@@ -121,21 +121,22 @@ EOT
 
         $dialog->writeSection($output, 'Controller generation');
 
-        // replace generator bundle to skeletons with gui bundle skeletons path
         $generator = $this->getGenerator($bundle);
-        $orgSkeletonDirs = $this->getSkeletonDirs($bundle);
 
-        $skeletonDirs = array();
-        $skeletonDirs[] = $orgSkeletonDirs[0];
+        // replace generator bundle to skeletons with gui bundle skeletons path
+//        $orgSkeletonDirs = $this->getSkeletonDirs($bundle);
+//
+//        $skeletonDirs = array();
+//        $skeletonDirs[] = $orgSkeletonDirs[0];
+//
+//        $bundleSkeletonDir = $bundle->getPath() . '/Resources/skeleton';
+//        if (is_dir($bundleSkeletonDir))
+//        {
+//            $skeletonDirs[] = $bundleSkeletonDir;
+//        }
+//        $skeletonDirs[] = realpath(__DIR__ . '/../Resources/skeleton');
+//        $generator->setSkeletonDirs($skeletonDirs);
 
-        $bundleSkeletonDir = $bundle->getPath() . '/Resources/skeleton';
-        if (is_dir($bundleSkeletonDir))
-        {
-            $skeletonDirs[] = $bundleSkeletonDir;
-        }
-        $skeletonDirs[] = realpath(__DIR__ . '/../Resources/skeleton');
-
-        $generator->setSkeletonDirs($skeletonDirs);
         $generator->generate($bundle, $controller, $input->getOption('route-format'), $input->getOption('template-format'), $this->parseActions($input->getOption('actions')));
 
         $output->writeln('Generating the bundle code: <info>OK</info>');

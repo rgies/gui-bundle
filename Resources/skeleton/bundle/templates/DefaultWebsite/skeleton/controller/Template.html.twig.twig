@@ -1,5 +1,7 @@
 {{ '{% extends "' }}{{ bundle }}{{ '::base.html.twig" %}' }}
-{{ '{% block headline %}' }}Welcome <small>to the home page</small>{{ '{% endblock %}' }}
+{{ '{% block headline %}' }}
+    Welcome to the {{ controller }}:{{ action.basename }} page
+{{ '{% endblock %}' }}
 {{ '{% block content %}' }}
     <p>Please place here your page content.</p>
 {{ '{% endblock %}' }}

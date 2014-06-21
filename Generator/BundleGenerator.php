@@ -86,22 +86,28 @@ class BundleGenerator extends Generator
             if ($templateDir)
             {
                 // copy controller
-                $this->_copyBundleTemplates($dir . '/Controller', $templateDir . '/controller', $parameters);
+                $this->_copyBundleTemplates($dir . '/Controller',
+                    $templateDir . '/controller', $parameters);
 
                 // copy views
-                $this->_copyBundleTemplates($dir . '/Resources/views', $templateDir . '/views', $parameters);
+                $this->_copyBundleTemplates($dir . '/Resources/views',
+                    $templateDir . '/views', $parameters);
 
                 // copy css
-                $this->_copyBundleTemplates($dir . '/Resources/public/css', $templateDir . '/css', $parameters);
+                $this->_copyBundleTemplates($dir . '/Resources/public/css',
+                    $templateDir . '/css', $parameters);
 
                 // copy js
-                $this->_copyBundleTemplates($dir . '/Resources/public/js', $templateDir . '/js', $parameters);
+                $this->_copyBundleTemplates($dir . '/Resources/public/js',
+                    $templateDir . '/js', $parameters);
 
                 // copy images
-                $this->_copyBundleTemplates($dir . '/Resources/public/images', $templateDir . '/images', $parameters, true);
+                $this->_copyBundleTemplates($dir . '/Resources/public/images',
+                    $templateDir . '/images', $parameters, true);
 
                 // copy skeleton
-                $this->_copyBundleTemplates($dir . '/Resources/skeleton', $templateDir . '/skeleton', $parameters, true);
+                $this->_copyBundleTemplates($dir . '/Resources/SensioGeneratorBundle/skeleton',
+                    $templateDir . '/skeleton', $parameters, true);
             }
         }
     }
