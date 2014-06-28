@@ -1,7 +1,7 @@
 {{ '{% extends "' }}{{ bundle }}{{ '::base.html.twig" %}' }}
-{{ '{% block headline %}' }}
-    Welcome to the {{ controller }}:{{ action.basename }} page
-{{ '{% endblock %}' }}
 {{ '{% block content %}' }}
+    <div class="page-header">
+        <h1>Welcome to the {{ controller }}:{{ action.basename }} page</h1>
+    </div>
     <p>Please place here your page content.</p>
 {{ '{% endblock %}' }}

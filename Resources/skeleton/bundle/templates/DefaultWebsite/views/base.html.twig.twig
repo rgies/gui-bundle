@@ -1,14 +1,14 @@
 {{ '{% extends "::base.html.twig" %}' }}
 {{ '{% block stylesheets %}' }}
-    <link href="{{ '{{ asset(\'bundles/' }}{{ bundle|lower }}{{ '/css/default.css\') }}' }}" rel="stylesheet">
+    <link href="{{ '{{ asset(\'bundles/' }}{{ bundle_basename|lower }}{{ '/css/default.css\') }}' }}" rel="stylesheet">
 {{ '{% endblock %}' }}
 {{ '{% block body %}' }}
+    <!-- Navigation -->
     {{ '{% include \'' }}{{ bundle }}{{ '::navi.html.twig\' %}' }}
-    <div class="container">
-        <div class="page-header">
-            <h1>{{ '{% block headline %}' }}Page Headline{{ '{% endblock %}' }}</h1>
-        </div>
+    <!-- Content -->
+    <div class="container content-block">
         {{ '{% block content %}' }}Content{{ '{% endblock %}' }}
     </div>
+    <!-- Footer -->
     {{ '{% include \'' }}{{ bundle }}{{ '::footer.html.twig\' %}' }}
 {{ '{% endblock %}' }}

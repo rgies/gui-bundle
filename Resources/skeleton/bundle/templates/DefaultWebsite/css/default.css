@@ -1,0 +1,25 @@
+/* -- Navigation Block ----------- */
+.navigation-block {
+
+}
+
+/* -- Content Block -------------- */
+.content-block {
+    padding-bottom: 30px;
+    min-height: 400px;
+}
+
+/* -- Footer Block --------------- */
+.footer-block {
+    border-top: 1px #aaaaaa solid;
+    border-bottom: 1px #aaaaaa solid;
+    background-color: #eeeeee;
+    color: #ffffff;
+    padding: 40px 30px;
+}
+
+/* -- Copyright ------------------ */
+.copyright-footer {
+    margin-top: 8px;
+    text-align: center;
+}

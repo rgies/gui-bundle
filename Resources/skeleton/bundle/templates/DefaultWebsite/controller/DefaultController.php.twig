@@ -23,13 +23,16 @@ class DefaultController extends Controller
     {% endif -%}
     public function indexAction()
     {
-        $request = $this->container->get('request');
-        $bundleName = $request->attributes->get('_template')->get('bundle');
+        $sliderImages = array (
+            'slider1.png',
+            'slider2.png',
+            'slider3.png',
+        );
 
         {% if 'annotation' != format -%}
-        return $this->render('{{ bundle }}:Default:index.html.twig', array('bundleName' => $bundleName));
+        return $this->render('{{ bundle }}:Default:index.html.twig', array('sliderImages' => $sliderImages));
         {%- else -%}
-        return array('bundleName' => $bundleName);
+        return array('sliderImages' => $sliderImages);
         {%- endif %}
 
     }
