@@ -17,16 +17,19 @@ class DefaultController extends Controller
 {% block class_body %}
     {% if 'annotation' == format -%}
     /**
+     * Website home action.
+     *
      * @Route("/", name="home")
      * @Template()
      */
     {% endif -%}
     public function indexAction()
     {
+        // setup images slider
         $sliderImages = array (
-            'slider1.png',
-            'slider2.png',
-            'slider3.png',
+            array('src'=>'slider1.png', 'url'=>'', 'caption'=>''),
+            array('src'=>'slider2.png', 'url'=>'', 'caption'=>''),
+            array('src'=>'slider3.png', 'url'=>'', 'caption'=>''),
         );
 
         {% if 'annotation' != format -%}
@@ -36,5 +39,60 @@ class DefaultController extends Controller
         {%- endif %}
 
     }
+
+    {% if 'annotation' == format -%}
+    /**
+     * Imprint action.
+     *
+     * @Route("/imprint/", name="imprint")
+     * @Template()
+     */
+    {% endif -%}
+    public function imprintAction()
+    {
+        {% if 'annotation' != format -%}
+        return $this->render('{{ bundle }}:Default:imprint.html.twig', array());
+        {%- else -%}
+        return array();
+        {%- endif %}
+
+    }
+
+    {% if 'annotation' == format -%}
+    /**
+    * Contact action.
+    *
+    * @Route("/contact/", name="contact")
+    * @Template()
+    */
+    {% endif -%}
+    public function contactAction()
+    {
+        {% if 'annotation' != format -%}
+        return $this->render('{{ bundle }}:Default:contact.html.twig', array());
+        {%- else -%}
+        return array();
+        {%- endif %}
+
+    }
+
+    {% if 'annotation' == format -%}
+    /**
+    * About action.
+    *
+    * @Route("/about/", name="about")
+    * @Template()
+    */
+    {% endif -%}
+    public function aboutAction()
+    {
+        {% if 'annotation' != format -%}
+        return $this->render('{{ bundle }}:Default:about.html.twig', array());
+        {%- else -%}
+        return array();
+        {%- endif %}
+
+    }
+
 {% endblock class_body %}
 }

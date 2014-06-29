@@ -1,0 +1,38 @@
+{{ '{% extends "' }}{{ bundle }}{{ '::base.html.twig" %}' }}
+{{ '{% block content %}' }}
+    <div class="page-header">
+        <h1>Contact us</h1>
+    </div>
+    <p>
+        <form id="contactForm" name="contactForm" role="form" method="post" action="">
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label for="name">Name*</label>
+                <input id="name" name="name" type="text" placeholder="Name" class="form-control " required="required">
+                <p class="help-block">Please insert your name.</p>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label for="email">Email*</label>
+                <input id="email" name="email" type="text" placeholder="Email" class="form-control email" required="required">
+                <p class="help-block">Please insert your email.</p>
+            </div>
+
+            <!-- Textarea -->
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" class="form-control" name="message">Your message.</textarea>
+            </div>
+
+            <!-- Button -->
+            <div class="form-group">
+                <div class="control">
+                    <button id="submit" name="submit" type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        </form>
+    </p>
+{{ '{% endblock %}' }}

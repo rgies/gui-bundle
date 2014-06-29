@@ -1,20 +1,26 @@
-<div class="container footer-block">
-    <div class="row">
-        <div class="col-md-4">
-            <a href="#">Impressum</a><br/>
-            <a href="#">Contact</a><br/>
-            <a href="#">xxx</a><br/>
-        </div>
-        <div class="col-md-4">
-            <a href="#">Sitemap</a><br/>
-            <a href="#">xxx</a><br/>
-            <a href="#">xxx</a><br/>
-        </div>
-        <div class="col-md-4">
-            <a href="#">xxx</a><br/>
-            <a href="#">xxx</a><br/>
-            <a href="#">xxx</a><br/>
+<div id="footer-block" role="contentinfo">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <!-- Links at first column -->
+                <h5>SITE</h5>
+                <a href="{{ '{{ path("imprint") }}' }}">Imprint</a><br/>
+                <a href="{{ '{{ path("contact") }}' }}">Contact us</a><br/>
+            </div>
+            <div class="col-sm-4">
+                <!-- Links at second column -->
+                <h5>INFO</h5>
+                <a href="{{ '{{ path("about") }}' }}">About this website</a><br/>
+            </div>
+            <div class="col-sm-4">
+                <!-- Links at third column -->
+                <h5>SOCIAL</h5>
+                <img src="{{ '{{ asset(\'bundles/' }}{{ bundle_basename|lower }}{{ '/images/social-icons/facebook.png\') }}' }}" alt="Facebook"/>&nbsp;
+                <img src="{{ '{{ asset(\'bundles/' }}{{ bundle_basename|lower }}{{ '/images/social-icons/twitter.png\') }}' }}" alt="Twitter"/>&nbsp;
+                <img src="{{ '{{ asset(\'bundles/' }}{{ bundle_basename|lower }}{{ '/images/social-icons/googleplus.png\') }}' }}" alt="Google+"/>&nbsp;
+                <img src="{{ '{{ asset(\'bundles/' }}{{ bundle_basename|lower }}{{ '/images/social-icons/xing.png\') }}' }}" alt="Xing"/>&nbsp;
+            </div>
         </div>
     </div>
 </div>
-<div class="copyright-footer">Copyright (c) 2014 by {{ '{{ project.name }}' }}</div>
+<div id="copyright-footer">Copyright (c) {{ '{{ "now"|date("Y") }}' }} by {{ '{{ project.name }}' }}</div>

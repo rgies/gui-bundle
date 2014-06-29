@@ -67,6 +67,8 @@
             //alert(responseText.output);
             var text = response.input + '<br/><br/>' + response.output;
 
+            $.ajax('{{ path('guiInstallAssetsAjax') }}');
+
             if (response.errorcode == 0)
             {
                 $('#responseDialogHeader').css('background-color', 'green');

@@ -156,6 +156,23 @@ class DefaultController extends Controller
     }
 
     /**
+     * Ajax action to install assets.
+     *
+     * @Route("/install-assets-ajax", name="guiInstallAssetsAjax")
+     * @Template()
+     */
+    public function installAssetsAjaxAction()
+    {
+        // install assets
+        $executor = new CommandExecutor($this->get('kernel'));
+        $ret = $executor->execute('assets:install');
+
+        // return json result
+        echo json_encode($ret);
+        exit;
+    }
+
+    /**
      * Ajax action to install defined package.
      *
      * @Route("/install-bundle-ajax", name="guiInstallBundleAjax")
@@ -440,13 +457,19 @@ class DefaultController extends Controller
         // execute command
         $ret = ($cmd) ? $executor->execute($cmd) : '';
 
+        // create database schema
         if ($ret['errorcode'] == 0 && $command == 'doctrine:generate:crud' && $request->get('createTable') == 'on')
         {
-            $ret2 = $executor->execute('doctrine:database:create');
-            $ret3 = $executor->execute('doctrine:schema:update --force');
-            $ret['output'] .= '<br/>' . $ret3['output'];
+            $ret2 = $executor->execute('doctrine:schema:update --force');
+            $ret['output'] .= '<br/>' . $ret2['output'];
         }
 
+//        // install assets
+//        if ($ret['errorcode'] == 0 && $command == 'gui:generate:bundle')
+//        {
+//            $ret2 = $executor->execute('assets:install');
+//            $ret['output'] .= '<br/>' . $ret2['output'];
+//        }
 
         // return json result
         echo json_encode($ret);

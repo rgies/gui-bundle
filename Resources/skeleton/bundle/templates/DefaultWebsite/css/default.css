@@ -1,25 +1,58 @@
-/* -- Navigation Block ----------- */
-.navigation-block {
+/* -- General -------------------- */
+html, body {
+    background-color: #ffffff;
+}
 
+a {
+    color: #000000;
+}
+
+a:link, a:visited {
+    color: #000000;
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    color: #555555;
+    text-decoration: underline;
+}
+
+/* -- Navigation Block ----------- */
+#navigation-block {
+    background-color: #f5f5f5;
+    border: 0px;
+    border-radius: 0px;
+    border-bottom: 1px #e3e3e3 solid;
 }
 
 /* -- Content Block -------------- */
-.content-block {
+#content-block {
     padding-bottom: 30px;
     min-height: 400px;
 }
 
+#right-content-col {
+    margin-top: 30px;
+}
+
 /* -- Footer Block --------------- */
-.footer-block {
-    border-top: 1px #aaaaaa solid;
-    border-bottom: 1px #aaaaaa solid;
-    background-color: #eeeeee;
+#footer-block {
+    border-top: 1px #e3e3e3 solid;
+    border-bottom: 1px #e3e3e3 solid;
+    background-color: #f5f5f5;
     color: #ffffff;
     padding: 40px 30px;
+    margin-top: 100px;
+}
+
+#footer-block h1,h2,h3,h4,h5,h6 {
+    color: #da0a0d;
+    font-weight: bold;
 }
 
 /* -- Copyright ------------------ */
-.copyright-footer {
-    margin-top: 8px;
+#copyright-footer {
+    margin-top: 30px;
+    margin-bottom: 30px;
     text-align: center;
 }
