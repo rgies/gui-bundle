@@ -4,6 +4,7 @@ namespace {{ namespace }}\Controller;
 
 {% block use_statements %}
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 {% if 'annotation' == format -%}
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -66,8 +67,24 @@ class DefaultController extends Controller
     * @Template()
     */
     {% endif -%}
-    public function contactAction()
+    public function contactAction(Request $request)
     {
+        $emailTo = $this->container->getParameter('contact_email');
+
+        if ($request->getMethod() == 'POST')
+        {
+            $contact = $request->request->all();
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Contact Request')
+                ->setFrom($emailTo)
+                ->setTo($emailTo)
+                ->setBody($this->renderView('{{ bundle }}:Email:contactEmail.txt.twig', array('contact' => $contact)));
+
+            $this->get('mailer')->send($message);
+            $this->get('session')->getFlashBag()->add('message', 'Your contact message was successfully sent. Thank you!');
+        }
+
         {% if 'annotation' != format -%}
         return $this->render('{{ bundle }}:Default:contact.html.twig', array());
         {%- else -%}

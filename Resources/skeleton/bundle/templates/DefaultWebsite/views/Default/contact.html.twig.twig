@@ -1,5 +1,13 @@
 {{ '{% extends "' }}{{ bundle }}{{ '::base.html.twig" %}' }}
 {{ '{% block content %}' }}
+    {{ '{% if app.session.getFlashBag.has("message") %}' }}
+    <!-- Confirmation message -->
+    <div class="alert alert-success" role="alert">
+        {{ '{% for flashMessage in app.session.flashbag.get("message") %}' }}
+        {{ '{{ flashMessage }}' }}
+        {{ '{% endfor %}' }}
+    </div>
+    {% endif %}
     <div class="page-header">
         <h1>Contact us</h1>
     </div>
