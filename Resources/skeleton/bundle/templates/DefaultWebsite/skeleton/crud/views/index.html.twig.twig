@@ -1,15 +1,13 @@
-{% block extends %}
-{{ "{% extends '::base.html.twig' %}" }}
-{% endblock extends %}
+{{ '{% extends "' }}{{ bundle }}{{ '::layout.html.twig" %}' }}
 
-{% block body %}
-{{ "{% block body -%}" }}
+{% block content %}
+{{ "{% block content -%}" }}
 <div class="container">
     <div class="page-header">
         <h1>{{ entity }} list</h1>
     </div>
 
-    <table class="table table-striped records_list">
+    <table class="table table-striped">
         <thead>
             <tr>
             {%- for field, metadata in fields %}
@@ -54,15 +52,13 @@
         </tbody>
     </table>
 
-    {% if 'new' in actions %}
-    <ul>
-        <li>
-            <a href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endif %}
+    {%- if 'new' in actions %}
+    <div>
+        <button type="button" class="btn btn-default" onclick="location.href='{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}'">
+            Create a new entry
+        </button>
+    </div>
+    {%- endif %}
 </div>
 {{ "{% endblock %}" }}
 {% endblock body %}

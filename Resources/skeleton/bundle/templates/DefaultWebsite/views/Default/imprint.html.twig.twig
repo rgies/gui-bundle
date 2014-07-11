@@ -1,10 +1,10 @@
-{{ '{% extends "' }}{{ bundle }}{{ '::base.html.twig" %}' }}
+{{ '{% extends "' }}{{ bundle }}{{ '::layout.html.twig" %}' }}
 {{ '{% block content %}' }}
     <div class="page-header">
         <h1>Imprint</h1>
     </div>
     <p>
-        <h4>Your Company name</h4>
+        <h4>{{ '{{ company.name }}' }}</h4>
         Street<br/>
         Zip City<br/>
         Phone<br/>
