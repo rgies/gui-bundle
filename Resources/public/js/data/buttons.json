@@ -1,0 +1,190 @@
+[
+    {
+        "title": "File Button",
+        "fields": {
+            "id": {
+                "type": "input",
+                "label": "ID / Name",
+                "value": "filebutton"
+            },
+            "label": {
+                "type": "input",
+                "label": "Label Text",
+                "value": "File Button"
+            }
+        }
+    },
+    {
+        "title": "Single Button",
+        "fields": {
+            "id": {
+                "type": "input",
+                "label": "ID / Name",
+                "value": "singlebutton"
+            },
+            "label": {
+                "type": "input",
+                "label": "Label Text",
+                "value": "Single Button"
+            },
+            "buttonlabel": {
+                "type": "input",
+                "label": "Button Label",
+                "value": "Submit"
+            },
+            "buttontype": {
+                "type": "select",
+                "label": "Button Type",
+                "value": [
+                    {
+                        "label": "Default",
+                        "value": "btn-default",
+                        "selected": false
+                    },
+                    {
+                        "label": "Primary",
+                        "value": "btn-primary",
+                        "selected": true
+                    },
+                    {
+                        "label": "Info",
+                        "value": "btn-info",
+                        "selected": false
+                    },
+                    {
+                        "label": "Success",
+                        "value": "btn-success",
+                        "selected": false
+                    },
+                    {
+                        "label": "Warning",
+                        "value": "btn-warning",
+                        "selected": false
+                    },
+                    {
+                        "label": "Danger",
+                        "value": "btn-danger",
+                        "selected": false
+                    },
+                    {
+                        "label": "Inverse",
+                        "value": "btn-inverse",
+                        "selected": false
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "title": "Double Button",
+        "fields": {
+            "id": {
+                "type": "input",
+                "label": "Button 1 ID / Name",
+                "value": "button1id"
+            },
+            "id2": {
+                "type": "input",
+                "label": "Button 2 ID / Name",
+                "value": "button2id"
+            },
+            "label": {
+                "type": "input",
+                "label": "Label Text",
+                "value": "Double Button"
+            },
+            "button1label": {
+                "type": "input",
+                "label": "Button Label",
+                "value": "Submit"
+            },
+            "button2label": {
+                "type": "input",
+                "label": "Button Label",
+                "value": "Cancel"
+            },
+            "button1type": {
+                "type": "select",
+                "label": "Button Type",
+                "value": [
+                    {
+                        "label": "Default",
+                        "value": "btn-default",
+                        "selected": false
+                    },
+                    {
+                        "label": "Primary",
+                        "value": "btn-primary",
+                        "selected": true
+                    },
+                    {
+                        "label": "Info",
+                        "value": "btn-info",
+                        "selected": false
+                    },
+                    {
+                        "label": "Success",
+                        "value": "btn-success",
+                        "selected": false
+                    },
+                    {
+                        "label": "Warning",
+                        "value": "btn-warning",
+                        "selected": false
+                    },
+                    {
+                        "label": "Danger",
+                        "value": "btn-danger",
+                        "selected": false
+                    },
+                    {
+                        "label": "Inverse",
+                        "value": "btn-inverse",
+                        "selected": false
+                    }
+                ]
+            },
+            "button2type": {
+                "type": "select",
+                "label": "Button Type",
+                "value": [
+                    {
+                        "label": "Default",
+                        "value": "btn-default",
+                        "selected": true
+                    },
+                    {
+                        "label": "Primary",
+                        "value": "btn-primary",
+                        "selected": false
+                    },
+                    {
+                        "label": "Info",
+                        "value": "btn-info",
+                        "selected": false
+                    },
+                    {
+                        "label": "Success",
+                        "value": "btn-success",
+                        "selected": false
+                    },
+                    {
+                        "label": "Warning",
+                        "value": "btn-warning",
+                        "selected": false
+                    },
+                    {
+                        "label": "Danger",
+                        "value": "btn-danger",
+                        "selected": false
+                    },
+                    {
+                        "label": "Inverse",
+                        "value": "btn-inverse",
+                        "selected": false
+                    }
+                ]
+            }
+        }
+    }
+]
