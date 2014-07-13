@@ -61,11 +61,11 @@ class DefaultController extends Controller
 
     {% if 'annotation' == format -%}
     /**
-    * Contact action.
-    *
-    * @Route("/contact/", name="contact")
-    * @Template()
-    */
+     * Contact action.
+     *
+     * @Route("/contact/", name="contact")
+     * @Template()
+     */
     {% endif -%}
     public function contactAction(Request $request)
     {
@@ -95,11 +95,11 @@ class DefaultController extends Controller
 
     {% if 'annotation' == format -%}
     /**
-    * About action.
-    *
-    * @Route("/about/", name="about")
-    * @Template()
-    */
+     * About action.
+     *
+     * @Route("/about/", name="about")
+     * @Template()
+     */
     {% endif -%}
     public function aboutAction()
     {
@@ -108,6 +108,42 @@ class DefaultController extends Controller
         {%- else -%}
         return array();
         {%- endif %}
+
+    }
+
+    {% if 'annotation' == format -%}
+    /**
+     * Login action.
+     *
+     * @Route("/login/", name="login")
+     * @Template()
+     */
+    {% endif -%}
+    public function loginAction()
+    {
+    {% if 'annotation' != format -%}
+        return $this->render('{{ bundle }}:Default:login.html.twig', array());
+    {%- else -%}
+        return array();
+    {%- endif %}
+
+    }
+
+    {% if 'annotation' == format -%}
+    /**
+     * Logout action.
+     *
+     * @Route("/logout/", name="logout")
+     * @Template()
+     */
+    {% endif -%}
+    public function logoutAction()
+    {
+    {% if 'annotation' != format -%}
+        return $this->render('{{ bundle }}:Default:logout.html.twig', array());
+    {%- else -%}
+        return array();
+    {%- endif %}
 
     }
 
