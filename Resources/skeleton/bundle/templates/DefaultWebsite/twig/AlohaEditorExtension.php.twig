@@ -34,9 +34,9 @@ class AlohaEditorExtension extends \Twig_Extension
         );
     }
 
-    public function getContent($id)
+    public function getContent($id, $default='Sample text')
     {
-        return 'Sample Content';
+        return $default;
     }
 
     public function initEditor($ids, $plugins='')

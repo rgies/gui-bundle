@@ -3,5 +3,9 @@
     <div class="page-header">
         <h1>About</h1>
     </div>
-    <p>Website description</p>
+    <p id="default-about-body">{{ '{{ get_content("content1", "Website description") }}' }}</p>
+{{ '{% endblock %}' }}
+
+{{ '{% block javascripts %}' }}
+    {{ '{%- if is_granted("ROLE_EDITOR") %}{{ init_editor("default-about-body") }}{% endif %}' }}
 {{ '{% endblock %}' }}
