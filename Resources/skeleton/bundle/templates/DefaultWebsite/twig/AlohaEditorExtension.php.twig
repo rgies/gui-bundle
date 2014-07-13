@@ -1,0 +1,78 @@
+<?php
+/**
+ * Symfony2 - Rapid Development Bundle.
+ *
+ * @author      Robert Gies <mail@rgies.com>
+ * @copyright   Copyright © 2014 by Robert Gies
+ * @license     MIT
+ * @date        2014-02-04
+ */
+
+namespace {{ namespace }}\Twig;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+/**
+ * Ahoha Text Editor Twig Extension.
+ *
+ * @package {{ bundle_basename }}\{{ bundle }}
+ */
+class AlohaEditorExtension extends \Twig_Extension
+{
+    private $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    public function getFunctions()
+    {
+        return array(
+            'editor_init'       => new \Twig_SimpleFunction('init_editor', array($this, 'initEditor'), array('is_safe' => array('html'))),
+            'editor_content'    => new \Twig_SimpleFunction('get_content', array($this, 'getContent'), array('is_safe' => array('html'))),
+        );
+    }
+
+    public function getContent($id)
+    {
+        return 'Sample Content';
+    }
+
+    public function initEditor($ids, $plugins='')
+    {
+        if (!is_array($ids))
+        {
+            $ids = array($ids);
+        }
+
+        $pathAlCss = $this->container->get('templating.helper.assets')->getUrl('js/aloha/css/aloha.css');
+        $pathReqJs = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/require.js');
+        $pathAlJs  = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/aloha.js');
+
+        $plugins = 'common/ui,common/format,common/highlighteditables,common/link,common/image' . $plugins;
+
+        $ret = '<!-- Aloha Texteditor integration -->
+        <link rel="stylesheet" href="' . $pathAlCss . '" type="text/css">
+        <script src="' . $pathReqJs . '"></script>
+        <script src="' . $pathAlJs . '" data-aloha-plugins="' . $plugins . '"></script>
+
+        <script>
+            Aloha.ready( function() {';
+
+        foreach ($ids as $id)
+        {
+            $ret .= 'Aloha.jQuery(\'#' . $id . '\').aloha();';
+        }
+
+        $ret .= '});
+        </script>
+';
+        return $ret;
+    }
+
+    public function getName()
+    {
+        return 'alohaeditor_extension';
+    }
+}

@@ -108,6 +108,14 @@ class BundleGenerator extends Generator
                 // copy skeleton
                 $this->_copyBundleTemplates($dir . '/Resources/SensioGeneratorBundle/skeleton',
                     $templateDir . '/skeleton', $parameters, true);
+
+                // copy twig extensions
+                $this->_copyBundleTemplates($dir . '/Twig',
+                    $templateDir . '/twig', $parameters);
+
+                // copy service configs
+                $this->_copyBundleTemplates($dir . '/Resources/config',
+                    $templateDir . '/config', $parameters);
             }
         }
     }
