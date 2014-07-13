@@ -21,6 +21,11 @@
                     <li><a href="{{ '{{ path("imprint") }}' }}">Imprint</a></li>
                     <li><a href="{{ '{{ path("contact") }}' }}">Contact</a></li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {{ '{%- if app.user %}' }}
+                        <li><a href="{{ '{{ path("logout") }}' }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    {{ '{% endif -%}' }}
+                </ul>
             </div>
         </div>
     </nav>
