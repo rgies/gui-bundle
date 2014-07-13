@@ -23,4 +23,7 @@
         </div>
     </div>
 </div>
-<div id="copyright-footer">Copyright (c) {{ '{{ "now"|date("Y") }}' }} by {{ '{{ company.name }}' }}</div>
+<div id="copyright-footer">
+    {{ '{{ platform.name }}' }} {{ '{{ platform.version }}' }}<br/>
+    Copyright (c) {{ '{{ "now"|date("Y") }}' }} by {{ '{{ platform.vendor }}' }}
+</div>

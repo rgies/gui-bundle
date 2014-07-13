@@ -69,7 +69,7 @@ class DefaultController extends Controller
     {% endif -%}
     public function contactAction(Request $request)
     {
-        $emailTo = $this->container->getParameter('company_email');
+        $emailTo = $this->container->getParameter('platform_contact');
 
         if ($request->getMethod() == 'POST')
         {
