@@ -460,6 +460,7 @@ class DefaultController extends Controller
         // create database schema
         if ($ret['errorcode'] == 0 && $command == 'doctrine:generate:crud' && $request->get('createTable') == 'on')
         {
+            $ret2 = $executor->execute('doctrine:database:create');
             $ret2 = $executor->execute('doctrine:schema:update --force');
             $ret['output'] .= '<br/>' . $ret2['output'];
         }
