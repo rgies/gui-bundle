@@ -4,6 +4,6 @@
         {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-imprint-headline", "<h1>Imprint</h1>") }}' }}
     </div>
     <div id="{{ bundle }}-default-imprint-body" class="editable">
-        {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-imprint-body", "<h4>{{ platform.vendor }}</h4>Street<br/>Zip City<br/>Phone<br/>{{ platform.contact }}") }}' }}
+        {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-imprint-body", "<h4>' }}{{ platform.vendor }}{{ '</h4>Street<br/>Zip City<br/>Phone<br/>' }}{{ platform.contact }}{{ '") }}' }}
     </div>
 {{ '{% endblock %}' }}
