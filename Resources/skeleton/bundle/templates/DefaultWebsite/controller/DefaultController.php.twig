@@ -148,5 +148,39 @@ class DefaultController extends Controller
 
     }
 
+    {% if 'annotation' == format -%}
+    /**
+     * Saves page cms content.
+     *
+     * @Route("/ajax-save-cms-editor-content", name="saveCmsEditorContent")
+     * @Method("POST")
+     * @Template()
+     */
+    {% endif -%}
+    public saveContentAjaxAction(Request $request)
+    {
+        //@todo Check for valid user session
+
+        if (!$request->isXmlHttpRequest())
+        {
+            die('No valid request');
+        }
+
+        $id = $request->request->get('id');
+        $content = $request->request->get('content');
+
+        $entity = new CmsContent();
+        $entity->setToken($id);
+        $entity->setContent($content);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
+
+        //@todo do garbage collection
+
+        exit;
+    }
+
 {% endblock class_body %}
 }

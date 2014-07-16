@@ -116,6 +116,10 @@ class BundleGenerator extends Generator
                 // copy service configs
                 $this->_copyBundleTemplates($dir . '/Resources/config',
                     $templateDir . '/config', $parameters);
+
+                // copy entities
+                $this->_copyBundleTemplates($dir . '/Entity',
+                    $templateDir . '/entity', $parameters);
             }
         }
     }

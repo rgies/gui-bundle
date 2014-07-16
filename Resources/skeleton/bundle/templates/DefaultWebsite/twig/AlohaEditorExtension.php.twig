@@ -11,6 +11,8 @@
 namespace {{ namespace }}\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * Ahoha Text Editor Twig Extension.
@@ -20,35 +22,48 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AlohaEditorExtension extends \Twig_Extension
 {
     private $container;
+    private $generator;
+    private $doctrine;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, UrlGeneratorInterface $generator, RegistryInterface $doctrine)
     {
         $this->container = $container;
+        $this->generator = $generator;
+        $this->doctrine = $doctrine;
     }
 
     public function getFunctions()
     {
         return array(
-            'editor_init'       => new \Twig_SimpleFunction('init_editor', array($this, 'initEditor'), array('is_safe' => array('html'))),
-            'editor_content'    => new \Twig_SimpleFunction('get_content', array($this, 'getContent'), array('is_safe' => array('html'))),
+            'editor_init'       => new \Twig_SimpleFunction('editor_init', array($this, 'initEditor'), array('is_safe' => array('html'))),
+            'editor_content'    => new \Twig_SimpleFunction('editor_get_content', array($this, 'getContent'), array('is_safe' => array('html'))),
         );
     }
 
-    public function getContent($id, $default='Sample text')
+    public function getContent($id, $default='')
     {
+        $em = $this->doctrine->getManager();
+        $entities = $em->getRepository('{{ bundle }}:CmsContent')->findBy(
+            array('token' => $id),
+            array('id' => 'DESC'),
+            1
+        );
+
+        if (count($entities))
+        {
+            return $entities[0]->getContent();
+        }
+
         return $default;
     }
 
-    public function initEditor($ids, $plugins='')
+    public function initEditor($plugins = '')
     {
-        if (!is_array($ids))
-        {
-            $ids = array($ids);
-        }
-
         $pathAlCss = $this->container->get('templating.helper.assets')->getUrl('js/aloha/css/aloha.css');
         $pathReqJs = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/require.js');
         $pathAlJs  = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/aloha.js');
+
+        $savePath = $this->generator->generate('saveCmsEditorContent');
 
         $plugins = 'common/ui,common/format,common/highlighteditables,common/link,common/image' . $plugins;
 
@@ -58,16 +73,15 @@ class AlohaEditorExtension extends \Twig_Extension
         <script src="' . $pathAlJs . '" data-aloha-plugins="' . $plugins . '"></script>
 
         <script>
-            Aloha.ready( function() {';
-
-        foreach ($ids as $id)
-        {
-            $ret .= 'Aloha.jQuery(\'#' . $id . '\').aloha();';
-        }
-
-        $ret .= '});
-        </script>
-';
+            Aloha.ready( function() {
+                Aloha.jQuery(".editable").aloha();
+                Aloha.bind("aloha-smart-content-changed", function(event, editable) {
+                    $.post( "' . $savePath . '", { id: editable.editable.getId(), content: editable.editable.getContents() })
+                            .done(function( data ) {
+                            });
+                });
+            });
+        </script>';
         return $ret;
     }
 
