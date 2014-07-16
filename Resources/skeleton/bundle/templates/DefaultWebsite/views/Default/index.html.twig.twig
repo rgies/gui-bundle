@@ -34,16 +34,14 @@
     <div class="row">
         <!-- Main Column-->
         <div id="main-content-col" class="col-md-9 col-sm-9 col-lg-9">
-            <div class="page-header">
-                <h1>Welcome <small>to your home page</small></h1>
+            <div id="{{ bundle }}-default-index-body" class="editable">
+                {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-index-body", "<h1>Welcome <small>to your home page</small></h1>Please place here your page content.") }}' }}
             </div>
-            <p>Please place here your page content.</p>
         </div>
         <!-- Right Column-->
         <div id="right-content-col" class="col-md-3 col-sm-3 col-lg-3">
-            <div class="well">
-                <h3>NEWS</h3>
-                <p>xxx xxx xxx xxx xxx xxx xxx xxx</p>
+            <div id="{{ bundle }}-default-index-txt1" class="well editable">
+                {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-index-txt1", "<h3>NEWS</h3>xxx xxx xxx xxx xxx xxx xxx xxx") }}' }}
             </div>
         </div>
     </div>
