@@ -1,7 +1,7 @@
 {{ '{% extends "' }}{{ bundle }}{{ '::layout.html.twig" %}' }}
 {{ '{% block content %}' }}
-    <div class="page-header">
+    <div class="page-header editable">
         <h1>Welcome to the {{ controller }}:{{ action.basename }} page</h1>
     </div>
-    <p>Please place here your page content.</p>
+    <div class="editable">{{ '{{ editor_get_content("' }}{{ bundle }}-{{ controller }}-{{ action.basename }}{{ '", "Please place here your page content") }}' }}</div>
 {{ '{% endblock %}' }}

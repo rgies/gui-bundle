@@ -3,5 +3,5 @@
     <div class="page-header">
         <h1>About</h1>
     </div>
-    <div id="default-about-body">{{ '{{ editor_get_content("default-about-body", "Website description") }}' }}</div>
+    <div class="editable">{{ '{{ editor_get_content("' }}{{ bundle }}-{{ controller }}-{{ action.basename }}{{ '", "Website description") }}' }}</div>
 {{ '{% endblock %}' }}
