@@ -1,9 +1,9 @@
 {{ '{% extends "' }}{{ bundle }}{{ '::layout.html.twig" %}' }}
 {{ '{% block content %}' }}
-    <div class="page-header editable">
+    <div id="{{ bundle }}-{{ controller }}-{{ action.basename }}-headline" class="page-header editable">
         {{ '{{ editor_get_content("' }}{{ bundle }}-{{ controller }}-{{ action.basename }}{{ '-headline", "<h1>Page Headline</h1>") }}' }}
     </div>
-    <div class="editable">
+    <div id="{{ bundle }}-{{ controller }}-{{ action.basename }}-body" class="editable">
         {{ '{{ editor_get_content("' }}{{ bundle }}-{{ controller }}-{{ action.basename }}{{ '-body", "Please place here your page content") }}' }}
     </div>
 {{ '{% endblock %}' }}
