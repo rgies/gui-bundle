@@ -1,7 +1,9 @@
 {{ '{% extends "' }}{{ bundle }}{{ '::layout.html.twig" %}' }}
 {{ '{% block content %}' }}
-    <div class="page-header">
-        <h1>About</h1>
+    <div class="page-header editable">
+        {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-about-headline", "About") }}' }}
     </div>
-    <div class="editable">{{ '{{ editor_get_content("' }}{{ bundle }}-{{ controller }}-{{ action.basename }}{{ '", "Website description") }}' }}</div>
+    <div class="editable">
+        {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-about-body", "Website description") }}' }}
+    </div>
 {{ '{% endblock %}' }}
