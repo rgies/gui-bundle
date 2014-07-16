@@ -173,6 +173,23 @@ class DefaultController extends Controller
     }
 
     /**
+     * Ajax action to update schema.
+     *
+     * @Route("/update-schema-ajax", name="guiUpdateSchemaAjax")
+     * @Template()
+     */
+    public function updateSchemaAjaxAction()
+    {
+        // update database schema
+        $executor = new CommandExecutor($this->get('kernel'));
+        $ret = $executor->execute('doctrine:schema:update --force');
+
+        // return json result
+        echo json_encode($ret);
+        exit;
+    }
+
+    /**
      * Ajax action to install defined package.
      *
      * @Route("/install-bundle-ajax", name="guiInstallBundleAjax")
@@ -461,7 +478,7 @@ class DefaultController extends Controller
         if ($ret['errorcode'] == 0 && $command == 'gui:generate:bundle')
         {
             $ret2 = $executor->execute('doctrine:database:create');
-            $ret2 = $executor->execute('doctrine:schema:update --force');
+            //$ret2 = $executor->execute('doctrine:schema:update --force');
             $ret['output'] .= '<br/>' . $ret2['output'];
         }
 

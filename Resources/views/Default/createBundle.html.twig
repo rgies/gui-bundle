@@ -68,12 +68,13 @@
             var text = response.input + '<br/><br/>' + response.output;
 
             $.ajax('{{ path('guiInstallAssetsAjax') }}');
+            $.ajax('{{ path('guiUpdateSchemaAjax') }}');
 
             if (response.errorcode == 0)
             {
                 $('#responseDialogHeader').css('background-color', 'green');
                 $('#responseDialogHeaderText').html('Successful');
-                $('#cancel-button').click(function() {
+                $('#close-button').click(function() {
                     location.href = '{{ app.request.getBaseURL() }}';
                 });
             }
