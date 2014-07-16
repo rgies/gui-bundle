@@ -47,7 +47,7 @@
                     <p>body content</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" onclick="location.href='{{ path('gui') }}'">Close</button>
+                    <button id="close-button" type="button" class="btn btn-default" onclick="location.href='{{ path('gui') }}'">Close</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -73,6 +73,9 @@
             {
                 $('#responseDialogHeader').css('background-color', 'green');
                 $('#responseDialogHeaderText').html('Successful');
+                $('#cancel-button').click(function() {
+                    location.href = '{{ app.request.getBaseURL() }}';
+                });
             }
             else
             {
