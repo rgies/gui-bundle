@@ -458,10 +458,18 @@ class DefaultController extends Controller
         $ret = ($cmd) ? $executor->execute($cmd) : '';
 
         // create database schema
-        if ($ret['errorcode'] == 0 && $command == 'doctrine:generate:crud' && $request->get('createTable') == 'on')
+        if ($ret['errorcode'] == 0 && $command == 'gui:generate:bundle')
         {
             $ret2 = $executor->execute('doctrine:database:create');
-            $ret2 = $executor->execute('doctrine:schema:update --force');
+            $ret2 .= $executor->execute('doctrine:schema:update --force');
+            $ret['output'] .= '<br/>' . $ret2['output'];
+        }
+
+        // create database schema
+        elseif ($ret['errorcode'] == 0 && $command == 'doctrine:generate:crud' && $request->get('createTable') == 'on')
+        {
+            $ret2 = $executor->execute('doctrine:database:create');
+            $ret2 .= $executor->execute('doctrine:schema:update --force');
             $ret['output'] .= '<br/>' . $ret2['output'];
         }
 
