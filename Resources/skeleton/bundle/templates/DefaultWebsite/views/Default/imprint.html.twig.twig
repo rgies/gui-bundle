@@ -1,13 +1,9 @@
 {{ '{% extends "' }}{{ bundle }}{{ '::layout.html.twig" %}' }}
 {{ '{% block content %}' }}
-    <div class="page-header">
-        <h1>Imprint</h1>
+    <div id="{{ bundle }}-default-imprint-headline" class="page-header editable">
+        {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-imprint-headline", "<h1>Imprint</h1>") }}' }}
     </div>
-    <p>
-        <h4>{{ '{{ platform.vendor }}' }}</h4>
-        Street<br/>
-        Zip City<br/>
-        Phone<br/>
-        {{ '{{ platform.contact }}' }}<br/>
-    </p>
+    <div id="{{ bundle }}-default-imprint-body" class="editable">
+        {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-imprint-body", "<h4>{{ platform.vendor }}</h4>Street<br/>Zip City<br/>Phone<br/>{{ platform.contact }}") }}' }}
+    </div>
 {{ '{% endblock %}' }}
