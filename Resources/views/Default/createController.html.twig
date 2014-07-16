@@ -78,7 +78,7 @@
                 $('#responseDialogHeader').css('background-color', 'green');
                 $('#responseDialogHeaderText').html('Successful');
                 $('#close-button').click(function() {
-                    location.href = '{{ app.request.getBaseURL() }}/' + $('#controllerActions').val();
+                    location.href = '{{ app.request.getBaseURL() }}/' + $('#controllerActions').val().toLowerCase();
                 });
             }
             else
