@@ -33,9 +33,12 @@
     </div>
     <div class="row">
         <!-- Main Column-->
+        <div id="{{ bundle }}-default-index-headline" class="page-header editable">
+            {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-index-headline", "<h1>Welcome <small>to your home page</small></h1>") }}' }}
+        </div>
         <div id="main-content-col" class="col-md-9 col-sm-9 col-lg-9">
             <div id="{{ bundle }}-default-index-body" class="editable">
-                {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-index-body", "<h1>Welcome <small>to your home page</small></h1><p>Please place here your page content.</p>") }}' }}
+                {{ '{{ editor_get_content("' }}{{ bundle }}{{ '-default-index-body", "Please place here your page content.") }}' }}
             </div>
         </div>
         <!-- Right Column-->
