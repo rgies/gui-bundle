@@ -57,7 +57,7 @@ class AlohaEditorExtension extends \Twig_Extension
         return $default;
     }
 
-    public function initEditor($plugins = '')
+    public function initEditor()
     {
         $pathAlCss = $this->container->get('templating.helper.assets')->getUrl('js/aloha/css/aloha.css');
         $pathReqJs = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/require.js');
@@ -65,11 +65,19 @@ class AlohaEditorExtension extends \Twig_Extension
 
         $savePath = $this->generator->generate('saveCmsEditorContent');
 
-        $plugins = 'common/ui,common/format,common/highlighteditables,common/link,common/image' . $plugins;
+        // get aloha configuration from bundle service.xml parameters
+        $config = $this->container->getParameter('Aloha');
+        $plugins = $config['plugins'];
 
         $ret = '<!-- Aloha Texteditor integration -->
         <link rel="stylesheet" href="' . $pathAlCss . '" type="text/css">
         <script src="' . $pathReqJs . '"></script>
+
+        <script>
+            var Aloha = window.Aloha || ( window.Aloha = {} );
+            Aloha.settings = { ' . $config['settings'] . ' };
+        </script>
+
         <script src="' . $pathAlJs . '" data-aloha-plugins="' . $plugins . '"></script>
 
         <script>
@@ -78,7 +86,7 @@ class AlohaEditorExtension extends \Twig_Extension
                 Aloha.bind("aloha-smart-content-changed", function(event, editable) {
                     $.post( "' . $savePath . '", { id: editable.editable.getId(), content: editable.editable.getContents() })
                             .done(function( data ) {
-                            });
+                    });
                 });
             });
         </script>';
