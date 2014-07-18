@@ -194,14 +194,14 @@
         <routingEntry></routingEntry>
         <description>
             <![CDATA[
-                RssAtomBundle is a Bundle for Symfony 2 made to easily access and deliver RSS / Atom feeds. It features:
+                RssAtomBundle is a Bundle for Symfony 2 made to easily access and deliver RSS / Atom feeds. It features:<br/><br/>
 
-                - Detection of the feed format (RSS / Atom)
-                - A generic StreamController built to write all your feeds. This controller is able to send a 304 HTTP Code if the feed didn't change since the last visit
-                - HTTP Headers support when reading feeds in order to save network traffic
-                - Content filtering to fetch only the newest items
-                - multiple feeds writing
-                - Ability to use doctrine as a data source
+                - Detection of the feed format (RSS / Atom)<br/>
+                - A generic StreamController built to write all your feeds. This controller is able to send a 304 HTTP Code if the feed didn't change since the last visit<br/>
+                - HTTP Headers support when reading feeds in order to save network traffic<br/>
+                - Content filtering to fetch only the newest items<br/>
+                - multiple feeds writing<br/>
+                - Ability to use doctrine as a data source<br/>
                 - All classes are heavily tested using PHPUnit.
             ]]>
         </description>
