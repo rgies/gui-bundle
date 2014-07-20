@@ -59,9 +59,16 @@ class AlohaEditorExtension extends \Twig_Extension
 
     public function initEditor()
     {
+        $request   = $this->container->get('request');
+        $user      = $this->container->get('security.context')->getToken()->getUser();
         $pathAlCss = $this->container->get('templating.helper.assets')->getUrl('js/aloha/css/aloha.css');
         $pathReqJs = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/require.js');
         $pathAlJs  = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/aloha.js');
+
+        // generate security token
+        $secret = $this->container->getParameter('secret');
+        $random = rand(11, 99);
+        $token = md5($user->getUsername() . $request->getLocale() . $secret . $random) . $random;
 
         $savePath = $this->generator->generate('saveCmsEditorContent');
 
@@ -84,10 +91,15 @@ class AlohaEditorExtension extends \Twig_Extension
             Aloha.ready( function() {
                 Aloha.jQuery(".editable").aloha();
                 Aloha.bind("aloha-smart-content-changed", function(event, editable) {
-                    $.post( "' . $savePath . '", { id: editable.editable.getId(), content: editable.editable.getContents() })
-                            .done(function( data ) {
-                    });
-                });
+                    $.post( "' . $savePath . '",
+                        {
+                            id: editable.editable.getId(),
+                            author: "' . $user->getUsername() . '",
+                            locale: "' . $request->getLocale() . '",
+                            content: editable.editable.getContents(),
+                            token: "' . $token . '"
+                        }).done(function( data ) {});
+               });
             });
         </script>';
         return $ret;

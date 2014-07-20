@@ -160,25 +160,39 @@ class DefaultController extends Controller
     {% endif -%}
     public function saveContentAjaxAction(Request $request)
     {
-        //@todo Check for valid user session
-
         if (!$request->isXmlHttpRequest())
         {
             die('No valid request');
         }
 
         $id = $request->request->get('id');
+        $secret  = $this->container->getParameter('secret');
         $content = $request->request->get('content');
+        $author  = $request->request->get('author', "");
+        $locale  = $request->request->get('locale', "en");
+        $token   = $request->request->get('token');
+        $random  = substr($token, -2);
+
+        $matchToken = md5($author . $locale . $secret . $random) . $random;
+
+        if ($token != $matchToken)
+        {
+            die('Access not allowed');
+        }
 
         $entity = new CmsContent();
         $entity->setToken($id);
         $entity->setContent($content);
+        $entity->setCreatedate(time());
+        $entity->setAuthor($author);
+        $entity->setLocale($locale);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($entity);
         $em->flush();
 
-        //@todo do garbage collection
+        // garbage collection to the newest 200 entries
+        //@todo: add garbage collection here
 
         exit;
     }
