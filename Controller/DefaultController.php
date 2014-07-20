@@ -709,4 +709,13 @@ class DefaultController extends Controller
 
         return $names;
     }
+
+    /**
+     * @Route("/create-style/", name="guiCreateStyle")
+     * @Template()
+     */
+    public function createStyleAction()
+    {
+        return array();
+    }
 }
