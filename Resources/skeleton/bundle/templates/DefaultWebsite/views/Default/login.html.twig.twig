@@ -19,7 +19,7 @@
                             <div class="form-group">
                                 <input class="form-control" placeholder="Password" name="_password" type="password" value="">
                             </div>
-                            <input type="hidden" name="_security_token" value="{{ '{{ csrf_token('authenticate') }}' }}">
+                            <input type="hidden" name="_security_token" value="{{ '{{ csrf_token("authenticate") }}' }}">
                             <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in">
                         </fieldset>
                     </form>
