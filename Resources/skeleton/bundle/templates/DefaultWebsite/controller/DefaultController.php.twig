@@ -162,11 +162,11 @@ class DefaultController extends Controller
     {% endif -%}
     public function logoutAction()
     {
-    {% if 'annotation' != format -%}
+        {% if 'annotation' != format -%}
         return $this->render('{{ bundle }}:Default:logout.html.twig', array());
-    {%- else -%}
+        {%- else -%}
         return array();
-    {%- endif %}
+        {%- endif %}
 
     }
 
