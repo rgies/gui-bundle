@@ -123,7 +123,7 @@ class DefaultController extends Controller
      * @Template()
      */
     {% endif -%}
-    public function loginAction()
+    public function loginAction(Request $request)
     {
         $session = $request->getSession();
 
