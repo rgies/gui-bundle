@@ -67,25 +67,26 @@
             //alert(responseText.output);
             var text = response.input + '<br/><br/>' + response.output;
 
-            $.ajax('{{ path('guiInstallAssetsAjax') }}');
-            $.ajax('{{ path('guiUpdateSchemaAjax') }}');
+            $.ajax('{{ path('guiInstallAssetsAjax') }}').done(function(data) {
+                $.ajax('{{ path('guiUpdateSchemaAjax') }}').done(function(data2) {
+                    if (response.errorcode == 0)
+                    {
+                        $('#responseDialogHeader').css('background-color', 'green');
+                        $('#responseDialogHeaderText').html('Successful');
+                        $('#close-button').click(function() {
+                            location.href = '{{ app.request.getBaseURL() }}';
+                        });
+                    }
+                    else
+                    {
+                        $('#responseDialogHeader').css('background-color', 'red');
+                        $('#responseDialogHeaderText').html('Execution Error');
+                    }
 
-            if (response.errorcode == 0)
-            {
-                $('#responseDialogHeader').css('background-color', 'green');
-                $('#responseDialogHeaderText').html('Successful');
-                $('#close-button').click(function() {
-                    location.href = '{{ app.request.getBaseURL() }}';
+                    $('#responseDialogBody').html(text);
+                    $('#responseDialog').modal('show');
                 });
-            }
-            else
-            {
-                $('#responseDialogHeader').css('background-color', 'red');
-                $('#responseDialogHeaderText').html('Execution Error');
-            }
-
-            $('#responseDialogBody').html(text);
-            $('#responseDialog').modal('show');
+            });
         }
     </script>
 {% endblock %}
