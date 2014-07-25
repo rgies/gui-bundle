@@ -59,14 +59,14 @@
         $(document).ready(function()
         {
             // bind to the form's submit event
-            $('#dataForm').submit(function() { $(this).ajaxSubmit({success:showResponse, dataType:'json'}); return false; });
+            $('#dataForm').submit(function() {
+                $('#pleaseWaitDialog').modal();
+                $(this).ajaxSubmit({success:showResponse, dataType:'json'}); return false;
+            });
         });
 
         function showResponse(response, statusText, xhr, $form)
         {
-            // show waiting layer
-            $('#pleaseWaitDialog').modal();
-
             var text = response.input + '<br/><br/>' + response.output;
 
             $.ajax('{{ path('guiInstallAssetsAjax') }}').done(function(data) {
