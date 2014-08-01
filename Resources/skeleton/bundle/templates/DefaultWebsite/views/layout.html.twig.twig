@@ -15,4 +15,6 @@
 
 {{ '{% block javascripts %}' }}
     {{ '{%- if is_granted("ROLE_EDITOR") %}{{ editor_init() }}{% endif %}' }}
+    <!-- individual page javascripts -->
+    {{ '{% block js %}{% endblock %}' }}
 {{ '{% endblock %}' }}
