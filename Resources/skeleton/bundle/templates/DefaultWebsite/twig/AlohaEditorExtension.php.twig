@@ -40,6 +40,9 @@ class AlohaEditorExtension extends \Twig_Extension
         );
     }
 
+    /**
+     * Gets the saved content by given id.
+     */
     public function getContent($id, $default='')
     {
         $em = $this->doctrine->getManager();
@@ -57,6 +60,9 @@ class AlohaEditorExtension extends \Twig_Extension
         return $default;
     }
 
+    /**
+     * Inits the aloha content editor.
+     */
     public function initEditor()
     {
         $request   = $this->container->get('request');
@@ -64,13 +70,21 @@ class AlohaEditorExtension extends \Twig_Extension
         $pathAlCss = $this->container->get('templating.helper.assets')->getUrl('js/aloha/css/aloha.css');
         $pathReqJs = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/require.js');
         $pathAlJs  = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/aloha.js');
+        $pathAlExtJs = $this->container->get('templating.helper.assets')->getUrl('bundles/{{ bundle_basename|lower }}/js/aloha-ext.js');
 
         // generate security token
         $secret = $this->container->getParameter('secret');
         $random = rand(11, 99);
         $token = md5($user->getUsername() . $request->getLocale() . $secret . $random) . $random;
 
-        $savePath = $this->generator->generate('saveCmsEditorContent');
+        $random = rand(11, 99);
+        $uploadToken = md5($user->getUsername() . $secret . $random) . $random;
+
+        $savePath = $this->generator->generate('cmSaveContent');
+        $imageLibPath = $this->generator->generate('cmGetImageLibrary');
+        $dropZonePath = $this->generator->generate('cmGetImageDropZone');
+        $uploadPath = $this->generator->generate('cmImageLibrary');
+        $deletePath = $this->generator->generate('cmImageDelete');
 
         // get aloha configuration from bundle service.xml parameters
         $config = $this->container->getParameter('Aloha');
@@ -86,10 +100,12 @@ class AlohaEditorExtension extends \Twig_Extension
         </script>
 
         <script src="' . $pathAlJs . '" data-aloha-plugins="' . $plugins . '"></script>
+        <script src="' . $pathAlExtJs . '"></script>
 
         <script>
             Aloha.ready( function() {
                 Aloha.jQuery(".editable").aloha();
+
                 Aloha.bind("aloha-smart-content-changed", function(event, editable) {
                     $.post( "' . $savePath . '",
                         {
@@ -100,6 +116,54 @@ class AlohaEditorExtension extends \Twig_Extension
                             token: "' . $token . '"
                         }).done(function( data ) {});
                });
+
+                aloha_ext_init();
+
+                $.post("' . $dropZonePath . '",
+                        {
+                            author: "' . $user->getUsername() . '",
+                            locale: "' . $request->getLocale() . '",
+                            token: "' . $token . '"
+                        }
+                ).done(function( data ) {
+                    $("#aloha-image-upload").html(data);
+
+                    var myDropzone = new Dropzone("#image-upload-form", {
+                        url: "' . $uploadPath . '",
+                        previewsContainer: "#dz-details",
+                        headers: {"token":"' . $uploadToken . '", "author":"' . $user->getUserName() . '"},
+                        success: function() { refreshImageLibrary(); }
+                    });
+
+                    refreshImageLibrary();
+
+                    $(document).on("click", ".img-lib-del-button", function(event){
+                        if (confirm("Delete Image [" + $("#" + $(this).attr("id") + "-form input:first").val() + "] ?")) {
+                            event.preventDefault();
+
+                            $.post("' . $deletePath . '", $( "#" + $(this).attr("id") + "-form" ).serialize()
+                                    ).done(function( data ) {
+                                        refreshImageLibrary();
+                                    });
+                        }
+                    });
+                });
+
+                function refreshImageLibrary()
+                {
+                    $("#aloha-image-library").html(\'<div style="text-align:center">Loading ...</div>\');
+
+                    $.post("' . $imageLibPath . '",
+                            {
+                                author: "' . $user->getUsername() . '",
+                                locale: "' . $request->getLocale() . '",
+                                token: "' . $token . '"
+                            }
+                    ).done(function( data ) {
+                                $("#aloha-image-library").html(data);
+                            });
+                }
+
             });
         </script>';
         return $ret;

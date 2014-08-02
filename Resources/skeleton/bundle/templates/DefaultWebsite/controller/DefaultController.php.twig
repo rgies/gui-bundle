@@ -10,7 +10,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use {{ namespace }}\Entity\CmsContent;
 {% endif %}
 {% endblock use_statements %}
 
@@ -168,54 +167,6 @@ class DefaultController extends Controller
         return array();
         {%- endif %}
 
-    }
-
-    {% if 'annotation' == format -%}
-    /**
-     * Saves page cms content.
-     *
-     * @Route("/ajax-save-cms-editor-content", name="saveCmsEditorContent")
-     * @Method("POST")
-     * @Template()
-     */
-    {% endif -%}
-    public function saveContentAjaxAction(Request $request)
-    {
-        if (!$request->isXmlHttpRequest())
-        {
-            die('No valid request');
-        }
-
-        $id = $request->request->get('id');
-        $secret  = $this->container->getParameter('secret');
-        $content = $request->request->get('content');
-        $author  = $request->request->get('author', "");
-        $locale  = $request->request->get('locale', "en");
-        $token   = $request->request->get('token');
-        $random  = substr($token, -2);
-
-        $matchToken = md5($author . $locale . $secret . $random) . $random;
-
-        if ($token != $matchToken)
-        {
-            die('Access not allowed');
-        }
-
-        $entity = new CmsContent();
-        $entity->setToken($id);
-        $entity->setContent($content);
-        $entity->setCreatedate(time());
-        $entity->setAuthor($author);
-        $entity->setLocale($locale);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($entity);
-        $em->flush();
-
-        // garbage collection to the newest 200 entries
-        //@todo: add garbage collection here
-
-        exit;
     }
 
 {% endblock class_body %}
