@@ -63,7 +63,10 @@
                 $('#pleaseWaitDialog').modal();
                 $(this).ajaxSubmit({success:showResponse, dataType:'json'}); return false;
             });
-        });
+
+            $('#bundleName').focus();
+
+    });
 
         function showResponse(response, statusText, xhr, $form)
         {
