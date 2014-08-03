@@ -263,7 +263,7 @@ class ContentManagerController extends Controller
      */
     protected function _getImageLibraryPath()
     {
-        $imgFolder = 'img/library';
+        $imgFolder = 'uploads/img-library';
         return $this->get('kernel')->getRootDir() . '/../web/' . $imgFolder;
     }
 
@@ -272,7 +272,7 @@ class ContentManagerController extends Controller
      */
     protected function _getImageLibraryUrl()
     {
-        $imgFolder = 'img/library';
+        $imgFolder = 'uploads/img-library';
         return $this->container->get('templating.helper.assets')->getUrl($imgFolder);
     }
 {% endblock class_body %}
