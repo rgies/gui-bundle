@@ -28,6 +28,7 @@ use Symfony\Component\Yaml\Yaml;
 
 use RGies\GuiBundle\Util\CommandExecutor;
 use RGies\GuiBundle\Util\BundleUtil;
+use RGies\GuiBundle\Less\Less_Parser;
 
 use Exception;
 use RuntimeException;
@@ -711,11 +712,211 @@ class DefaultController extends Controller
     }
 
     /**
+     * Form to define the website style.
+     *
      * @Route("/create-style/", name="guiCreateStyle")
      * @Template()
      */
     public function createStyleAction()
     {
-        return array();
+        $output = '';
+        $lessFolder = 'bundles/gui/less/bootstrap/';
+        $variablesFile = $this->get('kernel')->getRootDir() . '/../web/' . $lessFolder . 'variables.less';
+
+        $sectionName = '';
+        $helpText = '';
+        $formGroupOpen = false;
+        $formRowOpen = false;
+
+        $file = fopen($variablesFile, "r");
+        while(!feof($file))
+        {
+            $line = fgets($file);
+
+            if (mb_strlen($line)<5) continue;
+
+            if ($line[0] == '@')
+            {
+                // @ Variable
+                list($name, $value) = explode(':', $line, 2);
+                $name = htmlentities(trim($name));
+                list($value, $comment) = explode(';', $value, 2);
+                $value = htmlentities(trim($value));
+
+                // row
+                if (!$formRowOpen)
+                {
+                    $output .= '<div class="row"><div class="col-md-4 col-sm-4 col-xs-4">';
+                }
+                $formRowOpen = true;
+
+                // group
+                if ($formGroupOpen) $output .= '</div>';
+                $output .= '<div class="form-group">';
+                $formGroupOpen = true;
+
+                $output .= '<label for="input-' . $name . '">' . $name . '</label>';
+                $output .= '<input id="input-' . $name . '" type="text" value="' . $value . '" name="' . $name . '" class="form-control">';
+                if ($helpText)
+                {
+                    $output .= $helpText;
+                }
+                $helpText = '';
+            }
+            elseif (mb_substr($line,0,5) == '//== ')
+            {
+                //== Headline
+                if ($formGroupOpen)
+                {
+                    $output .= '</div>';
+                    $formGroupOpen = false;
+                }
+                if ($formRowOpen)
+                {
+                    $output .= '</div>';
+                    $output .= '<div class="col-md-8 col-sm-8 col-xs-8">'
+                        . $this->_loadStyleSection($sectionName) . '</div>';
+                    $output .= '</div>';
+                    $formRowOpen = false;
+                }
+
+                $sectionName = trim(mb_substr($line,5));
+                $output .= '<h2>' . htmlentities($sectionName) . '</h2>';
+                $sectionName = strtolower($sectionName);
+
+            }
+            elseif(mb_substr($line,0,5) == '//## ')
+            {
+                //## Sub headline
+                $output .= '<p>' . htmlentities(mb_substr($line,5)) . '</p>';
+            }
+            elseif(mb_substr($line,0,5) == '//** ')
+            {
+                //## Help
+                $helpText = '<p class="help-block">' . htmlentities(mb_substr($line,5)) . '</p>';
+            }
+
+
+        }
+        fclose($file);
+
+        if ($formGroupOpen)
+        {
+            $output .= '</div>';
+            $formGroupOpen = false;
+        }
+        if ($formRowOpen)
+        {
+            $output .= '</div></div>';
+            $formRowOpen = false;
+        }
+
+        return array('output' => $output);
+    }
+
+    /**
+     * Form to define the website style.
+     *
+     * @Route("/apply-less-variables/", name="guiApplyLessVariables")
+     * @Template()
+     */
+    public function applyLessVariablesAction(Request $request)
+    {
+        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
+        $lessVariables = file_get_contents($lessFolder . 'variables-default.less');
+
+        $vars = $request->request->all();
+
+        foreach ($vars as $key=>$value)
+        {
+            $lessVariables = preg_replace('/^' . $key . ':(.*);/m', $key . ': ' . $value . ';', $lessVariables, 1);
+        }
+
+        file_put_contents($lessFolder . 'variables.less', $lessVariables);
+
+        exit;
+    }
+
+    /**
+     * Download bootstrap less variables file.
+     *
+     * @Route("/download-less-variables/", name="guiDownloadLessVariables")
+     * @Template()
+     */
+    public function downloadLessVariablesAction()
+    {
+        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
+        $variables = file_get_contents($lessFolder . 'variables.less');
+
+        header("Content-type: text/css");
+        echo $variables;
+        exit;
+    }
+
+    /**
+     * Save less bootstrap.css.
+     *
+     * @Route("/save-bootstrap-css/", name="guiSaveBootstrapCss")
+     * @Template()
+     */
+    public function saveBootstrapCssAction()
+    {
+        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
+
+        require_once(dirname(__FILE__) . '/../Less/Less.php');
+
+        $parser = new Less_Parser();
+        $parser->parseFile( $lessFolder . 'bootstrap.less' );
+        $css = $parser->getCss();
+
+        echo $css;
+        exit;
+    }
+
+
+    /**
+     * Gets bootstrap less value.
+     *
+     * @Route("/get-bootstrap-less/", name="guiGetBootstrapLess")
+     * @Template()
+     */
+    public function getBootstrapLessAction()
+    {
+        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
+        $bootstrap = file_get_contents($lessFolder . 'bootstrap.less');
+
+        //$bootstrap = preg_replace('/^@import "/m', '@import "', $bootstrap);
+
+        echo $bootstrap;
+        exit;
+    }
+
+
+    /**
+     * Form to define the website style.
+     *
+     * @Route("/reset-less-variables/", name="guiResetLessVariables")
+     * @Template()
+     */
+    public function resetLessVariablesAction(Request $request)
+    {
+        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
+        copy($lessFolder . 'variables-default.less', $lessFolder . 'variables.less');
+
+        exit;
+    }
+
+    protected function _loadStyleSection($name)
+    {
+        $html = '';
+
+        try
+        {
+            $response = $this->render( 'GuiBundle:StyleSections:' . $name . '.html.twig', array() );
+            $html = $response->getContent();
+        }
+        catch(exception $e){}
+
+        return $html;
     }
 }
