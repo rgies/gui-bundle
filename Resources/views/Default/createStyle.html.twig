@@ -97,38 +97,6 @@
             }
         }
 
-        function importLessVariables()
-        {
-            /*
-            $.post( "{{ path('guiImportLessVariables') }}", $("#less-import-form").serialize()).done(function(data){
-                //location.reload();
-                alert(data);
-            });*/
-
-            var formObj = $("#less-import-form");
-            var formURL = '{{ path('guiImportLessVariables') }}';
-            var formData = new FormData(formObj);
-            $.ajax({
-                url: formURL,
-                type: 'POST',
-                data:  formData,
-                mimeType:"multipart/form-data",
-                contentType: false,
-                cache: false,
-                processData:false,
-                success: function(data, textStatus, jqXHR)
-                {
-                    alert('OK: ' + data);
-
-                },
-                error: function(jqXHR, textStatus, errorThrown)
-                {
-                    alert('Error');
-                }
-            });
-
-        }
-
         function saveCss()
         {
             var parser = new(less.Parser)({
