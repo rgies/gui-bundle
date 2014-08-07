@@ -13,12 +13,14 @@ namespace RGies\GuiBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\GeneratorBundle\Manipulator\KernelManipulator;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Filesystem\Filesystem as FS;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -28,7 +30,7 @@ use Symfony\Component\Yaml\Yaml;
 
 use RGies\GuiBundle\Util\CommandExecutor;
 use RGies\GuiBundle\Util\BundleUtil;
-use RGies\GuiBundle\Less\Less_Parser;
+use lessc;
 
 use Exception;
 use RuntimeException;
@@ -688,30 +690,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Gets list of all available bundle template names.
-     *
-     * @return array
-     */
-    protected function _getBundleTemplateNames()
-    {
-        $names = array();
-        $path = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/skeleton/bundle/templates'));
-
-        if ($files = scandir($path))
-        {
-            foreach ($files as $file)
-            {
-                if ($file[0] != '.' && is_dir($path . '/' . $file))
-                {
-                    $names[] = $file;
-                }
-            }
-        }
-
-        return $names;
-    }
-
-    /**
      * Form to define the website style.
      *
      * @Route("/create-style/", name="guiCreateStyle")
@@ -756,7 +734,25 @@ class DefaultController extends Controller
                 $formGroupOpen = true;
 
                 $output .= '<label for="input-' . $name . '">' . $name . '</label>';
-                $output .= '<input id="input-' . $name . '" type="text" value="' . $value . '" name="' . $name . '" class="form-control">';
+                $id = mb_substr($name, 1);
+
+                // check for color fields
+                if ( mb_substr($name, 0, 6) == '@gray-' || mb_substr($name, 0, 7) == '@brand-' || $name == '@gray'
+                    || mb_substr($name, -6) == '-color' || (mb_substr($name, -3) == '-bg') || (mb_substr($name, -7) == '-border'))
+                {
+                    $color = (mb_strlen($value)>0 && $value[0]=='#') ? $value : '#FFFFFF';
+                    $output .= '<div class="input-group color colorpicker" data-color="' . $color . '" data-color-format="hex">';
+                    $output .= '<input id="input-' . $id . '" type="text" value="' . $value . '" name="' . $name
+                        . '" class="form-control">';
+                    $output .= '<span class="input-group-addon color"><i id="color-' . $id . '" style="background-color: ' . $color . '"></i></span>';
+                    $output .= '</div>';
+                }
+                else
+                {
+                    $output .= '<input id="input-' . $name . '" type="text" value="' . $value . '" name="' . $name
+                        . '" class="form-control">';
+                }
+
                 if ($helpText)
                 {
                     $output .= $helpText;
@@ -811,7 +807,40 @@ class DefaultController extends Controller
             $formRowOpen = false;
         }
 
-        return array('output' => $output);
+        return array('output' => $output, 'themes' => $this->_getLessThemeNames());
+    }
+
+    /**
+     * Import less variables file.
+     *
+     * @Route("/import-less-variables/", name="guiImportLessVariables")
+     * @@Method("POST")
+     * @Template()
+     */
+    public function importLessVariablesAction(Request $request)
+    {
+        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
+        $bundleFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/public/less/bootstrap')) . '/';
+
+        foreach ($request->files as $file)
+        {
+            $ext = substr($file->getClientOriginalName(), -5);
+
+            if ($ext != '.less')
+            {
+                return new Response('Only *.less files allowed', Response::HTTP_FORBIDDEN);
+            }
+
+            if (!move_uploaded_file($file->getPathname(), $lessFolder . 'variables.less'))
+            {
+                return new Response('Error on file upload', Response::HTTP_OK);
+            }
+
+            copy ($lessFolder . 'variables.less', $bundleFolder . 'variables.less');
+
+        }
+
+        return $this->forward('GuiBundle:Default:createStyle');
     }
 
     /**
@@ -823,6 +852,7 @@ class DefaultController extends Controller
     public function applyLessVariablesAction(Request $request)
     {
         $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
+        $bundleFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/public/less/bootstrap')) . '/';
         $lessVariables = file_get_contents($lessFolder . 'variables-default.less');
 
         $vars = $request->request->all();
@@ -833,6 +863,7 @@ class DefaultController extends Controller
         }
 
         file_put_contents($lessFolder . 'variables.less', $lessVariables);
+        file_put_contents($bundleFolder . 'variables.less', $lessVariables);
 
         exit;
     }
@@ -859,17 +890,17 @@ class DefaultController extends Controller
      * @Route("/save-bootstrap-css/", name="guiSaveBootstrapCss")
      * @Template()
      */
-    public function saveBootstrapCssAction()
+    public function saveBootstrapCssAction(Request $request)
     {
-        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
+        $cssFolder = $this->get('kernel')->getRootDir() . '/../web/css/';
+        $appFolder = $this->get('kernel')->getRootDir() . '/../app/config/';
+        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/bundles/gui/less/bootstrap/';
+        $cssValue = $request->request->get('css');
 
-        require_once(dirname(__FILE__) . '/../Less/Less.php');
+        file_put_contents($cssFolder . 'bootstrap.min.css', $cssValue);
+        copy($lessFolder . 'variables.less', $appFolder . 'variables.less');
 
-        $parser = new Less_Parser();
-        $parser->parseFile( $lessFolder . 'bootstrap.less' );
-        $css = $parser->getCss();
-
-        echo $css;
+        echo 'CSS-Style saved';
         exit;
     }
 
@@ -882,10 +913,12 @@ class DefaultController extends Controller
      */
     public function getBootstrapLessAction()
     {
-        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
+        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/bundles/gui/less/bootstrap/';
         $bootstrap = file_get_contents($lessFolder . 'bootstrap.less');
 
-        //$bootstrap = preg_replace('/^@import "/m', '@import "', $bootstrap);
+        $path = $this->container->get('templating.helper.assets')->getUrl('bundles/gui/less/bootstrap/');
+
+        $bootstrap = preg_replace('/^@import "/m', '@import "' . $path, $bootstrap);
 
         echo $bootstrap;
         exit;
@@ -900,15 +933,38 @@ class DefaultController extends Controller
      */
     public function resetLessVariablesAction(Request $request)
     {
+        $theme = $request->request->get('theme', null);
         $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
-        copy($lessFolder . 'variables-default.less', $lessFolder . 'variables.less');
+        $themeFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/lessThemes')) . '/';
+        $appFolder = $this->get('kernel')->getRootDir() . '/../app/config/';
+
+        $sourceFile = $lessFolder . 'variables-default.less';
+
+        if ($theme && is_file($themeFolder . $theme . '.less'))
+        {
+            $sourceFile = $themeFolder . $theme . '.less';
+        }
+        elseif (!$theme && is_file($appFolder . 'variables.less'))
+        {
+            $sourceFile = $appFolder . 'variables.less';
+        }
+
+        copy($sourceFile, $lessFolder . 'variables.less');
 
         exit;
     }
 
+    /**
+     * Loads style section templates.
+     *
+     * @param string $name Name of section
+     * @return string
+     */
     protected function _loadStyleSection($name)
     {
         $html = '';
+
+        $name = str_replace(' ', '-', $name);
 
         try
         {
@@ -918,5 +974,53 @@ class DefaultController extends Controller
         catch(exception $e){}
 
         return $html;
+    }
+
+    /**
+     * Gets list of all available bundle template names.
+     *
+     * @return array
+     */
+    protected function _getBundleTemplateNames()
+    {
+        $names = array();
+        $path = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/skeleton/bundle/templates'));
+
+        if ($files = scandir($path))
+        {
+            foreach ($files as $file)
+            {
+                if ($file[0] != '.' && is_dir($path . '/' . $file))
+                {
+                    $names[] = $file;
+                }
+            }
+        }
+
+        return $names;
+    }
+
+    /**
+     * Gets list of all available bundle template names.
+     *
+     * @return array
+     */
+    protected function _getLessThemeNames()
+    {
+        $names = array();
+        $path = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/lessThemes'));
+
+        if ($files = scandir($path))
+        {
+            foreach ($files as $file)
+            {
+                if ($file[0] != '.' && is_file($path . '/' . $file))
+                {
+                    $names[] = basename($file, '.less');
+                }
+            }
+        }
+
+        return $names;
     }
 }
