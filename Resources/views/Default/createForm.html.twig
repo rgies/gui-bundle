@@ -9,10 +9,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Modal title</h4>
+                    <h4 class="modal-title">Form HTML-Code</h4>
                 </div>
                 <div id="export-dialog-body" class="modal-body">
-                    <p><textarea id="export-textarea" class="form-control" name="textarea"></textarea></p>
+                    <p><textarea id="export-textarea" rows="18" class="form-control" name="textarea"></textarea></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -44,10 +44,12 @@
         <div class="container-fluid">
             <div class="navbar-brand">
                 <!--<input id="filebutton" style="float:left;" name="filebutton" type="file" class="filestyle" data-buttonText="Import" data-classIcon="glyphicon glyphicon-import" data-input="false" data-classbutton="btn btn-default" value="Import">-->
-                <button type="button" class="btn btn-default" onclick="$('#import-dialog').modal();"><span class="glyphicon glyphicon-import"></span> Import</button>
+                <!--<button type="button" class="btn btn-default" onclick="$('#import-dialog').modal();"><span class="glyphicon glyphicon-import"></span> Import</button>
                 <button type="button" class="btn btn-default" onclick="$('#export-textarea').val($('#target fieldset').html()); $('#export-dialog').modal();"><span class="glyphicon glyphicon-export"></span> Export</button>
                 <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Save</button>
-                <button type="button" onclick="console.log($('#target'))" class="btn btn-default">Test</button>
+                <button type="button" onclick="console.log($('#target'))" class="btn btn-default">Test</button>-->
+                Drag&Drop the form elements into the form section
+                <button type="button" class="btn btn-primary" onclick="$('#export-textarea').val($('#render').val()); $('#export-dialog').modal();"><span class="glyphicon glyphicon-list-alt"></span> Show form code</button>
             </div>
         </div>
     </nav>
