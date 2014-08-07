@@ -852,7 +852,7 @@ class DefaultController extends Controller
     {
         $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
         $bundleFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/public/less/bootstrap')) . '/';
-        $lessVariables = file_get_contents($lessFolder . 'variables-default.less');
+        $lessVariables = file_get_contents($lessFolder . 'variables.less');
 
         $vars = $request->request->all();
 
