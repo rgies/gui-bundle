@@ -468,7 +468,7 @@ class DefaultController extends Controller
                 $cmd.= ' --route-prefix="' . strtolower($entityName) . '"';
                 $cmd.= ' --with-write';
                 $cmd.= ' --no-interaction';
-            break;
+                break;
 
             default:
                 $cmd = null;
@@ -528,18 +528,18 @@ class DefaultController extends Controller
         {
             case 'self-update':
                 $composer = array(
-                  $php,
-                  (empty($php)) ? $path . '/bin/composer' : $path . '/bin/composer.phar',
-                  'self-update'
+                    $php,
+                    (empty($php)) ? $path . '/bin/composer' : $path . '/bin/composer.phar',
+                    'self-update'
                 );
                 break;
             case 'update':
                 $composer = array(
-                  $php,
-                  (empty($php)) ? $path . '/bin/composer' : $path . '/bin/composer.phar',
-                  '--no-interaction',
-                  'update',
-                  $what
+                    $php,
+                    (empty($php)) ? $path . '/bin/composer' : $path . '/bin/composer.phar',
+                    '--no-interaction',
+                    'update',
+                    $what
                 );
                 break;
         }
@@ -743,14 +743,14 @@ class DefaultController extends Controller
                     $color = (mb_strlen($value)>0 && $value[0]=='#') ? $value : '#FFFFFF';
                     $output .= '<div class="input-group color colorpicker" data-color="' . $color . '" data-color-format="hex">';
                     $output .= '<input id="input-' . $id . '" type="text" value="' . $value . '" name="' . $name
-                        . '" class="form-control">';
+                        . '" class="form-control less-input-field">';
                     $output .= '<span class="input-group-addon color"><i id="color-' . $id . '" style="background-color: ' . $color . '"></i></span>';
                     $output .= '</div>';
                 }
                 else
                 {
                     $output .= '<input id="input-' . $name . '" type="text" value="' . $value . '" name="' . $name
-                        . '" class="form-control">';
+                        . '" class="form-control less-input-field">';
                 }
 
                 if ($helpText)

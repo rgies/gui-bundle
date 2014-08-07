@@ -25,7 +25,7 @@
                                 <li><a href="javascript:resetLessVariables('Default')">Default</a></li>
                                 <li class="divider"></li>
                                 {% for theme in themes %}
-                                <li><a href="javascript:resetLessVariables('{{ theme }}')">{{ theme }}</a></li>
+                                    <li><a href="javascript:resetLessVariables('{{ theme }}')">{{ theme }}</a></li>
                                 {% endfor %}
                             </ul>
                         </li>
@@ -40,10 +40,8 @@
         </nav>
     </form>
 
-    <!-- Variables form -->
-    <form id="less-form" role="form" method="post" action="{{ path('guiApplyLessVariables') }}">
-        {{ output|raw }}
-    </form>
+    <!-- Less Variables -->
+    {{ output|raw }}
 {% endblock %}
 
 {% block javascripts %}
@@ -65,16 +63,16 @@
     <script>
         var lessVariables = {};
 
-        $("#less-form :input").blur(function() {
+        $(".less-input-field").blur(function() {
             lessVariables[$(this).attr('name')] = $(this).val();
             less.modifyVars(lessVariables);
 
+            // set color picker
             var name = $(this).attr('name').slice(1);
-
             $('#color-' + name).css('background-color', $(this).val());
 
             // save changes to variables.less
-            $.post( "{{ path('guiApplyLessVariables') }}", $( "#less-form" ).serialize());
+            $.post( "{{ path('guiApplyLessVariables') }}", lessVariables);
         });
 
         $(".colorpicker").colorpicker();
@@ -84,7 +82,7 @@
             less.modifyVars(lessVariables);
 
             // save changes to variables.less
-            $.post( "{{ path('guiApplyLessVariables') }}", $( "#less-form" ).serialize());
+            $.post( "{{ path('guiApplyLessVariables') }}", lessVariables);
         });
 
         function resetLessVariables(theme)
