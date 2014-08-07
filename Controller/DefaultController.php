@@ -894,10 +894,12 @@ class DefaultController extends Controller
         $cssFolder = $this->get('kernel')->getRootDir() . '/../web/css/';
         $appFolder = $this->get('kernel')->getRootDir() . '/../app/config/';
         $lessFolder = $this->get('kernel')->getRootDir() . '/../web/bundles/gui/less/bootstrap/';
+        $bundleFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/public/less/bootstrap')) . '/';
         $cssValue = $request->request->get('css');
 
         file_put_contents($cssFolder . 'bootstrap.min.css', $cssValue);
         copy($lessFolder . 'variables.less', $appFolder . 'variables.less');
+        copy($lessFolder . 'variables.less', $bundleFolder . 'variables.less');
 
         echo 'CSS-Style saved';
         exit;
@@ -935,6 +937,7 @@ class DefaultController extends Controller
         $theme = $request->request->get('theme', null);
         $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
         $themeFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/lessThemes')) . '/';
+        $bundleFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/public/less/bootstrap')) . '/';
         $appFolder = $this->get('kernel')->getRootDir() . '/../app/config/';
 
         $sourceFile = $lessFolder . 'variables-default.less';
@@ -949,6 +952,7 @@ class DefaultController extends Controller
         }
 
         copy($sourceFile, $lessFolder . 'variables.less');
+        copy($sourceFile, $bundleFolder . 'variables.less');
 
         exit;
     }
