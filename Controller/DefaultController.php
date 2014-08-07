@@ -837,7 +837,6 @@ class DefaultController extends Controller
             }
 
             copy ($lessFolder . 'variables.less', $bundleFolder . 'variables.less');
-
         }
 
         return $this->forward('GuiBundle:Default:createStyle');
@@ -952,6 +951,28 @@ class DefaultController extends Controller
         copy($sourceFile, $lessFolder . 'variables.less');
 
         exit;
+    }
+
+    /**
+     * Generates password tokens for security.yml users.
+     *
+     * @Route("/encrypt-password/", name="guiEncryptPassword")
+     * @Template()
+     */
+    public function encryptPasswordAction(Request $request)
+    {
+        $password = '';
+        $token = '';
+
+        if ($request->request->has('passwordinput'))
+        {
+            $password = $request->request->get('passwordinput');
+            $token = md5($password);
+            $token = hash ('sha256', $password);
+            //$token = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
+        }
+
+        return array('token' => $token, 'password' => $password);
     }
 
     /**
