@@ -698,8 +698,21 @@ class DefaultController extends Controller
     public function createStyleAction()
     {
         $output = '';
-        $lessFolder = 'bundles/gui/less/bootstrap/';
-        $variablesFile = $this->get('kernel')->getRootDir() . '/../web/' . $lessFolder . 'variables.less';
+        $appFolder = $this->get('kernel')->getRootDir() . '/../app/config/';
+        $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
+        $variablesFile = $lessFolder . 'variables.less';
+
+        if (!is_file($variablesFile))
+        {
+            if (is_file($appFolder . 'variables.less'))
+            {
+                copy($appFolder . 'variables.less', $variablesFile);
+            }
+            else
+            {
+                copy($lessFolder . 'variables-default.less', $variablesFile);
+            }
+        }
 
         $sectionName = '';
         $helpText = '';
@@ -820,7 +833,6 @@ class DefaultController extends Controller
     public function importLessVariablesAction(Request $request)
     {
         $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
-        $bundleFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/public/less/bootstrap')) . '/';
 
         foreach ($request->files as $file)
         {
@@ -835,8 +847,6 @@ class DefaultController extends Controller
             {
                 return new Response('Error on file upload', Response::HTTP_OK);
             }
-
-            copy ($lessFolder . 'variables.less', $bundleFolder . 'variables.less');
         }
 
         return $this->forward('GuiBundle:Default:createStyle');
@@ -851,7 +861,6 @@ class DefaultController extends Controller
     public function applyLessVariablesAction(Request $request)
     {
         $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
-        $bundleFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/public/less/bootstrap')) . '/';
         $lessVariables = file_get_contents($lessFolder . 'variables.less');
 
         $vars = $request->request->all();
@@ -862,7 +871,6 @@ class DefaultController extends Controller
         }
 
         file_put_contents($lessFolder . 'variables.less', $lessVariables);
-        file_put_contents($bundleFolder . 'variables.less', $lessVariables);
 
         exit;
     }
@@ -894,12 +902,10 @@ class DefaultController extends Controller
         $cssFolder = $this->get('kernel')->getRootDir() . '/../web/css/';
         $appFolder = $this->get('kernel')->getRootDir() . '/../app/config/';
         $lessFolder = $this->get('kernel')->getRootDir() . '/../web/bundles/gui/less/bootstrap/';
-        $bundleFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/public/less/bootstrap')) . '/';
         $cssValue = $request->request->get('css');
 
         file_put_contents($cssFolder . 'bootstrap.min.css', $cssValue);
         copy($lessFolder . 'variables.less', $appFolder . 'variables.less');
-        copy($lessFolder . 'variables.less', $bundleFolder . 'variables.less');
 
         echo 'CSS-Style saved';
         exit;
@@ -937,7 +943,6 @@ class DefaultController extends Controller
         $theme = $request->request->get('theme', null);
         $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
         $themeFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/lessThemes')) . '/';
-        $bundleFolder = str_replace('\\', '/', realpath(__DIR__ . '/../Resources/public/less/bootstrap')) . '/';
         $appFolder = $this->get('kernel')->getRootDir() . '/../app/config/';
 
         $sourceFile = $lessFolder . 'variables-default.less';
@@ -952,7 +957,6 @@ class DefaultController extends Controller
         }
 
         copy($sourceFile, $lessFolder . 'variables.less');
-        copy($sourceFile, $bundleFolder . 'variables.less');
 
         exit;
     }
@@ -971,9 +975,8 @@ class DefaultController extends Controller
         if ($request->request->has('passwordinput'))
         {
             $password = $request->request->get('passwordinput');
-            $token = md5($password);
+            //$token = md5($password);
             $token = hash ('sha256', $password);
-            //$token = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
         }
 
         return array('token' => $token, 'password' => $password);
