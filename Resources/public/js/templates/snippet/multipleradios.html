@@ -2,8 +2,8 @@
 <div class="form-group">
   <label for="<%= name %>"><%= label %><% if(required) {%>*<% } %></label>
   <% _.each(radios, function(radio, i){ %>
-    <label class="radio" for="<%= name+'-'+i %>">
+    <div class="radio"><label class="radio" for="<%= name+'-'+i %>">
       <input type="radio" name="<%= name %>" id="<%= name+'-'+i %>" value="<%= radio %>"  <% if (i < 1) { %> checked="checked" <% } %><% if(required){ %> required="required"<% } %>>
       <%= radio %>
-    </label><% }); %>
+    </label></div><% }); %>
 </div>

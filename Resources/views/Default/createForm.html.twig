@@ -42,14 +42,22 @@
     <!-- Toolbar -->
     <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
-            <div class="navbar-brand">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-form-navbar-collapse-3">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Drag&Drop the form elements into the form section</span>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-form-navbar-collapse-3">
                 <!--<input id="filebutton" style="float:left;" name="filebutton" type="file" class="filestyle" data-buttonText="Import" data-classIcon="glyphicon glyphicon-import" data-input="false" data-classbutton="btn btn-default" value="Import">-->
                 <!--<button type="button" class="btn btn-default" onclick="$('#import-dialog').modal();"><span class="glyphicon glyphicon-import"></span> Import</button>
                 <button type="button" class="btn btn-default" onclick="$('#export-textarea').val($('#target fieldset').html()); $('#export-dialog').modal();"><span class="glyphicon glyphicon-export"></span> Export</button>
                 <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Save</button>
                 <button type="button" onclick="console.log($('#target'))" class="btn btn-default">Test</button>-->
-                Drag&Drop the form elements into the form section
-                <button type="button" class="btn btn-primary" onclick="$('#export-textarea').val($('#render').val()); $('#export-dialog').modal();"><span class="glyphicon glyphicon-list-alt"></span> Show form code</button>
+                <button type="button" class="btn btn-primary navbar-btn" onclick="$('#export-textarea').val($('#render').val()); $('#export-dialog').modal();"><span class="glyphicon glyphicon-list-alt"></span> Show form code</button>
             </div>
         </div>
     </nav>

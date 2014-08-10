@@ -1,11 +1,11 @@
 <form role="form">
-  <div class='form-group'>
     <% var compiled =  _.reduce(items, function(str, v, k){ %>
       <% v["name"] = k; %>
-      <% return str + popoverTemplates[v["type"]](v); %>
+      <% return str + '<div class="form-group">' + popoverTemplates[v["type"]](v) + '</div>'; %>
     <% }, "") %>
     <%= compiled %>
-    <hr/>
-      <button id="save" class='btn btn-primary'>Save</button><button id="cancel" class='btn btn-danger'>Cancel</button>
-  </div>
+    <div class="form-group">
+        <hr/>
+        <button id="save" class="btn btn-primary">Save</button><button id="cancel" class="btn btn-danger">Cancel</button>
+    </div>
 </form>
