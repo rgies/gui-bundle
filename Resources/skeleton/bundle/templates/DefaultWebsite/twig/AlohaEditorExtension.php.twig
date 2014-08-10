@@ -68,8 +68,7 @@ class AlohaEditorExtension extends \Twig_Extension
         $request   = $this->container->get('request');
         $user      = $this->container->get('security.context')->getToken()->getUser();
         $pathAlCss = $this->container->get('templating.helper.assets')->getUrl('js/aloha/css/aloha.css');
-        $pathReqJs = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/require.js');
-        $pathAlJs  = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/aloha.js');
+        $pathAlJs  = $this->container->get('templating.helper.assets')->getUrl('js/aloha/lib/aloha-full.min.js');
         $pathAlExtJs = $this->container->get('templating.helper.assets')->getUrl('bundles/{{ bundle_basename|lower }}/js/aloha-ext.js');
 
         // generate security token
@@ -92,7 +91,6 @@ class AlohaEditorExtension extends \Twig_Extension
 
         $ret = '<!-- Aloha Texteditor integration -->
         <link rel="stylesheet" href="' . $pathAlCss . '" type="text/css">
-        <script src="' . $pathReqJs . '"></script>
 
         <script>
             var Aloha = window.Aloha || ( window.Aloha = {} );
