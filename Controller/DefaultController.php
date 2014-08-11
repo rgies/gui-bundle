@@ -790,7 +790,7 @@ class DefaultController extends Controller
                 }
 
                 $sectionName = trim(mb_substr($line,5));
-                $output .= '<h2>' . htmlentities($sectionName) . '</h2>';
+                $output .= '<h2>' . htmlentities($sectionName) . '</h2><hr/>';
                 $sectionName = strtolower($sectionName);
 
             }
