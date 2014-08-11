@@ -16,40 +16,37 @@
             <input name="entityName" type="text" class="form-control" id="entityName" placeholder="Entity name" maxlength="40" required />
             <p class="help-block">Enter here your entity name (e.g. faq).</p>
         </div>
-        <div class="form-group col-sm-6">
-            <label for="fieldName[0]">Fieldname 1</label>
-            <input name="fieldName[0]" type="text" class="form-control" id="fieldName[0]" placeholder="Field name" maxlength="40" />
-            <p class="help-block">Enter here a field name (e.g. name).</p>
+        <div id="sortable">
+            <div class="form-group col-sm-12 form-inline">
+                <label for="fieldName[0]">Field</label>&nbsp;&nbsp;
+                <input name="fieldName[0]" type="text" class="form-control" id="fieldName[0]" placeholder="Field name" maxlength="40" />
+                <select name="fieldType[0]" class="form-control" id="fieldType[0]" placeholder="Field type">
+                    <option></option>
+                    {% for item in types %}<option>{{ item }}</option>{% endfor %}
+                </select>
+                <span class="glyphicon glyphicon-resize-vertical"></span>
+                <p class="help-block">Enter here a field name with data type (e.g. string(100)).</p>
+            </div>
+            {% for z in 1..40 %}
+            <div id="form-group{{ z }}" class="form-group col-sm-12 form-inline" style="display: none">
+                <label for="fieldName[{{ z }}]">Field</label>&nbsp;&nbsp;
+                <input name="fieldName[{{ z }}]" type="text" class="form-control" id="fieldName[{{ z }}]" placeholder="Field name" maxlength="40" />
+                <select name="fieldType[{{ z }}]" class="form-control" id="fieldType[{{ z }}]" placeholder="Field type">
+                    <option></option>
+                    {% for item in types %}<option>{{ item }}</option>{% endfor %}
+                </select>
+                <span class="glyphicon glyphicon-resize-vertical"></span>
+                <p class="help-block">Enter here a field name with data type (e.g. string(100)).</p>
+            </div>
+            {% endfor %}
         </div>
-        <div class="form-group col-sm-6">
-            <label for="fieldType[0]">Fieldtype 1</label>
-            <select name="fieldType[0]" class="form-control" id="fieldType[0]" placeholder="Field type">
-                <option></option>
-                {% for item in types %}<option>{{ item }}</option>{% endfor %}
-            </select>
-            <p class="help-block">Select here a field type (e.g. string(100)).</p>
-        </div>
-        {% for z in 1..40 %}
-        <div id="form-group-name{{ z }}" class="form-group col-sm-6" style="display: none">
-            <label for="fieldName[{{ z }}]">Fieldname {{ z+1 }}</label>
-            <input name="fieldName[{{ z }}]" type="text" class="form-control" id="fieldName[{{ z }}]" placeholder="Field name" maxlength="40" />
-            <p class="help-block">Enter here a field name (e.g. name).</p>
-        </div>
-        <div id="form-group-type{{ z }}" class="form-group col-sm-6" style="display: none">
-            <label for="fieldType[{{ z }}]">Fieldtype {{ z+1 }}</label>
-            <select name="fieldType[{{ z }}]" class="form-control" id="fieldType[{{ z }}]" placeholder="Field type">
-                <option></option>
-                {% for item in types %}<option>{{ item }}</option>{% endfor %}
-            </select>
-            <p class="help-block">Select here a field type (e.g. string(100)).</p>
-        </div>
-        {% endfor %}
         <div class="form-group col-sm-12">
             <button type="button" onclick="showNextFieldset();" class="btn btn-default btn-xs">
                 <span class="glyphicon glyphicon-plus-sign"></span> Add field
             </button>
         </div>
         <div class="form-group col-sm-12">
+            <hr/>
             <div class="checkbox">
                 <label>
                     <input name="createCrud" id="createCrud" type="checkbox" checked="checked" /> Create CRUD file structure.
@@ -82,10 +79,16 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->{% endblock %}
 {% block javascripts %}
+    <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet" media="screen">
+    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+
     <script>
         // send ajax request to execute commandline
         $(document).ready(function()
         {
+            $( "#sortable" ).sortable();
+            $( "#sortable" ).disableSelection();
+
             // bind to the form's submit event
             $('#dataForm').submit(function() { $(this).ajaxSubmit({success:showResponse, dataType:'json'}); return false; });
         });
@@ -94,11 +97,10 @@
         {
             for (z=1; z<100; z++)
             {
-                if ($('#form-group-name'+z).is(':hidden'))
+                if ($('#form-group'+z).is(':hidden'))
                 {
-                    $('#form-group-name'+z).toggle();
-                    $('#form-group-type'+z).toggle();
-                    $('#form-group-name'+z+' input').focus();
+                    $('#form-group'+z).toggle();
+                    $('#form-group'+z+' input').focus();
                     return;
                 }
             }
