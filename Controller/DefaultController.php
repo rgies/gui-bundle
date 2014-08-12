@@ -374,10 +374,32 @@ class DefaultController extends Controller
      * @Route("/create-controller", name="guiCreateController")
      * @Template()
      */
-    public function createControllerAction()
+    public function createControllerAction(Request $request)
     {
+        $controller = '';
+        $action = '';
+
+        // try to get the action name from the given uri
+        if ($request->query->has('uri'))
+        {
+            $uri = $request->query->get('uri');
+            $parts = explode('/', $uri);
+            if ($parts == 2)
+            {
+                $controller = 'Default';
+                $action = $parts[1];
+            }
+            elseif ($parts > 2)
+            {
+                $controller = $parts[1];
+                $action = $parts[2];
+            }
+        }
+
         return array(
-            'bundles' => BundleUtil::getCustomBundleNameList($this, $this->container)
+            'bundles' => BundleUtil::getCustomBundleNameList($this, $this->container),
+            'controller' => $controller,
+            'action' => $action
         );
     }
 
