@@ -884,11 +884,22 @@ class DefaultController extends Controller
     public function downloadLessVariablesAction()
     {
         $lessFolder = $this->get('kernel')->getRootDir() . '/../web/' . 'bundles/gui/less/bootstrap/';
-        $variables = file_get_contents($lessFolder . 'variables.less');
 
-        header("Content-type: text/css");
-        echo $variables;
-        exit;
+        $file = $lessFolder . 'variables.less';
+
+        if (file_exists($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: text/less');
+            header('Content-Disposition: attachment; filename='.basename($file));
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            exit;
+        }
+
+        return new Response('[' . $file . '] file not found', Response::HTTP_NOT_FOUND);
     }
 
     /**
