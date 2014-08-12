@@ -384,12 +384,12 @@ class DefaultController extends Controller
         {
             $uri = $request->query->get('uri');
             $parts = explode('/', $uri);
-            if ($parts == 2)
+            if (count($parts) == 2)
             {
                 $controller = 'Default';
                 $action = $parts[1];
             }
-            elseif ($parts > 2)
+            elseif (count($parts) > 2)
             {
                 $controller = $parts[1];
                 $action = $parts[2];
