@@ -32,7 +32,7 @@ class {{ controller }}Controller extends Controller
 {% for action in actions %}
     {% if 'annotation' == format.routing -%}
     /**
-     * @Route("{{ action.route }}", name="{{ action.route }})
+     * @Route("{{ action.route }}", name="{{ action.route|trim('/') }}")
      {% if 'default' == action.template -%}
      * @Template()
      {% else -%}
