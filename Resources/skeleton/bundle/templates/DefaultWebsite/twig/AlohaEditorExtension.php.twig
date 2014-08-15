@@ -117,6 +117,25 @@ class AlohaEditorExtension extends \Twig_Extension
 
                 aloha_ext_init();
 
+                function insertImageAtCursor(src) {
+                    var sel, range;
+
+                    if (window.getSelection) {
+                        sel = window.getSelection();
+
+                        if (sel.getRangeAt && sel.rangeCount) {
+                            range = sel.getRangeAt(0);
+                            range.deleteContents();
+                            var img = new Image();
+                            img.src = src;
+                            range.insertNode(img);
+                        }
+                    } else if (document.selection && document.selection.createRange) {
+                        var html = \'<img src="\' + src + \'"/>\';
+                        document.selection.createRange().pasteHTML(html);
+                    }
+                }
+
                 $.post("' . $dropZonePath . '",
                         {
                             author: "' . $user->getUsername() . '",
@@ -135,14 +154,22 @@ class AlohaEditorExtension extends \Twig_Extension
 
                     refreshImageLibrary();
 
+                    $(document).on("click", "#cm-img-item", function(event){
+                        if (Aloha.activeEditable != null)
+                        {
+                            Aloha.activeEditable.obj.context.focus()
+                            insertImageAtCursor($(this).context.src);
+                        }
+                    });
+
                     $(document).on("click", ".img-lib-del-button", function(event){
                         if (confirm("Delete Image [" + $("#" + $(this).attr("id") + "-form input:first").val() + "] ?")) {
                             event.preventDefault();
 
-                            $.post("' . $deletePath . '", $( "#" + $(this).attr("id") + "-form" ).serialize()
-                                    ).done(function( data ) {
-                                        refreshImageLibrary();
-                                    });
+                            $.post("' . $deletePath . '", $( "#" + $(this).attr("id") + "-form" ).serialize())
+                            .done(function( data ) {
+                                refreshImageLibrary();
+                            });
                         }
                     });
                 });

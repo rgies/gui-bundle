@@ -7,20 +7,27 @@
     <parameters>
         <!-- Aloha Editor Configuration -->
         <parameter key="Aloha" type="collection">
-            <parameter key="plugins">common/ui,common/format,common/highlighteditables,common/list,common/horizontalruler,common/link,common/image</parameter>
+            <parameter key="plugins">common/ui,common/format,common/highlighteditables,common/list,common/horizontalruler,common/link,common/image,common/table,common/undo</parameter>
             <parameter key="settings">
                 plugins: {
                     format: {
-                        config: [ 'b', 'i', 'sub', 'sup', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat' ],
-                        editables: {
-                            '.page-header': []
-                        }
+                        editables : {'.page-header' : []}
                     },
                     link: {
-                        config : [ 'a' ],
-                        editables : {
-                            '.page-header' : []
-                        }
+                        editables : {'.page-header' : []}
+                    },
+                    table: {
+                        editables : {'.page-header' : []}
+                    },
+                    list: {
+                        editables : {'.page-header' : []}
+                    },
+                    horizontalruler: {
+                        editables : {'.page-header' : []}
+                    },
+                    image: {
+                        'fixedAspectRatio' : true,
+                        editables : {'.page-header' : []}
                     }
                 }
             </parameter>
