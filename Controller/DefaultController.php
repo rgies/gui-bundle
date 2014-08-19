@@ -103,6 +103,8 @@ class DefaultController extends Controller
             'text',
             'boolean',
             'datetime',
+            'date',
+            'time',
             'float',
             'smallint',
             'bigint',

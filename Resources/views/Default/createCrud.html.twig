@@ -24,7 +24,7 @@
                     <option></option>
                     {% for item in types %}<option>{{ item }}</option>{% endfor %}
                 </select>
-                <span class="glyphicon glyphicon-resize-vertical"></span>
+                <span class="glyphicon glyphicon-resize-vertical" style="cursor: move;" title="Reorder fields up or down"></span>
                 <p class="help-block">Enter here a field name with data type (e.g. string(100)).</p>
             </div>
             {% for z in 1..40 %}
@@ -35,7 +35,7 @@
                     <option></option>
                     {% for item in types %}<option>{{ item }}</option>{% endfor %}
                 </select>
-                <span class="glyphicon glyphicon-resize-vertical"></span>
+                <span class="glyphicon glyphicon-resize-vertical" style="cursor: move;" title="Reorder fields up or down"></span>
                 <p class="help-block">Enter here a field name with data type (e.g. string(100)).</p>
             </div>
             {% endfor %}
