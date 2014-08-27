@@ -79,7 +79,15 @@
                 $('#responseDialogHeader').css('background-color', 'green');
                 $('#responseDialogHeaderText').html('Successful');
                 $('#close-button').click(function() {
-                    location.href = '{{ app.request.getBaseURL() }}/' + $('#controllerActions').val().toLowerCase();
+                    var url = '{{ app.request.getBaseURL() }}/';
+                    if ($('#controllerName').val().toLowerCase() != 'default')
+                    {
+                        url = url + $('#controllerName').val().toLowerCase() + '/';
+                    }
+                    url = url + $('#controllerActions').val().toLowerCase();
+
+                    // redirect to new created page
+                    location.href = url;
                 });
             }
             else

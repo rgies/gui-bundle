@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 {% endblock phpdoc_class_header %}
  *
 {% block phpdoc_class_annotations %}
-{% if 'annotation' == format %}
+{% if 'annotation' == format.routing %}
  * @Route("/{{ route_prefix }}", name="{{ route_prefix }}")
 {% endif %}
 {% endblock phpdoc_class_annotations %}

@@ -51,6 +51,7 @@ class ControllerGenerator extends Generator
                 'templating' => $templateFormat,
             ),
             'controller' => $controller,
+            'route_prefix' => strtolower($controller),
         );
 
         //var_dump($actions); exit;
