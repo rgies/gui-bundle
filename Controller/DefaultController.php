@@ -75,17 +75,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Create form view.
-     *
-     * @Route("/create-form", name="guiCreateForm")
-     * @Template()
-     */
-    public function createFormAction()
-    {
-        return array();
-    }
-
-    /**
      * Create crud view.
      *
      * @Route("/create-crud", name="guiCreateCrud")

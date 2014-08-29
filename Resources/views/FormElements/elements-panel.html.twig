@@ -1,0 +1,21 @@
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    {% for category,items in elements %}
+    <li{% if loop.index == 1 %} class="active"{% endif %}>
+        <a href="#{{ category }}" role="tab" data-toggle="tab">{{ category|capitalize }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<!-- Tab panes -->
+<div id="elements-panel" class="tab-content">
+    {% for category,items in elements %}
+    <div class="tab-pane{% if loop.index == 1 %} active{% endif %}" id="{{ category }}">
+        {% for name,item in items %}
+            <div class="form-group draggable" name="{{ name }}">
+{% include 'GuiBundle:FormElements/items:' ~ name ~ '.html.twig' with { 'vars': item.vars } only %}
+</div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,7 @@
+{% if vars.label|default %}
+    <label for="{{ vars.id_left }}">{{ vars.label }}</label>
+{% endif %}
+    <div class="control">
+        <button id="{{ vars.id_left }}" name="{{ vars.id_left }}" type="submit" class="btn btn-{{ vars.left_type }}">{{ vars.left_button }}</button>
+        <button id="{{ vars.id_right }}" name="{{ vars.id_right }}" class="btn btn-{{ vars.right_type }}">{{ vars.right_button }}</button>
+    </div>

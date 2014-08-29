@@ -1,0 +1,31 @@
+#dataForm {
+    min-height: 400px;
+}
+
+#form-stage {
+    border: 1px #aaa dashed;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
+
+#elements-panel {
+    border: 1px #e7e7e7 solid;
+    border-top: none;
+    padding: 10px;
+ }
+
+#elements-panel label, #elements-panel button, #elements-panel input, #elements-panel textarea , #elements-panel select {
+    pointer-events: none;
+}
+
+#elements-panel .form-group {
+    cursor: move;
+}
+
+#form-stage label, #form-stage input, #form-stage textarea , #form-stage select {
+    pointer-events: none;
+}
+
+#form-stage .form-group {
+    cursor: move;
+}

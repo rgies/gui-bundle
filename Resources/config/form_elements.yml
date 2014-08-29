@@ -1,0 +1,181 @@
+elements:
+  # Text Input
+  text-input:
+    category: 'input'
+    types:
+      required:     'checkbox'
+    vars:
+      id:           'text-input'
+      label:        'Text Input'
+      placeholder:  ''
+      help_text:    ''
+      required:     ''
+
+  # Password Input
+  password-input:
+    category: 'input'
+    vars:
+      id:           'password-input'
+      label:        'Password Input'
+      placeholder:  ''
+      help_text:    ''
+      #required:     false
+
+  # Text Area
+  text-area:
+    category: 'input'
+    vars:
+      id:           'text-area'
+      label:        'Text Area'
+      text:         'sample text'
+      help_text:    ''
+      #required:     false
+
+  # Checkbox Input
+  checkbox-input:
+    category: 'input'
+    vars:
+      id:           'checkbox-input'
+      label:        'Checkbox Input'
+      placeholder:  ''
+      help_text:    ''
+
+  # Dropdown Input
+  dropdown-input:
+    category: 'input'
+    types:
+      options:      'textarea'
+    vars:
+      id:           'dropdown-input'
+      label:        'Dropdown Input'
+      options:      "Option one\nOption two"
+      placeholder:  ''
+      help_text:    ''
+
+  # File Button
+  file-button:
+    category: 'button'
+    vars:
+      id:           'file'
+      label:        'File Upload'
+
+  # Button
+  button:
+    category: 'button'
+    types:
+      button_type:  ['default','primary','success','info','warning','danger']
+    vars:
+      id:           'button'
+      label:        ''
+      button_text:  'Submit'
+      button_type:  'primary'
+
+  # Button Double
+  button-double:
+    category: 'button'
+    types:
+      left_type:    ['default','primary','success','info','warning','danger']
+      right_type:   ['default','primary','success','info','warning','danger']
+    vars:
+      id_left:      'save'
+      id_right:     'cancel'
+      label:        ''
+      left_button:  'Save'
+      left_type:    'primary'
+      right_button: 'Cancel'
+      right_type:   'default'
+
+  # Button Triple
+  button-triple:
+    category: 'button'
+    types:
+      left_type:    ['default','primary','success','info','warning','danger']
+      right_middle:   ['default','primary','success','info','warning','danger']
+      right_type:   ['default','primary','success','info','warning','danger']
+    vars:
+      id_left:      'save'
+      id_middle:    'cancel'
+      id_right:     'delete'
+      label:        ''
+      left_button:  'Save'
+      left_type:    'primary'
+      middle_button: 'Cancel'
+      middle_type:   'default'
+      right_button: 'Delete'
+      right_type:   'danger'
+
+  # Checkbox
+  checkbox:
+    category:       'choice'
+    types:
+      options:      'textarea'
+    vars:
+      id:           'checkbox'
+      label:        'Single Line Checkboxes'
+      options:      'Option one'
+
+  # Radio
+  radio:
+    category:       'choice'
+    types:
+      options:      'textarea'
+    vars:
+      id:           'radio'
+      label:        'Single Line Radios'
+      options:      "Option one\nOption two"
+
+  # Checkbox List
+  checkbox-list:
+    category:       'choice'
+    types:
+      options:      'textarea'
+    vars:
+      id:           'checkbox'
+      label:        'Checkbox List'
+      options:      "Option one\nOption two"
+
+  # Radio List
+  radio-list:
+    category:       'choice'
+    types:
+      options:      'textarea'
+    vars:
+      id:           'radio'
+      label:        'Radio List'
+      options:      "Option one\nOption two"
+
+  # Select
+  select:
+    category:       'select'
+    types:
+      options:      'textarea'
+    vars:
+      id:           'select'
+      label:        'Select'
+      options:      "Option one\nOption two"
+      help_text:    ''
+      #required:     false
+
+  # Select Multiple
+  select-multiple:
+    category:       'select'
+    types:
+      options:      'textarea'
+    vars:
+      id:           'select-multiple'
+      label:        'Select Multiple'
+      options:      "Option one\nOption two"
+      help_text:    ''
+      #required:     false
+
+  # Form Title
+  form-title:
+    category:       'misc'
+    vars:
+      title:        'Form Title'
+
+  # Horizontal Ruler
+  horizontal-ruler:
+    category:       'misc'
+    vars:
+      label:        'Horizontal Ruler'

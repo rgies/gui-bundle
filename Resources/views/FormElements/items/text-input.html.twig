@@ -1,0 +1,7 @@
+{% if vars.label|default %}
+    <label for="{{ vars.id }}">{{ vars.label }}{% if vars.required|default %}*{% endif %}</label>
+{% endif %}
+    <input id="{{ vars.id }}" name="{{ vars.id }}" type="text"{% if vars.placeholder|default %} placeholder="{{ vars.placeholder }}"{% endif %} class="form-control"{% if vars.required|default %} required="required"{% endif %} />
+{% if vars.help_text|default %}
+    <p class="help-block">{{ vars.help_text }}</p>
+{% endif %}

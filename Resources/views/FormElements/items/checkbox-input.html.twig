@@ -1,0 +1,12 @@
+{% if vars.label|default %}
+    <label for="{{ vars.id }}">{{ vars.label }}{% if vars.required|default %}*{% endif %}</label>
+{% endif %}
+    <div class="input-group">
+        <span class="input-group-addon">
+            <input type="checkbox" id="{{ vars.id }}-check" name="{{ vars.id }}-check">
+        </span>
+        <input id="{{ vars.id }}" name="{{ vars.id }}" type="text"{% if vars.placeholder|default %} placeholder="{{ vars.placeholder }}"{% endif %} class="form-control"{% if vars.required|default %} required="required"{% endif %} />
+    </div>
+{% if vars.help_text|default %}
+    <p class="help-block">{{ vars.help_text }}</p>
+{% endif %}

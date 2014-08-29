@@ -1,0 +1,6 @@
+{% if vars.label|default %}
+    <label for="{{ vars.id }}">{{ vars.label }}</label>
+{% endif %}
+    <div class="control">
+        <button id="{{ vars.id }}" name="{{ vars.id }}" type="file" class="filestyle" data-classbutton="btn btn-primary" />
+    </div>

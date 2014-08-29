@@ -1,0 +1,31 @@
+<form id="attributes-form" name="attributes-form" role="form" class="form-horizontal" method="post" action="">
+{% for key,value in element.vars %}
+    <div class="form-group">
+        {% if element.types[key]|default and element.types[key] == 'checkbox' %}
+            {% set label = '' %}
+            {% set check_label = key|replace('_',' ')|capitalize %}
+        {% else %}
+            {% set label = key|replace('_',' ')|capitalize %}
+        {% endif %}
+        <label for="{{ key }}" class="col-sm-3 control-label">{{ label }}</label>
+        <div class="col-sm-9">
+            {% if element.types[key]|default and element.types[key] is iterable %}
+            <select id="{{ key }}" name="vars[{{ key }}]" class="form-control">
+                {% for option in element.types[key] %}
+                <option value="{{ option }}"{% if value == option %} selected="selected"{% endif %}>{{ option|capitalize }}</option>
+                {% endfor %}
+            </select>
+            {% elseif element.types[key]|default and element.types[key] == 'textarea' %}
+            <textarea id="{{ key }}" name="vars[{{ key }}]" rows="5" class="form-control">{{ value }}</textarea>
+            {% elseif element.types[key]|default and element.types[key] == 'checkbox' %}
+            <label>
+                <input type="checkbox" id="{{ key }}" name="vars[{{ key }}]"{% if value|default %} checked="checked"{% endif %} /> {{ check_label }}
+            </label>
+            {% else %}
+            <input type="text" class="form-control" id="{{ key }}" name="vars[{{ key }}]" value="{{ value }}" />
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+    <input type="hidden" name="name" value="{{ name }}" />
+</form>

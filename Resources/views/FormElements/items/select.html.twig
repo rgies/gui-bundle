@@ -1,0 +1,12 @@
+{% if vars.label|default %}
+    <label for="{{ vars.id }}">{{ vars.label }}</label>
+{% endif %}
+    <select id="{{ vars.id }}" name="{{ vars.id }}" class="form-control">
+        {% set options = vars.options|split('\n') %}
+        {% for option in options %}
+        <option>{{ option }}</option>
+        {% endfor %}
+    </select>
+{% if vars.help_text|default %}
+    <p class="help-block">{{ vars.help_text }}</p>
+{% endif %}

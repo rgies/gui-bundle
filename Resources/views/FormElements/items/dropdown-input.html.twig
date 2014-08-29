@@ -1,0 +1,21 @@
+{% if vars.label|default %}
+    <label for="{{ vars.id }}">{{ vars.label }}{% if vars.required|default %}*{% endif %}</label>
+{% endif %}
+    <div class="input-group">
+        <input id="{{ vars.id }}" name="{{ vars.id }}" type="text"{% if vars.placeholder|default %} placeholder="{{ vars.placeholder }}"{% endif %} class="form-control"{% if vars.required|default %} required="required"{% endif %} />
+        <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                Action
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu pull-right">
+    {% set options = vars.options|split('\n') %}
+    {% for option in options %}
+                <li><a href="#">{{ option }}</a></li>
+    {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% if vars.help_text|default %}
+    <p class="help-block">{{ vars.help_text }}</p>
+{% endif %}

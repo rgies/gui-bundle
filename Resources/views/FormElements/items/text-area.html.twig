@@ -1,0 +1,9 @@
+{% if vars.label|default %}
+    <label for="{{ vars.id }}">{{ vars.label }}</label>
+{% endif %}
+    <textarea id="{{ vars.id }}" name="{{ vars.id }}" class="form-control">
+{{ vars.text }}
+    </textarea>
+{% if vars.help_text|default %}
+    <p class="help-block">{{ vars.help_text }}</p>
+{% endif %}

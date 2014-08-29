@@ -1,0 +1,11 @@
+{% if vars.label|default %}
+    <label for="{{ vars.id }}">{{ vars.label }}</label>
+{% endif %}
+    <div class="controls">
+        {% set options = vars.options|split('\n') %}
+        {% for option in options %}
+        <label class="radio-inline" for="{{ vars.id }}-{{ loop.index }}">
+            <input id="{{ vars.id }}-{{ loop.index }}" name="{{ vars.id }}-{{ loop.index }}" type="radio"> {{ option }}
+        </label>
+        {% endfor %}
+    </div>
