@@ -1,0 +1,168 @@
+{% extends "GuiBundle::base.html.twig" %}
+
+{% block stylesheets %}
+    <link href="{{ asset('bundles/gui/css/formGenerator.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block headline %}Create Form{% endblock %}
+
+{% block content %}
+    <div id="attributes-dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Element Attributes</h4>
+                </div>
+                <div id="attributes-dialog-body" class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="updateElement(current_element)" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" onclick="$(current_element).remove()" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="export-dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">HTML-Code</h4>
+                </div>
+                <div id="export-dialog-body" class="modal-body">
+                    <p><textarea id="export-textarea" rows="18" class="form-control" name="textarea"></textarea></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Toolbar -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-form-navbar-collapse-3">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Options</span>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-form-navbar-collapse-3">
+                <button type="button" class="btn btn-primary navbar-btn" onclick="getHtmlCode()"><span class="glyphicon glyphicon-list-alt"></span> Show form code</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Building Form. -->
+    <div id="form-stage" class="col-sm-6">{% include "GuiBundle::FormElements/base-form.html.twig" %}</div>
+    <!-- / Building Form. -->
+    <div class="col-sm-6">{{ elements_panel|raw }}</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet" media="screen">
+    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+
+    <script>
+        var element_vars = {};
+        var elementCount = 0;
+        var current_element = null;
+
+        $( document ).ready(function() {
+            $( "#dataForm" ).sortable();
+
+            $( ".draggable" ).draggable({
+                connectToSortable: "#dataForm",
+                helper: 'clone',
+                opacity: 0.65,
+                revert: "invalid",
+                stop: function( event, ui ) {addDroppedElement()}
+            });
+            //$( "input" ).disableSelection();
+        });
+
+        function addNewElement(name)
+        {
+            elementCount++;
+            $.post("{{ path('guiRenderFormElement') }}", {'name': name, 'num' : elementCount }).done(function(data){
+                data = JSON.parse(data);
+                var html = '<div class="form-group">\n' + data.html + '</div>';
+                var div = $(html).on("click", function(event) {event.preventDefault(); editAttributes(this); });
+                var id = new Date().getTime();
+                element_vars[id] = data.vars;
+                div = div.css('cursor', 'move').attr('id', id).attr('name', name);
+                $('#dataForm').append(div);
+                //return div;
+            });
+        }
+
+        function addDroppedElement()
+        {
+            element = $('#dataForm div:not([id]).form-group');
+            elementCount++;
+            var name = $(element).attr('name');
+            var id = new Date().getTime();
+            element.attr('id', id);
+            $.post("{{ path('guiRenderFormElement') }}", {'name': name, 'num' : elementCount }).done(function(data){
+                data = JSON.parse(data);
+                $(element).on("click", function(event) {event.preventDefault(); editAttributes(this); });
+                element_vars[id] = data.vars;
+            });
+        }
+
+        function updateElement(element)
+        {
+            $.post("{{ path('guiRenderFormElement') }}", $('#attributes-form').serialize()).done(function(data){
+                data = JSON.parse(data);
+                var id = $(element).attr('id');
+                $(element).html(data.html);
+                element_vars[id] = data.vars;
+            });
+        }
+
+        function getHtmlCode()
+        {
+            var html = cleanHtmlCode($('#form-stage').html());
+
+            $('#export-textarea').val(html);
+            $('#export-dialog').modal();
+        }
+
+        function cleanHtmlCode(html)
+        {
+            html = html.replace(' class="ui-sortable"','');
+            //html = html.replace(/ style="cursor: move;"/g,'');
+            html = html.replace(/<div .*class="form-group.*".*>/g,'<div class="form-group">');
+            html = html.replace(/<\/div><div class="form-group">/g,'</div>\n\n<div class="form-group">');
+            html = html.replace(/<\/div><\/form>/g,'</div>\n\n</form>');
+
+            return html;
+        }
+
+        function editAttributes(element)
+        {
+            current_element = element;
+            var id = $(element).attr('id');
+            var name = $(element).attr('name');
+
+            $('#attributes-dialog-body').html('');
+
+            $.post("{{ path('guiRenderAttributesForm') }}", {'name': name, 'vars' : element_vars[id] }).done(function(data){
+                $('#attributes-dialog-body').html(data);
+                $('#attributes-dialog-body form :input:visible:enabled:first').focus();
+            });
+
+            $('#attributes-dialog').modal();
+        }
+
+    </script>
+{% endblock %}
