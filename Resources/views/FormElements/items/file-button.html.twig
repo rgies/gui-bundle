@@ -2,15 +2,6 @@
 {% if vars.label|default %}
     <label for="{{ vars.id }}">{{ vars.label }}</label>
 {% endif %}
-    <div class="control">
-        <button id="{{ vars.id }}" name="{{ vars.id }}" type="file" class="filestyle" data-buttonname="btn-{{ vars.button_type }}" tabindex="-1" style="position: absolute; clip: rect(0px 0px 0px 0px);" />
-        <div class="bootstrap-filestyle input-group">
-            {% if not vars.hide_input|default %}<input type="text" class="form-control " disabled="" />{% endif %}
-            <span class="group-span-filestyle input-group-btn" tabindex="0">
-                <label for="file" class="btn btn-{{ vars.button_type }}">
-                    {% if not vars.hide_icon|default %}<span class="glyphicon glyphicon-folder-open"></span>{% endif %}
-                    {{ vars.button_text }}
-                </label>
-            </span>
-        </div>
+    <div class="control"><!-- generator-code-start --><input id="{{ vars.id }}" name="{{ vars.id }}" type="file" class="filestyle" data-buttonName="btn-{{ vars.button_type }}"{% if vars.hide_icon|default %} data-icon="false"{% endif %}{% if vars.hide_input|default %} data-input="false"{% endif %} data-buttonText="&nbsp;{{ vars.button_text }}" /><!-- generator-code-end -->
+        <!-- original-code-start|<input id="{{ vars.id }}" name="{{ vars.id }}" type="file" class="filestyle" data-buttonName="btn-{{ vars.button_type }}"{% if vars.hide_icon|default %} data-icon="false"{% endif %}{% if vars.hide_input|default %} data-input="false"{% endif %} data-buttonText="&nbsp;{{ vars.button_text }}" />|original-code-end -->
     </div>

@@ -78,7 +78,7 @@
         var current_element = null;
 
         $( document ).ready(function() {
-            $( "#dataForm" ).sortable();
+            $( "#dataForm" ).sortable().disableSelection();
 
             $( ".draggable" ).draggable({
                 connectToSortable: "#dataForm",
@@ -87,7 +87,16 @@
                 revert: "invalid",
                 stop: function( event, ui ) {addDroppedElement()}
             });
-            //$( "input" ).disableSelection();
+
+            $( 'body' ).droppable({
+                accept: "#form-stage div[id].draggable",
+                drop: function( event, ui ) {
+                    if (ui.position.top < -60 || ui.position.left < -100)
+                    {
+                        $(ui.draggable).remove();
+                    }
+                }
+            });
         });
 
         function addNewElement(name)
@@ -101,7 +110,6 @@
                 element_vars[id] = data.vars;
                 div = div.css('cursor', 'move').attr('id', id).attr('name', name);
                 $('#dataForm').append(div);
-                //return div;
             });
         }
 
@@ -124,8 +132,24 @@
             $.post("{{ path('guiRenderFormElement') }}", $('#attributes-form').serialize()).done(function(data){
                 data = JSON.parse(data);
                 var id = $(element).attr('id');
+                var name = $(element).attr('name');
                 $(element).html(data.html);
                 element_vars[id] = data.vars;
+
+                // update filestyle
+                if (name == 'file-button')
+                {
+                    var showInput = true;
+                    if (data.vars.hide_input != '') showInput = false;
+                    var showIcon = true;
+                    if (data.vars.hide_icon != '')  showIcon = false;
+                    $('#' + id + ' :file').filestyle({
+                        buttonName: "btn-" + data.vars.button_type,
+                        input: showInput,
+                        icon: showIcon,
+                        buttonText: '&nbsp;' + htmlEncode(data.vars.button_text)
+                    });
+                }
             });
         }
 
@@ -140,10 +164,13 @@
         function cleanHtmlCode(html)
         {
             html = html.replace(' class="ui-sortable"','');
-            //html = html.replace(/ style="cursor: move;"/g,'');
             html = html.replace(/<div .*class="form-group.*".*>/g,'<div class="form-group">');
             html = html.replace(/<\/div><div class="form-group">/g,'</div>\n\n<div class="form-group">');
             html = html.replace(/<\/div><\/form>/g,'</div>\n\n</form>');
+
+            //rewrite generated code to original code
+            html = html.replace(/<!-- generator-code-start -->.*<!-- generator-code-end -->/g, "");
+            html = html.replace(/<!-- original-code-start\|(.*)\|original-code-end -->/g, "$1");
 
             return html;
         }
@@ -162,6 +189,11 @@
             });
 
             $('#attributes-dialog').modal();
+        }
+
+        function htmlEncode(value)
+        {
+            return $('<div/>').text(value).html();
         }
 
     </script>
