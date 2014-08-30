@@ -840,7 +840,7 @@ class DefaultController extends Controller
      * Import less variables file.
      *
      * @Route("/import-less-variables/", name="guiImportLessVariables")
-     * @@Method("POST")
+     * @Method("POST")
      * @Template()
      */
     public function importLessVariablesAction(Request $request)

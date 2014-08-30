@@ -1,7 +1,7 @@
 elements:
   # Text Input
   text-input:
-    category: 'input'
+    category:       'input'
     types:
       required:     'checkbox'
     vars:
@@ -13,7 +13,7 @@ elements:
 
   # Password Input
   password-input:
-    category: 'input'
+    category:       'input'
     vars:
       id:           'password-input'
       label:        'Password Input'
@@ -23,7 +23,7 @@ elements:
 
   # Text Area
   text-area:
-    category: 'input'
+    category:       'input'
     vars:
       id:           'text-area'
       label:        'Text Area'
@@ -33,7 +33,7 @@ elements:
 
   # Checkbox Input
   checkbox-input:
-    category: 'input'
+    category:       'input'
     vars:
       id:           'checkbox-input'
       label:        'Checkbox Input'
@@ -42,7 +42,7 @@ elements:
 
   # Dropdown Input
   dropdown-input:
-    category: 'input'
+    category:       'input'
     types:
       options:      'textarea'
     vars:
@@ -54,14 +54,22 @@ elements:
 
   # File Button
   file-button:
-    category: 'button'
+    category:       'button'
+    types:
+      button_type:  ['default','primary','success','info','warning','danger']
+      hide_input:   'checkbox'
+      hide_icon:    'checkbox'
     vars:
       id:           'file'
       label:        'File Upload'
+      button_text:  'Choose file'
+      button_type:  'primary'
+      hide_input:   ''
+      hide_icon:    ''
 
   # Button
   button:
-    category: 'button'
+    category:       'button'
     types:
       button_type:  ['default','primary','success','info','warning','danger']
     vars:
@@ -72,7 +80,7 @@ elements:
 
   # Button Double
   button-double:
-    category: 'button'
+    category:       'button'
     types:
       left_type:    ['default','primary','success','info','warning','danger']
       right_type:   ['default','primary','success','info','warning','danger']
@@ -87,7 +95,7 @@ elements:
 
   # Button Triple
   button-triple:
-    category: 'button'
+    category:       'button'
     types:
       left_type:    ['default','primary','success','info','warning','danger']
       right_middle:   ['default','primary','success','info','warning','danger']
