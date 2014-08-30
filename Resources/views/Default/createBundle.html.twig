@@ -1,6 +1,10 @@
 {% extends "GuiBundle::base.html.twig" %}
-{% block headline %}Create Bundle{% endblock %}
+
 {% block content %}
+    <div class="page-header">
+        <h1>Create Bundle</h1>
+    </div>
+
     <!-- Data form -->
     <form name="dataForm" id="dataForm" role="form" method="post" action="{{ path('guiExecuteCommand') }}">
         <input name="command" id="command" type="hidden" value="gui:generate:bundle" />

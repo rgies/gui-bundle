@@ -1,6 +1,10 @@
 {% extends "GuiBundle::base.html.twig" %}
-{% block headline %}Create Pages{% endblock %}
+
 {% block content %}
+    <div class="page-header">
+        <h1>Create Pages</h1>
+    </div>
+
     {% if bundles|length == 0 %}
         <div class="alert alert-warning">
             <strong>Warning!</strong> to continue please create first a <a href="{{ path('guiCreateBundle') }}">Symfony Bundle</a>.

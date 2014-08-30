@@ -2,7 +2,6 @@
 {% block stylesheets %}
     <link href="{{ asset('bundles/gui/css/colorpicker.css') }}" rel="stylesheet">
 {% endblock %}
-{% block headline %}Create Style{% endblock %}
 {% block content %}
     <!-- Top Toolbar -->
     <form id="less-import-form" name="less-import-form" method="post" action="{{ path('guiImportLessVariables') }}" enctype="multipart/form-data">
@@ -15,9 +14,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Options</a>
+                    <a class="navbar-brand" href="#">Theme Builder</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-colors-navbar-collapse-3">
+                    <div class="form-inline">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-tint"></span> Themes <span class="caret"></span>
@@ -30,10 +30,11 @@
                             {% endfor %}
                         </ul>
                     </div>&nbsp;
-                    <input id="filebutton" style="float:left;" name="file" onchange="submit()" type="file" class="filestyle btn" data-buttonText="Import Vars" data-classIcon="glyphicon glyphicon-import" data-input="false" data-classbutton="btn btn-default" value="Import Vars">
+                    <input id="filebutton" style="float:left;" name="file" onchange="submit()" type="file" class="filestyle" data-buttonText="Import Vars" data-iconName="glyphicon-import" data-input="false" data-buttonName="btn-default" value="Import Vars">
                     <a href="{{ path('guiDownloadLessVariables') }}" target="_blank" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-export"></span> Export Vars</a>
                     <button type="button" onclick="resetLessVariables()" class="btn btn-danger navbar-btn"><span class="glyphicon glyphicon-repeat"></span> Reset</button>
                     <button type="button" class="btn btn-primary navbar-btn" onclick="saveCss()"><span class="glyphicon glyphicon-floppy-disk"></span> Apply to website</button>
+                    </div>
                 </div>
             </div>
         </nav>

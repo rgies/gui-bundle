@@ -1,6 +1,10 @@
 {% extends "GuiBundle::base.html.twig" %}
-{% block headline %}Create Entity{% endblock %}
+
 {% block content %}
+    <div class="page-header">
+        <h1>Create Entity</h1>
+    </div>
+
     <form name="dataForm" id="dataForm" role="form" method="post" action="{{ path('guiExecuteCommand') }}">
         <input name="command" id="command" type="hidden" value="doctrine:generate:entity" />
         <div class="form-group col-sm-6">

@@ -4,8 +4,6 @@
     <link href="{{ asset('bundles/gui/css/formGenerator.css') }}" rel="stylesheet">
 {% endblock %}
 
-{% block headline %}Create Form{% endblock %}
-
 {% block content %}
     <div id="attributes-dialog" class="modal fade">
         <div class="modal-dialog">
@@ -53,13 +51,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <span class="navbar-brand">Options</span>
+                <span class="navbar-brand">Form Builder</span>
             </div>
             <div class="collapse navbar-collapse" id="bs-form-navbar-collapse-3">
-                <button type="button" class="btn btn-primary navbar-btn" onclick="getHtmlCode()"><span class="glyphicon glyphicon-list-alt"></span> Show form code</button>
+                <button type="button" class="btn btn-primary navbar-btn" onclick="getHtmlCode()"><span class="glyphicon glyphicon-list-alt"></span> Get form code</button>
             </div>
         </div>
     </nav>
+
+    <div class="text-muted">Drop your form elements to the area below.</div>
 
     <!-- Building Form. -->
     <div id="form-stage" class="col-sm-6">{% include "GuiBundle::FormElements/base-form.html.twig" %}</div>
@@ -91,7 +91,7 @@
             $( 'body' ).droppable({
                 accept: "#form-stage div[id].draggable",
                 drop: function( event, ui ) {
-                    if (ui.position.top < -60 || ui.position.left < -100)
+                    if (ui.position.top < -50 || ui.position.left < -100)
                     {
                         $(ui.draggable).remove();
                     }
