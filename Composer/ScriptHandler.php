@@ -31,10 +31,11 @@ class ScriptHandler
      */
     public static function getInstallInstructions(CommandEvent $event)
     {
-        echo PHP_EOL . 'Symfony RAD-Tool installation complete. ';
+        echo PHP_EOL . 'Symfony RAD-Tool installation complete. ' . PHP_EOL;
 
-        if (DIRECTORY_SEPARATOR != '\\') {
-            // not windows
+        if (DIRECTORY_SEPARATOR != '\\')
+        {
+            // if os is not windows
             echo '=================================================' . PHP_EOL;
             echo 'NOTE: please run the ./bin/set_file_rights.sh' . PHP_EOL;
             echo '=================================================' . PHP_EOL . PHP_EOL;
@@ -42,8 +43,6 @@ class ScriptHandler
 
         echo 'Now you can start the Rapid Development Cockpit.' . PHP_EOL;
         echo 'Open your web browser with the following url:' . PHP_EOL;
-        echo '=================================================' . PHP_EOL;
-        echo 'http://localhost/[your website]' . PHP_EOL;
-        echo '=================================================' . PHP_EOL . PHP_EOL;
+        echo 'http://localhost/[your website]' . PHP_EOL . PHP_EOL;
     }
 }
