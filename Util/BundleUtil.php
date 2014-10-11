@@ -42,11 +42,14 @@ class BundleUtil
         // find all bundles in src folder
         foreach ($allBundles as $bundle=>$path)
         {
-            if (is_dir($srcPath . '/' . dirname($path)))
+            $dir = dirname(str_replace('\\', '/', $srcPath . '/' . $path));
+
+            if (is_dir($dir))
             {
                 $bundles[] = $bundle;
             }
         }
+
         asort($bundles);
 
         return $bundles;
