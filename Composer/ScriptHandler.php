@@ -36,9 +36,12 @@ class ScriptHandler
         if (DIRECTORY_SEPARATOR != '\\')
         {
             // if os is not windows
-            echo '=================================================' . PHP_EOL;
-            echo 'NOTE: please run the ./bin/set_file_rights.sh' . PHP_EOL;
-            echo '=================================================' . PHP_EOL . PHP_EOL;
+            echo '===================================================' . PHP_EOL;
+            echo 'PLEASE NOTE:' . PHP_EOL;
+            echo 'Run the ./bin/set_dev_access_rights.sh script' . PHP_EOL;
+            echo 'to enable the needed access rights for the rapid' . PHP_EOL;
+            echo 'development web interface.' . PHP_EOL;
+            echo '===================================================' . PHP_EOL . PHP_EOL;
         }
 
         echo 'Now you can start the Rapid Development Cockpit.' . PHP_EOL;
