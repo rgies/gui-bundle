@@ -16,7 +16,9 @@
                     {{ '{% for image in sliderImages %}' }}
                     <div class="item{{ '{% if loop.first %}' }} active{{ '{% endif %}' }}">
                         <img src="{{ '{{ asset(\'bundles/' }}{{ bundle_basename|lower }}{{ '/images/slider/\') }}{{ image.src }}' }}" alt="Slider Image">
-                        <div class="carousel-caption">{{ '{{ image.caption }}' }}</div>
+                        <div class="container">
+                            <div class="carousel-caption">{{ '{{ image.caption | raw }}' }}</div>
+                        </div>
                     </div>
                     {{ '{% endfor %}' }}
                 </div>
