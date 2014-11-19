@@ -207,4 +207,28 @@
         </description>
     </bundle>
 
+    <!-- FOS Rest Bundle -->
+    <bundle>
+        <title>REST Webservice (FOSRestBundle)</title>
+        <category>Webservice</category>
+        <url>https://github.com/FriendsOfSymfony/FOSRestBundle</url>
+        <!-- Url or base64 encoded image 120x100 px -->
+        <icon></icon>
+        <bundleName>FOSRestBundle</bundleName>
+        <bundlePath>friendsofsymfony/rest-bundle</bundlePath>
+        <bundleNamespace>FOS\RestBundle</bundleNamespace>
+        <bundleVersion>~1.4</bundleVersion>
+        <routingEntry></routingEntry>
+        <description>
+            <![CDATA[
+                This bundle provides various tools to rapidly develop RESTful API's & applications with Symfony2.<br/><br/>
+                - A View layer to enable output and format agnostic Controllers<br/>
+                - A custom route loader to generate url's following REST conventions<br/>
+                - Accept header format negotiation including handling for custom mime types<br/>
+                - RESTful decoding of HTTP request body and Accept headers<br/>
+                - Exception controller for sending appropriate HTTP status codes
+            ]]>
+        </description>
+    </bundle>
+
 </repository>
