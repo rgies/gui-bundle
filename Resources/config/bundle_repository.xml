@@ -208,11 +208,11 @@
     </bundle>
 
     <!-- FOS Rest Bundle -->
+    <!--
     <bundle>
         <title>REST Webservice (FOSRestBundle)</title>
         <category>Webservice</category>
         <url>https://github.com/FriendsOfSymfony/FOSRestBundle</url>
-        <!-- Url or base64 encoded image 120x100 px -->
         <icon></icon>
         <bundleName>FOSRestBundle</bundleName>
         <bundlePath>friendsofsymfony/rest-bundle</bundlePath>
@@ -230,5 +230,6 @@
             ]]>
         </description>
     </bundle>
+    -->
 
 </repository>
