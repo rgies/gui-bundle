@@ -20,9 +20,9 @@ class DefaultController extends Controller
 {% block class_body %}
     {% if 'annotation' == format -%}
     /**
-     * Website home action.
+     * Controller index action.
      *
-     * @Route("/", name="home")
+     * @Route("/", name="{{ bundle }}_index")
      * @Template()
      */
     {% endif -%}
