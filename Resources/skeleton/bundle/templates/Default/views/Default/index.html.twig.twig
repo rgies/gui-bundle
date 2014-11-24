@@ -3,5 +3,9 @@
     <div class="page-header">
         <h1>Welcome to the <strong>{{ bundle }}</strong></h1>
     </div>
-    <p>Please place here your page content.</p>
+
+    <!-- Replace start: Please replace the following block with your own content -->
+    {{ '{% if app.environment() == \'dev\' %}{% include \'GuiBundle:Default:firstSteps.html.twig\' %}{% endif %}' }}
+    <!-- Replace end -->
+
 {{ '{% endblock %}' }}

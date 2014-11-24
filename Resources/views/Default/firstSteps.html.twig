@@ -1,0 +1,30 @@
+{% set _template = app.request.get('_template')|split(':') %}
+{% set bundle = _template[0] %}
+{% set controller = _template[1] %}
+{% set view = _template[2] %}
+{% set view_path = bundle ~ '/Resources/views/' ~ controller ~ '/' ~ view %}
+{% set controller_path = bundle ~ '/Controller/' ~ controller ~ 'Controller.php' %}
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-info-sign"></span> First Steps
+    </div>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <h4><span class="glyphicon glyphicon-file"></span> Edit view</h4>
+            Open your IDE and edit <strong>"{{ view_path }}"</strong> file.
+        </li>
+        <li class="list-group-item">
+            <h4><span class="glyphicon glyphicon-file"></span> Edit controller</h4>
+            Open your IDE and edit <strong>"{{ controller_path }}"</strong> file.
+        </li>
+        <li class="list-group-item">
+            <h4>Rapid development</h4>
+            <a href="{{ path('guiCreateController') }}"><span class="glyphicon glyphicon-hand-right"></span> Click here to create a new sub page.</a><br/>
+            <a href="{{ path('guiCreateCrud') }}"><span class="glyphicon glyphicon-hand-right"></span> Click here to create entity with CRUD actions.</a>
+        </li>
+    </ul>
+    <div class="panel-footer">
+        <small><span class="glyphicon glyphicon-exclamation-sign"></span> Note: Click on the <strong>RAD</strong> icon in the Symfony debug toolbar for further rapid development features.</small>
+    </div>
+</div>
