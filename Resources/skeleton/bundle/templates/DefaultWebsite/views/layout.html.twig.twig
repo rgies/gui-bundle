@@ -20,7 +20,7 @@
 {{ '{% endblock %}' }}
 
 {{ '{% block javascripts %}' }}
-    <script src="{{ '{{ asset(\'bundles/website/js/default.js\') }}' }}"></script>
+    <script src="{{ '{{ asset(\'bundles/' }}{{ bundle_basename|lower }}{{ '/js/default.js\') }}' }}"></script>
     {{ '{%- if is_granted("ROLE_EDITOR") %}{{ editor_init() }}{% endif %}' }}
     <!-- individual page java scripts -->
     {{ '{% block js %}{% endblock %}' }}
