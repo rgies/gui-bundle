@@ -35,3 +35,19 @@ q:before {
 q:after {
     content: "";
 }
+
+/* -- Scroll to top -------------------- */
+#toTop {
+    display: none;
+    position: fixed;
+    bottom: 0px;
+    right: 25px;
+    font-size: 64px;
+    opacity: 0.4;
+    filter: alpha(opacity=40); /* For IE8 and earlier */
+}
+
+#toTop:hover {
+    opacity: 0.8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+}
