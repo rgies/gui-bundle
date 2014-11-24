@@ -1,0 +1,4 @@
+/* -- Required fields -------------- */
+.required:after {
+    content: "*";
+}
