@@ -1,0 +1,18 @@
+{{ '{% extends "::base.html.twig" %}' }}
+{{ '{% block stylesheets %}' }}
+    <link href="{{ '{{ asset(\'bundles/' }}{{ bundle_basename|lower }}{{ '/css/default.css\') }}' }}" rel="stylesheet">
+    <!-- individual page stylesheets -->
+    {{ '{% block css %}{% endblock %}' }}
+{{ '{% endblock %}' }}
+{{ '{% block body %}' }}
+    <!-- Content -->
+    <div id="content-block" class="container">
+        {{ '{% block content %}' }}Content{{ '{% endblock %}' }}
+    </div>
+{{ '{% endblock %}' }}
+
+{{ '{% block javascripts %}' }}
+    <script src="{{ '{{ asset(\'bundles/website/js/default.js\') }}' }}"></script>
+    <!-- individual page java scripts -->
+    {{ '{% block js %}{% endblock %}' }}
+{{ '{% endblock %}' }}
