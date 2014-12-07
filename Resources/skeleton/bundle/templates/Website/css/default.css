@@ -1,6 +1,13 @@
-/* -- Required fields -------------- */
-.required:after {
+/* -- Required label --------------- */
+label.required:after {
     content: "*";
+}
+
+/* -- Error label ------------------ */
+label.error:before {
+    font-family: FontAwesome;
+    content: "\F071 ";
+    color: #DF382C;
 }
 
 /* -- Content Block -------------- */
