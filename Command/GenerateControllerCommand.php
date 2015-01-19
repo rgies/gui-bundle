@@ -15,7 +15,8 @@ namespace RGies\GuiBundle\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
+use Symfony\Component\Console\Question\Question;
+use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use RGies\GuiBundle\Generator\ControllerGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\GeneratorCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
@@ -34,32 +35,10 @@ class GenerateControllerCommand extends GeneratorCommand
     {
         $this
             ->setDefinition(array(
-                new InputOption(
-                    'controller',
-                    '',
-                    InputOption::VALUE_REQUIRED,
-                    'The name of the controller to create'
-                ),
-                new InputOption(
-                    'route-format',
-                    '',
-                    InputOption::VALUE_REQUIRED,
-                    'The format that is used for the routing (yml, xml, php, annotation)',
-                    'annotation'
-                ),
-                new InputOption(
-                    'template-format',
-                    '',
-                    InputOption::VALUE_REQUIRED,
-                    'The format that is used for templating (twig, php)',
-                    'twig'
-                ),
-                new InputOption(
-                    'actions',
-                    '',
-                    InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                    'The actions in the controller'
-                ),
+                new InputOption('controller', '', InputOption::VALUE_REQUIRED, 'The name of the controller to create'),
+                new InputOption('route-format', '', InputOption::VALUE_REQUIRED, 'The format that is used for the routing (yml, xml, php, annotation)', 'annotation'),
+                new InputOption('template-format', '', InputOption::VALUE_REQUIRED, 'The format that is used for templating (twig, php)', 'twig'),
+                new InputOption('actions', '', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'The actions in the controller'),
             ))
             ->setDescription('Generates a controller')
             ->setHelp(<<<EOT
@@ -94,10 +73,11 @@ EOT
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getDialogHelper();
+        $questionHelper = $this->getQuestionHelper();
 
         if ($input->isInteractive()) {
-            if (!$dialog->askConfirmation($output, $dialog->getQuestion('Do you confirm generation', 'yes', '?'), true)) {
+            $question = new Question($questionHelper->getQuestion('Do you confirm generation', 'yes', '?'), true);
+            if (!$questionHelper->ask($input, $output, $question)) {
                 $output->writeln('<error>Command aborted</error>');
 
                 return 1;
@@ -119,35 +99,20 @@ EOT
             }
         }
 
-        $dialog->writeSection($output, 'Controller generation');
+        $questionHelper->writeSection($output, 'Controller generation');
 
         $generator = $this->getGenerator($bundle);
-
-        // replace generator bundle to skeletons with gui bundle skeletons path
-//        $orgSkeletonDirs = $this->getSkeletonDirs($bundle);
-//
-//        $skeletonDirs = array();
-//        $skeletonDirs[] = $orgSkeletonDirs[0];
-//
-//        $bundleSkeletonDir = $bundle->getPath() . '/Resources/skeleton';
-//        if (is_dir($bundleSkeletonDir))
-//        {
-//            $skeletonDirs[] = $bundleSkeletonDir;
-//        }
-//        $skeletonDirs[] = realpath(__DIR__ . '/../Resources/skeleton');
-//        $generator->setSkeletonDirs($skeletonDirs);
-
         $generator->generate($bundle, $controller, $input->getOption('route-format'), $input->getOption('template-format'), $this->parseActions($input->getOption('actions')));
 
         $output->writeln('Generating the bundle code: <info>OK</info>');
 
-        $dialog->writeGeneratorSummary($output, array());
+        $questionHelper->writeGeneratorSummary($output, array());
     }
 
     public function interact(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getDialogHelper();
-        $dialog->writeSection($output, 'Welcome to the Symfony2 controller generator');
+        $questionHelper = $this->getQuestionHelper();
+        $questionHelper->writeSection($output, 'Welcome to the Symfony2 controller generator');
 
         // namespace
         $output->writeln(array(
@@ -161,7 +126,9 @@ EOT
         ));
 
         while (true) {
-            $controller = $dialog->askAndValidate($output, $dialog->getQuestion('Controller name', $input->getOption('controller')), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateControllerName'), false, $input->getOption('controller'));
+            $question = new Question($questionHelper->getQuestion('Controller name', $input->getOption('controller')), $input->getOption('controller'));
+            $question->setValidator(array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateControllerName'));
+            $controller = $questionHelper->ask($input, $output, $question);
             list($bundle, $controller) = $this->parseShortcutNotation($controller);
 
             try {
@@ -185,7 +152,9 @@ EOT
             'Determine the format to use for the routing.',
             '',
         ));
-        $routeFormat = $dialog->askAndValidate($output, $dialog->getQuestion('Routing format (php, xml, yml, annotation)', $defaultFormat), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat'), false, $defaultFormat);
+        $question = new Question($questionHelper->getQuestion('Routing format (php, xml, yml, annotation)', $defaultFormat), $defaultFormat);
+        $question->setValidator(array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat'));
+        $routeFormat = $questionHelper->ask($input, $output, $question);
         $input->setOption('route-format', $routeFormat);
 
         // templating format
@@ -203,11 +172,14 @@ EOT
             'Determine the format to use for templating.',
             '',
         ));
-        $templateFormat = $dialog->askAndValidate($output, $dialog->getQuestion('Template format (twig, php)', $defaultFormat), $validateTemplateFormat, false, $defaultFormat);
+        $question = new Question($questionHelper->getQuestion('Template format (twig, php)', $defaultFormat), $defaultFormat);
+        $question->setValidator($validateTemplateFormat);
+
+        $templateFormat = $questionHelper->ask($input, $output, $question);
         $input->setOption('template-format', $templateFormat);
 
         // actions
-        $input->setOption('actions', $this->addActions($input, $output, $dialog));
+        $input->setOption('actions', $this->addActions($input, $output, $questionHelper));
 
         // summary
         $output->writeln(array(
@@ -220,7 +192,7 @@ EOT
         ));
     }
 
-    public function addActions(InputInterface $input, OutputInterface $output, DialogHelper $dialog)
+    public function addActions(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
     {
         $output->writeln(array(
             '',
@@ -247,7 +219,8 @@ EOT
         while (true) {
             // name
             $output->writeln('');
-            $actionName = $dialog->askAndValidate($output, $dialog->getQuestion('New action name (press <return> to stop adding actions)', null), function ($name) use ($actions) {
+            $question = new Question($questionHelper->getQuestion('New action name (press <return> to stop adding actions)', null), null);
+            $question->setValidator(function ($name) use ($actions) {
                 if (null == $name) {
                     return $name;
                 }
@@ -262,17 +235,21 @@ EOT
 
                 return $name;
             });
+
+            $actionName = $questionHelper->ask($input, $output, $question);
             if (!$actionName) {
                 break;
             }
 
             // route
-            $route = $dialog->ask($output, $dialog->getQuestion('Action route', '/'.substr($actionName, 0, -6)), '/'.substr($actionName, 0, -6));
+            $question = new Question($questionHelper->getQuestion('Action route', '/'.substr($actionName, 0, -6)), '/'.substr($actionName, 0, -6));
+            $route = $questionHelper->ask($input, $output, $question);
             $placeholders = $this->getPlaceholdersFromRoute($route);
 
             // template
             $defaultTemplate = $input->getOption('controller').':'.substr($actionName, 0, -6).'.html.'.$input->getOption('template-format');
-            $template = $dialog->askAndValidate($output, $dialog->getQuestion('Templatename (optional)', $defaultTemplate), $templateNameValidator, false, 'default');
+            $question = new Question($questionHelper->getQuestion('Templatename (optional)', $defaultTemplate), 'default');
+            $template = $questionHelper->ask($input, $output, $question);
 
             // adding action
             $actions[$actionName] = array(
