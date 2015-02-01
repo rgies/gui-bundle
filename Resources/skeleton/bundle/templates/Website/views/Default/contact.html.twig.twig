@@ -44,3 +44,11 @@
         </form>
     </p>
 {{ '{% endblock %}' }}
+
+
+{{ '{% block js %}' }}
+    <script>
+        // Form validation
+        $("#contactForm").validate();
+    </script>
+{{ '{% endblock %}' }}
