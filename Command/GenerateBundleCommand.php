@@ -16,10 +16,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Sensio\Bundle\GeneratorBundle\Manipulator\KernelManipulator;
 use Sensio\Bundle\GeneratorBundle\Manipulator\RoutingManipulator;
-use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
+use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use RGies\GuiBundle\Generator\BundleGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\GeneratorCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
@@ -78,10 +80,10 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getDialogHelper();
+        $questionHelper = $this->getQuestionHelper();
 
         if ($input->isInteractive()) {
-            if (!$dialog->askConfirmation($output, $dialog->getQuestion('Do you confirm generation', 'yes', '?'), true)) {
+            if (!$questionHelper->ask($input, $output, new ConfirmationQuestion($questionHelper->getQuestion('Do you confirm generation', 'yes', '?'), true))) {
                 $output->writeln('<error>Command aborted</error>');
 
                 return 1;
@@ -103,11 +105,10 @@ EOT
         if (null === $input->getOption('format')) {
             $input->setOption('format', 'annotation');
         }
-
         $format = Validators::validateFormat($input->getOption('format'));
         $structure = $input->getOption('structure');
 
-        $dialog->writeSection($output, 'Bundle generation');
+        $questionHelper->writeSection($output, 'Bundle generation');
 
         if (!$this->getContainer()->get('filesystem')->isAbsolutePath($dir)) {
             $dir = getcwd().'/'.$dir;
@@ -132,31 +133,31 @@ EOT
         $output->writeln('Generating the bundle code: <info>OK</info>');
 
         $errors = array();
-        $runner = $dialog->getRunner($output, $errors);
+        $runner = $questionHelper->getRunner($output, $errors);
 
         // check that the namespace is already autoloaded
         $runner($this->checkAutoloader($output, $namespace, $bundle, $dir));
 
         // register the bundle in the Kernel class
-        $runner($this->updateKernel($dialog, $input, $output, $this->getContainer()->get('kernel'), $namespace, $bundle));
+        $runner($this->updateKernel($questionHelper, $input, $output, $this->getContainer()->get('kernel'), $namespace, $bundle));
 
         // routing
-        $runner($this->updateRouting($dialog, $input, $output, $bundle, $format));
+        $runner($this->updateRouting($questionHelper, $input, $output, $bundle, $format));
 
-        $dialog->writeGeneratorSummary($output, $errors);
+        $questionHelper->writeGeneratorSummary($output, $errors);
     }
 
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getDialogHelper();
-        $dialog->writeSection($output, 'Welcome to the Symfony2 bundle generator');
+        $questionHelper = $this->getQuestionHelper();
+        $questionHelper->writeSection($output, 'Welcome to the Symfony2 bundle generator');
 
         // namespace
         $namespace = null;
         try {
             $namespace = $input->getOption('namespace') ? Validators::validateBundleNamespace($input->getOption('namespace')) : null;
         } catch (\Exception $error) {
-            $output->writeln($dialog->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error'));
+            $output->writeln($questionHelper->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error'));
         }
 
         if (null === $namespace) {
@@ -178,7 +179,35 @@ EOT
                 '',
             ));
 
-            $namespace = $dialog->askAndValidate($output, $dialog->getQuestion('Bundle namespace(Vendor/MyBundle)', $input->getOption('namespace')), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateBundleNamespace'), false, $input->getOption('namespace'));
+            $acceptedNamespace = false;
+            while (!$acceptedNamespace) {
+                $question = new Question($questionHelper->getQuestion('Bundle namespace', $input->getOption('namespace')), $input->getOption('namespace'));
+                $question->setValidator(function ($answer) {
+                        return Validators::validateBundleNamespace($answer, false);
+
+                });
+                $namespace = $questionHelper->ask($input, $output, $question);
+
+                // mark as accepted, unless they want to try again below
+                $acceptedNamespace = true;
+
+                // see if there is a vendor namespace. If not, this could be accidental
+                if (false === strpos($namespace, '\\')) {
+                    // language is (almost) duplicated in Validators
+                    $msg = array();
+                    $msg[] = '';
+                    $msg[] = sprintf('The namespace sometimes contain a vendor namespace (e.g. <info>VendorName/BlogBundle</info> instead of simply <info>%s</info>).', $namespace, $namespace);
+                    $msg[] = 'If you\'ve *did* type a vendor namespace, try using a forward slash <info>/</info> (<info>Acme/BlogBundle</info>)?';
+                    $msg[] = '';
+                    $output->writeln($msg);
+
+                    $question = new ConfirmationQuestion($questionHelper->getQuestion(
+                        sprintf('Keep <comment>%s</comment> as the bundle namespace (choose no to try again)?', $namespace),
+                        'yes'
+                    ), true);
+                    $acceptedNamespace = $questionHelper->ask($input, $output, $question);
+                }
+            }
             $input->setOption('namespace', $namespace);
         }
 
@@ -187,7 +216,7 @@ EOT
         try {
             $bundle = $input->getOption('bundle-name') ? Validators::validateBundleName($input->getOption('bundle-name')) : null;
         } catch (\Exception $error) {
-            $output->writeln($dialog->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error'));
+            $output->writeln($questionHelper->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error'));
         }
 
         if (null === $bundle) {
@@ -203,7 +232,11 @@ EOT
                 'Based on the namespace, we suggest <comment>'.$bundle.'</comment>.',
                 '',
             ));
-            $bundle = $dialog->askAndValidate($output, $dialog->getQuestion('Bundle name', $bundle), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateBundleName'), false, $bundle);
+            $question = new Question($questionHelper->getQuestion('Bundle name', $bundle), $bundle);
+            $question->setValidator(
+                 array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateBundleName')
+            );
+            $bundle = $questionHelper->ask($input, $output, $question);
             $input->setOption('bundle-name', $bundle);
         }
 
@@ -212,7 +245,7 @@ EOT
         try {
             $dir = $input->getOption('dir') ? Validators::validateTargetDir($input->getOption('dir'), $bundle, $namespace) : null;
         } catch (\Exception $error) {
-            $output->writeln($dialog->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error'));
+            $output->writeln($questionHelper->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error'));
         }
 
         if (null === $dir) {
@@ -224,8 +257,11 @@ EOT
                 'the standard conventions.',
                 '',
             ));
-            $dir = $dialog->askAndValidate($output, $dialog->getQuestion('Target directory', $dir),
-                function ($dir) use ($bundle, $namespace) { return Validators::validateTargetDir($dir, $bundle, $namespace); }, false, $dir);
+            $question = new Question($questionHelper->getQuestion('Target directory', $dir), $dir);
+            $question->setValidator(function ($dir) use ($bundle, $namespace) {
+                    return Validators::validateTargetDir($dir, $bundle, $namespace);
+            });
+            $dir = $questionHelper->ask($input, $output, $question);
             $input->setOption('dir', $dir);
         }
 
@@ -234,7 +270,7 @@ EOT
         try {
             $format = $input->getOption('format') ? Validators::validateFormat($input->getOption('format')) : null;
         } catch (\Exception $error) {
-            $output->writeln($dialog->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error'));
+            $output->writeln($questionHelper->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error'));
         }
 
         if (null === $format) {
@@ -243,13 +279,11 @@ EOT
                 'Determine the format to use for the generated configuration.',
                 '',
             ));
-            $format = $dialog->askAndValidate($output,
-                $dialog->getQuestion('Configuration format (yml, xml, php, or annotation) [annotation]',
-                    $input->getOption('format')), array('Sensio\Bundle\GeneratorBundle\Command\Validators',
-                    'validateFormat'
-                ),
-                false,
-                'annotation');
+            $question = new Question($questionHelper->getQuestion('Configuration format (yml, xml, php, or annotation) [annotation]', $input->getOption('format')), 'annotation');
+            $question->setValidator(
+                array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat')
+            );
+            $format = $questionHelper->ask($input, $output, $question);
             $input->setOption('format', $format);
         }
 
@@ -262,10 +296,9 @@ EOT
         ));
 
         $structure = $input->getOption('structure');
+        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate the whole directory structure', 'no', '?'), false);
         $template = '';
-        if (!$structure && $dialog->askConfirmation($output,
-                $dialog->getQuestion('Do you want to generate the whole directory structure', 'yes', '?'),
-                true))
+        if (!$structure && $questionHelper->ask($input, $output, $question))
         {
             $structure = true;
 
@@ -279,7 +312,14 @@ EOT
             ));
             // ask for bundle template name
             //$choice = $this->getBundleTemplateSelection();
-            $template = $dialog->askAndValidate($output, $dialog->getQuestion('Bundle template', $input->getOption('template-name')), array('RGies\GuiBundle\Command\GenerateBundleCommand', 'validateBundleTemplate'), false, $input->getOption('template-name'));
+
+            $question = new Question($questionHelper->getQuestion('Bundle template', $input->getOption('template-name')), $input->getOption('template-name'));
+            $question->setValidator(
+                array('RGies\GuiBundle\Command\GenerateBundleCommand', 'validateBundleTemplate')
+            );
+            $template = $questionHelper->ask($input, $output, $question);
+
+            //$template = $dialog->askAndValidate($output, $dialog->getQuestion('Bundle template', $input->getOption('template-name')), array('RGies\GuiBundle\Command\GenerateBundleCommand', 'validateBundleTemplate'), false, $input->getOption('template-name'));
             $input->setOption('template-name', $template);
         }
         $input->setOption('structure', $structure);
@@ -306,11 +346,12 @@ EOT
         }
     }
 
-    protected function updateKernel(DialogHelper $dialog, InputInterface $input, OutputInterface $output, KernelInterface $kernel, $namespace, $bundle)
+    protected function updateKernel(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output, KernelInterface $kernel, $namespace, $bundle)
     {
         $auto = true;
         if ($input->isInteractive()) {
-            $auto = $dialog->askConfirmation($output, $dialog->getQuestion('Confirm automatic update of your Kernel', 'yes', '?'), true);
+            $question = new ConfirmationQuestion($questionHelper->getQuestion('Confirm automatic update of your Kernel', 'yes', '?'), true);
+            $auto = $questionHelper->ask($input, $output, $question);
         }
 
         $output->write('Enabling the bundle inside the Kernel: ');
@@ -337,11 +378,12 @@ EOT
         }
     }
 
-    protected function updateRouting(DialogHelper $dialog, InputInterface $input, OutputInterface $output, $bundle, $format)
+    protected function updateRouting(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output, $bundle, $format)
     {
         $auto = true;
         if ($input->isInteractive()) {
-            $auto = $dialog->askConfirmation($output, $dialog->getQuestion('Confirm automatic update of the Routing', 'yes', '?'), true);
+            $question = new ConfirmationQuestion($questionHelper->getQuestion('Confirm automatic update of the Routing', 'yes', '?'), true);
+            $auto = $questionHelper->ask($input, $output, $question);
         }
 
         $output->write('Importing the bundle routing resource: ');
