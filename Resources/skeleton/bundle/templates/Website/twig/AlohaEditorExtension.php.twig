@@ -45,9 +45,11 @@ class AlohaEditorExtension extends \Twig_Extension
      */
     public function getContent($id, $default='')
     {
+        $locale = $this->container->get('request')->getLocale();
+
         $em = $this->doctrine->getManager();
         $entities = $em->getRepository('{{ bundle }}:CmsContent')->findBy(
-            array('token' => $id),
+            array('token' => $id, 'locale' => $locale),
             array('id' => 'DESC'),
             1
         );
