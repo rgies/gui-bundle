@@ -86,6 +86,8 @@ class DefaultController extends Controller
             'integer',
             'string(5)',
             'string(10)',
+            'string(15)',
+            'string(20)',
             'string(50)',
             'string(100)',
             'string(255)',
