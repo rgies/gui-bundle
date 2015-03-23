@@ -27,5 +27,9 @@
     </div>
 {{ '{% endblock %}' }}
 {{ '{% block js %}' }}
-    <script>$('#username').focus();</script>
+    <script>
+        $( document ).ready(function() {
+            $('#username').focus();
+        });
+    </script>
 {{ '{% endblock %}' }}
