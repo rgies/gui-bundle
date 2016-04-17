@@ -99,6 +99,7 @@ class DefaultController extends Controller
             'float',
             'smallint',
             'bigint',
+            'array',
         );
 
         return array(
