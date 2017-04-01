@@ -7,6 +7,14 @@
         <h1>{{ entity }} list</h1>
     </div>
 
+    {%- if 'new' in actions %}
+        <div>
+            <button type="button" class="btn btn-primary" onclick="location.href='{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}'">
+                Create a new entry
+            </button>
+        </div>
+    {%- endif %}
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -41,7 +49,13 @@
             {%- if loop.last %}
 
                 <td>
-                    {%- include "crud/views/others/actions.html.twig.twig" %}
+                    {%- if 'edit' in record_actions %}
+                        <div>
+                            <button type="button" class="btn btn-default" onclick="location.href='{{ "{{ path('" ~ route_name_prefix ~ "_edit', { 'id': entity.id }) }}" }}'">
+                                Edit {{ entity }}
+                            </button>
+                        </div>
+                    {%- endif %}
                 </td>
 
             {%- endif %}
