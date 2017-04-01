@@ -2,7 +2,7 @@
 
 {% block content %}
 {{ "{% block content -%}" }}
-<div class="container">
+<div class="container" xmlns="http://www.w3.org/1999/html">
     <div class="page-header">
         <h1>{{ entity }} list</h1>
     </div>
@@ -10,9 +10,9 @@
     {%- if 'new' in actions %}
         <div>
             <button type="button" class="btn btn-primary" onclick="location.href='{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}'">
-                Create a new entry
+                <i class="fa fa-plus"></i> Create a new entry
             </button>
-        </div>
+        </div><br/>
     {%- endif %}
 
     <table class="table table-striped">
@@ -50,11 +50,7 @@
 
                 <td>
                     {%- if 'edit' in record_actions %}
-                        <div>
-                            <button type="button" class="btn btn-default" onclick="location.href='{{ "{{ path('" ~ route_name_prefix ~ "_edit', { 'id': entity.id }) }}" }}'">
-                                Edit {{ entity }}
-                            </button>
-                        </div>
+                        <a href="{{ "{{ path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'id': entity.id }) }}" }}"><i class="fa fa-edit"></i> Edit</a>
                     {%- endif %}
                 </td>
 
@@ -66,13 +62,6 @@
         </tbody>
     </table>
 
-    {%- if 'new' in actions %}
-    <div>
-        <button type="button" class="btn btn-primary" onclick="location.href='{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}'">
-            Create a new entry
-        </button>
-    </div>
-    {%- endif %}
 </div>
 {{ "{% endblock %}" }}
 {% endblock content %}
