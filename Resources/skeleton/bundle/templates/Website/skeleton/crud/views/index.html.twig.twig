@@ -34,7 +34,7 @@
         {%- for field, metadata in fields %}
             {%- if loop.first and ('show' in actions) %}
 
-                <td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': entity.id }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
+                <td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_edit', { 'id': entity.id }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
 
             {%- elseif metadata.type in ['date', 'datetime'] %}
 
@@ -49,8 +49,8 @@
             {%- if loop.last %}
 
                 <td>
-                    {%- if 'edit' in record_actions %}
-                        <a href="{{ "{{ path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'id': entity.id }) }}" }}"><i class="fa fa-edit"></i> Edit</a>
+                    {%- if 'edit' in actions %}
+                        <a href="{{ "{{ path('" ~ route_name_prefix ~ "_edit', { 'id': entity.id }) }}" }}"><i class="fa fa-edit"></i> Edit</a>
                     {%- endif %}
                 </td>
 
