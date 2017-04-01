@@ -31,7 +31,7 @@
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('{{ route_name_prefix }}_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));
         }
 {% endblock method_body %}
 

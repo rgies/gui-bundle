@@ -59,9 +59,10 @@
         $form = $this->createForm(new {{ entity_class }}Type(), $entity, array(
             'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => $entity->getId())),
             'method' => 'PUT',
+            'attr'   => array('id' => 'edit-form'),
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
