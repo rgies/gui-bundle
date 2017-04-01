@@ -9,8 +9,29 @@
 
     {{ '{{ form(form) }}' }}
 
-    {% set hide_edit, hide_delete = true, true %}
-    {% include 'crud/views/others/record_actions.html.twig.twig' %}
+    <div class="form-group">
+        <div class="control">
+            <button id="save" type="submit" onclick="formSave()" class="btn btn-primary pull-right">
+                <i class="fa fa-check"></i> Save
+            </button>
+        </div>
+    </div>
 </div>
+{{ "{% endblock %}" }}
+
+{{ "{% block js -%}" }}
+    <script type="text/javascript">
+        function formSave()
+        {
+            var form = $("#create-form");
+
+            if (form.validate())
+            {
+                form.submit();
+            }
+        }
+
+        $("#create-form").validate();
+    </script>
 {{ "{% endblock %}" }}
 {% endblock content %}
