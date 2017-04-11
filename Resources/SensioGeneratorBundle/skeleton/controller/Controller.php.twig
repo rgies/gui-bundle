@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 {% endblock phpdoc_class_header %}
  *
 {% block phpdoc_class_annotations %}
-{% if 'annotation' == format %}
+{% if 'annotation' == format.routing %}
  * @Route("/{{ route_prefix }}", name="{{ route_prefix }}")
 {% endif %}
 {% endblock phpdoc_class_annotations %}
@@ -32,7 +32,7 @@ class {{ controller }}Controller extends Controller
 {% for action in actions %}
     {% if 'annotation' == format.routing -%}
     /**
-     * @Route("{{ action.route }}", name="{{ action.route|trim('/') }}")
+     * @Route("{{ action.route }}", name="{{ controller|lower }}-{{ action.route|trim('/') }}")
      {% if 'default' == action.template -%}
      * @Template()
      {% else -%}
