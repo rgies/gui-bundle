@@ -120,6 +120,23 @@ class BundleGenerator extends Generator
                 // copy entities
                 $this->_copyBundleTemplates($dir . '/Entity',
                     $templateDir . '/entity', $parameters);
+
+                // copy fixtures
+                $this->_copyBundleTemplates($dir . '/DataFixtures',
+                    $templateDir . '/DataFixtures', $parameters);
+
+                // copy forms
+                $this->_copyBundleTemplates($dir . '/Form',
+                    $templateDir . '/Form', $parameters);
+
+                // copy handler
+                $this->_copyBundleTemplates($dir . '/Handler',
+                    $templateDir . '/Handler', $parameters);
+
+                // copy services
+                $this->_copyBundleTemplates($dir . '/Services',
+                    $templateDir . '/Services', $parameters);
+
             }
         }
     }
