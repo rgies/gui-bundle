@@ -55,6 +55,6 @@ class UserType extends AbstractType
      */
     public function getName()
     {
-        return '{{ bundle_basename  || lower }}_{{ bundle || lower }}_user';
+        return '{{ bundle_basename | lower }}_{{ bundle | lower }}_user';
     }
 }

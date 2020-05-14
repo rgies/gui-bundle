@@ -75,6 +75,6 @@ class UserRegisterType extends AbstractType
      */
     public function getName()
     {
-        return '{{ bundle_basename  || lower }}_{{ bundle || lower }}_user_register';
+        return '{{ bundle_basename | lower }}_{{ bundle | lower }}_user_register';
     }
 }
