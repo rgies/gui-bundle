@@ -29,6 +29,16 @@ class InitialData implements FixtureInterface, ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     {
+
+        // get root path
+        $rootPath = $this->container->get('kernel')->getRootDir() . '/../';
+        $appFile = __DIR__ . '/../app.yml';
+        $ymlFileContent = file_get_contents($appFile);
+        $appParams = Yaml::parse($ymlFileContent, true);
+
+        // add needed parameter to app.yml
+        $this->_addAppParameter('UserManagement', $rootPath, $appParams);
+
         // admin user
         $userAdmin = new User();
         $userAdmin->setUsername('Admin');
@@ -41,4 +51,97 @@ class InitialData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($userAdmin);
         $manager->flush();
     }
+
+
+    /**
+     * Add given configuration array to app.yml.
+     *
+     * @param string $bundleTitle Title of the bundle
+     * @param string $rootPath Path to app root
+     * @param array $configuration Configuration to add
+     * @return bool False if config not written
+     */
+    private function _addAppParameter($bundleTitle, $rootPath, $configuration)
+    {
+        $configFile = $rootPath . '/app/config/app.yml';
+
+        try
+        {
+            // Get content of YAML file
+            $ymlFileContent = file_get_contents($configFile);
+
+            // Parse YAML file
+            $config = Yaml::parse($ymlFileContent, true);
+            $newConfig = array();
+
+            if (is_array($configuration))
+            {
+                foreach ($configuration as $key=>$value)
+                {
+                    if (!isset($config[$key]))
+                    {
+                        $value = $this->_recursiveArrFindReplace($value, 'true', true);
+                        $value = $this->_recursiveArrFindReplace($value, 'false', false);
+                        $value = $this->_recursiveArrFindReplace($value, '[]', array());
+                        $newConfig[$key] = $value;
+                    }
+                }
+            }
+
+            // new YAML config part
+            $result = PHP_EOL . '# ' . $bundleTitle . ' Configuration' . PHP_EOL . Yaml::dump($newConfig, 10);
+
+            if ($result)
+            {
+                echo 'Installing of configuration completed.';
+                if (@file_put_contents($configFile, $result, FILE_APPEND) !== false)
+                {
+                    return true;
+                }
+            }
+        }
+        catch (ParseException $ex)
+        {
+            echo 'Unable to parse the YAML string: ' . $ex->getMessage();
+        }
+        catch (Exception $ex)
+        {
+            echo 'Exception was thrown: ' . $ex->getMessage();
+        }
+
+        return false;
+    }
+
+    /**
+     * Search and replace given value into arrays.
+     *
+     * @param array $arr
+     * @param string $find
+     * @param string $replace
+     * @return array
+     */
+    private function _recursiveArrFindReplace($arr, $find, $replace)
+    {
+        if (is_array($arr))
+        {
+            foreach ($arr as $key=>$val)
+            {
+                if (is_array($arr[$key]))
+                {
+                    $arr[$key] = $this->_recursiveArrFindReplace($arr[$key], $find, $replace);
+                }
+                else
+                {
+                    if ($arr[$key] == $find)
+                    {
+                        $arr[$key] = $replace;
+                    }
+                }
+            }
+        }
+        return $arr;
+    }
+
+
+
 }
