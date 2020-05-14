@@ -27,6 +27,10 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ '{{ app.user.username }}' }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
+                            {{ '{%- if is_granted("ROLE_ADMIN") %}' }}
+                                <li><a href="{{ '{{ path("") }}' }}"><i class="fa fa-user fa-fw"></i> User Management</a></li>
+                                <li class="divider"></li>
+                            {{ '{% endif %}' }}
                             <li><a href="{{ '{{ path("logout") }}' }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                         </ul>
                     </li>
