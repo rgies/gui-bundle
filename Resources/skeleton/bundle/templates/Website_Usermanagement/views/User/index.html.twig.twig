@@ -35,13 +35,13 @@
         </div>
     </form>
     {{ '{% endset %}' }}
-    {{ '{% include 'WebsiteBundle::ViewSnippets/modal.html.twig' with {'id': 'invite-user-dialog', 'title': 'Invite User', 'submit': 'OK', 'content': content} only %}' }}
+    {{ '{% include \'WebsiteBundle::ViewSnippets/modal.html.twig\' with {\'id\': \'invite-user-dialog\', \'title\': \'Invite User\', \'submit\': \'OK\', \'content\': content} only %}' }}
 
     <div class="container">
         <div class="page-header">
             <h1>
                 <i class="fa fa-user"></i> User list
-                <button type="button" class="btn btn-primary pull-right" onclick="location.href='{{ '{{ path('user_new') }}' }}'">
+                <button type="button" class="btn btn-primary pull-right" onclick="location.href='{{ '{{ path(\'user_new\') }}' }}'">
                     <i class="fa fa-plus"></i> New
                 </button>
                 <div class="pull-right">&nbsp;</div>
@@ -68,13 +68,13 @@
                     <td>
                         {% if entity.isactive != 1 %}<i class="fa fa-eye-slash"></i>{{ '{% endif %}' }}
                         {{ icon.roles[entity.role]|raw }}
-                        <a href="{{ path('user_edit', { 'id': entity.id }) }}">{{ '{{ entity.username }}' }}</a>
+                        <a href="{{ '{{ path(\'user_edit\', { \'id\': entity.id }) }}' }}">{{ '{{ entity.username }}' }}</a>
                     </td>
                     <td>{{ '{{ entity.firstname }}' }} {{ '{{ entity.lastname }}' }}</td>
                     <td>{{ '{{ entity.email }}' }}</td>
-                    <td>{{ '{% if entity.getLastLoginDate() %}' }}{{ '{{ entity.getLastLoginDate()|date('Y-m-d H:i') }}' }}{{ '{% else %}' }}never{{ '{% endif %}' }}</td>
+                    <td>{{ '{% if entity.getLastLoginDate() %}' }}{{ '{{ entity.getLastLoginDate()|date(\'Y-m-d H:i\') }}' }}{{ '{% else %}' }}never{{ '{% endif %}' }}</td>
                     <td>
-                        <a href="{{ path('user_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i> edit</a>
+                        <a href="{{ '{{ path(\'user_edit\', { \'id\': entity.id }) }}' }}"><i class="fa fa-edit"></i> edit</a>
                     </td>
                 </tr>
             {{ '{% endfor %}' }}
