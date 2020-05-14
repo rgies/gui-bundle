@@ -35,8 +35,8 @@
         </div>
     </form>
     {{ '{% endset %}' }}
-    {{ '{% include \'WebsiteBundle::ViewSnippets/modal.html.twig\' with {\'id\': \'invite-user-dialog\', \'title\': \'Invite User\', \'submit\': \'OK\', \'content\': content} only %}' }}
 
+    {{ '{% include \'' }}{{ bundle }}{{ '::ViewSnippets/modal.html.twig\' with {\'id\': \'invite-user-dialog\', \'title\': \'Invite User\', \'submit\': \'OK\', \'content\': content} only %}' }}
     <div class="container">
         <div class="page-header">
             <h1>

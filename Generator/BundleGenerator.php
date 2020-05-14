@@ -32,7 +32,8 @@ class BundleGenerator extends Generator
 
     public function generate($namespace, $bundle, $dir, $format, $structure, $templateDir)
     {
-        $dir .= '/'.strtr($namespace, '\\', '/');
+        $rootDir = $dir . '/..';
+        $dir .= '/' . strtr($namespace, '\\', '/');
         if (file_exists($dir)) {
             if (!is_dir($dir)) {
                 throw new \RuntimeException(sprintf('Unable to generate the bundle as the target directory "%s" exists but is a file.', realpath($dir)));
@@ -136,6 +137,10 @@ class BundleGenerator extends Generator
                 // copy services
                 $this->_copyBundleTemplates($dir . '/Services',
                     $templateDir . '/Services', $parameters);
+
+                // copy app files
+                $this->_copyBundleTemplates($rootDir . '/app',
+                    $templateDir . '/app', $parameters);
 
             }
         }
