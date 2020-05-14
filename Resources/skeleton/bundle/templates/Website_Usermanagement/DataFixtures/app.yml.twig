@@ -21,7 +21,7 @@ parameters:
 # Workgroup Services
 services:
     security_token_service:
-        class:            RGies\WebsiteBundle\Services\SecurityTokenService
+        class:            {{ namespace }}\Services\SecurityTokenService
         arguments:        [@doctrine]
 
 
