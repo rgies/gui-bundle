@@ -1,0 +1,44 @@
+security:
+    encoders:
+        {{ namespace }}\Entity\User:
+            algorithm: sha256
+            encode_as_base64: false
+            iterations: 1
+
+    role_hierarchy:
+        ROLE_EDITOR:      [ROLE_USER]
+        ROLE_ADMIN:       [ROLE_USER, ROLE_EDITOR]
+        ROLE_SUPER_ADMIN: [ROLE_EDITOR, ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        administrators:
+            entity: { class: {{ bundle }}:User, property: username }
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt|gui)|css|images|js)/
+            security: false
+
+        login:
+            pattern:  ^/login$
+            security: false
+
+        secured_area:
+            pattern:    ^/
+            form_login:
+                login_path: login
+                check_path: login_auth
+                success_handler: authentication_handler
+                csrf_provider: form.csrf_provider
+                csrf_parameter: _security_token
+            remember_me:
+                key:      "%secret%"
+                lifetime: 604800 # 1 week in seconds
+                path:     /
+            logout:
+                path:   logout
+                #target: _demo
+            anonymous: ~
+
+    access_control:
+        - { path: ^/user, roles: ROLE_ADMIN }
