@@ -1,4 +1,4 @@
-{{ '{% extends "WebsiteBundle::layout.html.twig" %}' }}
+{{ '{% extends "' }}{{ bundle }}{{ '::layout.html.twig" %}' }}
 
 {{ '{% block content -%}' }}
 <div class="container">
@@ -38,7 +38,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ path('user_edit', { 'id': entity.id }) }}">
+        <a href="{{ '{{ path(\'user_edit\', { \'id\': entity.id }) }}' }}">
             Edit
         </a>
     </li>

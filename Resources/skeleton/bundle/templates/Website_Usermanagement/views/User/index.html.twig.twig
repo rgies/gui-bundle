@@ -1,6 +1,6 @@
-{{ '{% extends "WebsiteBundle::layout.html.twig" %}' }}
+{{ '{% extends "' }}{{ bundle }}{{ '::layout.html.twig" %}' }}
 
-{% block content -%}
+{{ '{% block content -%}' }}
     <!-- Invite Dialog -->
     {{ '{% set content %}' }}
     <!-- Data Form -->
@@ -8,7 +8,7 @@
         <div class="form-group">
             <label for="user_role">User Role</label>
             <select id="user_role" name="user_role" class="form-control">
-                {% for key,role in userRoles %}
+                {{ '{% for key,role in userRoles %}' }}
                     <option value="{{ '{{ key }}' }}">{{ '{{ role }}' }}</option>
                 {{ '{% endfor %}' }}
             </select>
@@ -66,8 +66,8 @@
             {{ '{% for entity in entities %}' }}
                 <tr>
                     <td>
-                        {% if entity.isactive != 1 %}<i class="fa fa-eye-slash"></i>{{ '{% endif %}' }}
-                        {{ icon.roles[entity.role]|raw }}
+                        {{ '{% if entity.isactive != 1 %}' }}<i class="fa fa-eye-slash"></i>{{ '{% endif %}' }}
+                        {{ '{{ icon.roles[entity.role]|raw }}' }}
                         <a href="{{ '{{ path(\'user_edit\', { \'id\': entity.id }) }}' }}">{{ '{{ entity.username }}' }}</a>
                     </td>
                     <td>{{ '{{ entity.firstname }}' }} {{ '{{ entity.lastname }}' }}</td>
@@ -81,8 +81,8 @@
             </tbody>
         </table>
         <strong>Legend:</strong>
-        {% for key,label in label.roles %}
-            {{ icon.roles[key]|raw }}{{ '{{ label }}' }}
+        {{ '{% for key,label in label.roles %}' }}
+        {{ '{{ icon.roles[key]|raw }}' }}{{ '{{ label }}' }}
         {{ '{% endfor %}' }}
     </div>
 {{ '{% endblock %}' }}
@@ -102,7 +102,7 @@
                     modal.modal('hide');
 
                     // load form
-                    $.post('{{ '{{ path('user_invite') }}' }}', $('#invite-user-form').serialize(), function(data){
+                    $.post('{{ '{{ path("user_invite") }}' }}', $('#invite-user-form').serialize(), function(data){
                         if (typeof(data) == 'string') location.href=data;
                     });
                 });
