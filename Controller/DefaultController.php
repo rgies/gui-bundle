@@ -497,7 +497,7 @@ class DefaultController extends Controller
         if ($ret['errorcode'] == 0 && $command == 'gui:generate:bundle')
         {
             $ret2 = $executor->execute('doctrine:database:create');
-            //$ret2 = $executor->execute('doctrine:schema:update --force');
+            $executor->execute('doctrine:fixture:load');
             $ret['output'] .= '<br/>' . $ret2['output'];
         }
 
