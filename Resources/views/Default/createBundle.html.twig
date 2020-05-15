@@ -78,23 +78,25 @@
 
             $.ajax('{{ path('guiInstallAssetsAjax') }}').done(function(data) {
                 $.ajax('{{ path('guiUpdateSchemaAjax') }}').done(function(data2) {
-                    if (response.errorcode == 0)
-                    {
-                        $('#responseDialogHeader').css('background-color', 'green');
-                        $('#responseDialogHeaderText').html('Successful');
-                        $('#close-button').click(function() {
-                            location.href = '{{ app.request.getBaseURL() }}';
-                        });
-                    }
-                    else
-                    {
-                        $('#responseDialogHeader').css('background-color', 'red');
-                        $('#responseDialogHeaderText').html('Execution Error');
-                    }
+                    $.ajax('{{ path('guiFixtureLoadAjax') }}').done(function(data3) {
+                        if (response.errorcode == 0)
+                        {
+                            $('#responseDialogHeader').css('background-color', 'green');
+                            $('#responseDialogHeaderText').html('Successful');
+                            $('#close-button').click(function() {
+                                location.href = '{{ app.request.getBaseURL() }}';
+                            });
+                        }
+                        else
+                        {
+                            $('#responseDialogHeader').css('background-color', 'red');
+                            $('#responseDialogHeaderText').html('Execution Error');
+                        }
 
-                    $('#pleaseWaitDialog').modal('hide');
-                    $('#responseDialogBody').html(text);
-                    $('#responseDialog').modal('show');
+                        $('#pleaseWaitDialog').modal('hide');
+                        $('#responseDialogBody').html(text);
+                        $('#responseDialog').modal('show');
+                    });
                 });
             });
         }

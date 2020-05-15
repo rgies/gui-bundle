@@ -164,6 +164,9 @@ class DefaultController extends Controller
         $executor = new CommandExecutor($this->get('kernel'));
         $ret = $executor->execute('assets:install');
 
+        // clean command line output
+        $ret['output'] = $this->_cleanCommandLineOutput($ret['output']);
+
         // return json result
         echo json_encode($ret);
         exit;
@@ -180,6 +183,28 @@ class DefaultController extends Controller
         // update database schema
         $executor = new CommandExecutor($this->get('kernel'));
         $ret = $executor->execute('doctrine:schema:update --force');
+
+        // clean command line output
+        $ret['output'] = $this->_cleanCommandLineOutput($ret['output']);
+
+        // return json result
+        echo json_encode($ret);
+        exit;
+    }
+
+    /**
+     * Ajax action to load fixture.
+     *
+     * @Route("/fixture-load-ajax", name="guiFixtureLoadAjax")
+     * @Template()
+     */
+    public function fixtureLoadAjaxAction()
+    {
+        $executor = new CommandExecutor($this->get('kernel'));
+        $ret = $executor->execute('doctrine:fixture:load');
+
+        // clean command line output
+        $ret['output'] = $this->_cleanCommandLineOutput($ret['output']);
 
         // return json result
         echo json_encode($ret);
@@ -497,7 +522,7 @@ class DefaultController extends Controller
         if ($ret['errorcode'] == 0 && $command == 'gui:generate:bundle')
         {
             $ret2 = $executor->execute('doctrine:database:create');
-            $executor->execute('doctrine:fixture:load');
+            //$ret2 = $executor->execute('doctrine:fixture:load --fixtures=src/' . $namespace  . '/DataFixtures/ORM');
             $ret['output'] .= '<br/>' . $ret2['output'];
         }
 
@@ -509,16 +534,25 @@ class DefaultController extends Controller
             $ret['output'] .= '<br/>' . $ret2['output'];
         }
 
-//        // install assets
-//        if ($ret['errorcode'] == 0 && $command == 'gui:generate:bundle')
-//        {
-//            $ret2 = $executor->execute('assets:install');
-//            $ret['output'] .= '<br/>' . $ret2['output'];
-//        }
+        // clean command line output
+        $ret['output'] = $this->_cleanCommandLineOutput($ret['output']);
 
         // return json result
         echo json_encode($ret);
         exit;
+    }
+
+    /**
+     * Removes special command line format characters
+     *
+     * @param string $message A formatted command line output message
+     * @param string $replacement Optional character to replace
+     *
+     * @return string Returns a cleaned message
+     */
+    protected function _cleanCommandLineOutput($message, $replacement=' ')
+    {
+        return preg_replace('%\x1b\[[0-9\;]*m%', $replacement, $message);
     }
 
     /**
